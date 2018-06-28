@@ -4185,3 +4185,658 @@ mutation: add mounting command addl in 396 for ST at 4
 mutation: swap in 397 for C between 9 and 9
 mutation: add brain move command brainmoveFTC_3.000000 in 398 for AJ1 at 2
 mutation: remove in 399 for AJ1 at 5
+nearest neighbor  0 for genome 215 has distance 0.000000
+nearest neighbor  1 for genome 215 has distance 0.147560
+nearest neighbor  0 for genome 219 has distance 0.000000
+nearest neighbor  1 for genome 219 has distance 0.184255
+nearest neighbor  0 for genome 344 has distance 0.000000
+nearest neighbor  1 for genome 344 has distance 0.226316
+nearest neighbor  0 for genome 237 has distance 0.000000
+nearest neighbor  1 for genome 237 has distance 0.215177
+nearest neighbor  0 for genome 253 has distance 0.000000
+nearest neighbor  1 for genome 253 has distance 0.131256
+nearest neighbor  0 for genome 286 has distance 0.000000
+nearest neighbor  1 for genome 286 has distance 0.027821
+nearest neighbor  0 for genome 140 has distance 0.000000
+nearest neighbor  1 for genome 140 has distance 0.192451
+nearest neighbor  0 for genome 255 has distance 0.000000
+nearest neighbor  1 for genome 255 has distance 0.112379
+nearest neighbor  0 for genome 294 has distance 0.000000
+nearest neighbor  1 for genome 294 has distance 0.000000
+nearest neighbor  0 for genome 71 has distance 0.000000
+nearest neighbor  1 for genome 71 has distance 0.309243
+nearest neighbor  0 for genome 222 has distance 0.000000
+nearest neighbor  1 for genome 222 has distance 0.000000
+nearest neighbor  0 for genome 310 has distance 0.000000
+nearest neighbor  1 for genome 310 has distance 0.000000
+nearest neighbor  0 for genome 322 has distance 0.000000
+nearest neighbor  1 for genome 322 has distance 0.178759
+nearest neighbor  0 for genome 332 has distance 0.000000
+nearest neighbor  1 for genome 332 has distance 0.295884
+nearest neighbor  0 for genome 202 has distance 0.000000
+nearest neighbor  1 for genome 202 has distance 0.000000
+nearest neighbor  0 for genome 327 has distance 0.000000
+nearest neighbor  1 for genome 327 has distance 0.171485
+nearest neighbor  0 for genome 227 has distance 0.000000
+nearest neighbor  1 for genome 227 has distance 0.088623
+nearest neighbor  0 for genome 19 has distance 0.000000
+nearest neighbor  1 for genome 19 has distance 0.000000
+nearest neighbor  0 for genome 36 has distance 0.000000
+nearest neighbor  1 for genome 36 has distance 0.040472
+nearest neighbor  0 for genome 300 has distance 0.000000
+nearest neighbor  1 for genome 300 has distance 0.116698
+nearest neighbor  0 for genome 127 has distance 0.000000
+nearest neighbor  1 for genome 127 has distance 0.000000
+nearest neighbor  0 for genome 333 has distance 0.000000
+nearest neighbor  1 for genome 333 has distance 0.128596
+nearest neighbor  0 for genome 307 has distance 0.000000
+nearest neighbor  1 for genome 307 has distance 0.051010
+nearest neighbor  0 for genome 289 has distance 0.000000
+nearest neighbor  1 for genome 289 has distance 0.000000
+nearest neighbor  0 for genome 160 has distance 0.000000
+nearest neighbor  1 for genome 160 has distance 0.000000
+nearest neighbor  0 for genome 116 has distance 0.000000
+nearest neighbor  1 for genome 116 has distance 0.076740
+nearest neighbor  0 for genome 252 has distance 0.000000
+nearest neighbor  1 for genome 252 has distance 0.238987
+nearest neighbor  0 for genome 305 has distance 0.000000
+nearest neighbor  1 for genome 305 has distance 0.180901
+nearest neighbor  0 for genome 254 has distance 0.000000
+nearest neighbor  1 for genome 254 has distance 0.266560
+nearest neighbor  0 for genome 349 has distance 0.000000
+nearest neighbor  1 for genome 349 has distance 0.000000
+nearest neighbor  0 for genome 348 has distance 0.000000
+nearest neighbor  1 for genome 348 has distance 0.000000
+nearest neighbor  0 for genome 298 has distance 0.000000
+nearest neighbor  1 for genome 298 has distance 0.089616
+nearest neighbor  0 for genome 334 has distance 0.000000
+nearest neighbor  1 for genome 334 has distance 0.175074
+nearest neighbor  0 for genome 340 has distance 0.000000
+nearest neighbor  1 for genome 340 has distance 0.092898
+nearest neighbor  0 for genome 266 has distance 0.000000
+nearest neighbor  1 for genome 266 has distance 0.052811
+nearest neighbor  0 for genome 55 has distance 0.000000
+nearest neighbor  1 for genome 55 has distance 0.030692
+nearest neighbor  0 for genome 293 has distance 0.000000
+nearest neighbor  1 for genome 293 has distance 0.000000
+nearest neighbor  0 for genome 238 has distance 0.000000
+nearest neighbor  1 for genome 238 has distance 0.049487
+nearest neighbor  0 for genome 336 has distance 0.000000
+nearest neighbor  1 for genome 336 has distance 0.089616
+nearest neighbor  0 for genome 316 has distance 0.000000
+nearest neighbor  1 for genome 316 has distance 0.000000
+nearest neighbor  0 for genome 338 has distance 0.000000
+nearest neighbor  1 for genome 338 has distance 0.000000
+nearest neighbor  0 for genome 345 has distance 0.000000
+nearest neighbor  1 for genome 345 has distance 0.000000
+nearest neighbor  0 for genome 328 has distance 0.000000
+nearest neighbor  1 for genome 328 has distance 0.000000
+nearest neighbor  0 for genome 179 has distance 0.000000
+nearest neighbor  1 for genome 179 has distance 0.270126
+nearest neighbor  0 for genome 189 has distance 0.000000
+nearest neighbor  1 for genome 189 has distance 0.000000
+nearest neighbor  0 for genome 123 has distance 0.000000
+nearest neighbor  1 for genome 123 has distance 0.205402
+nearest neighbor  0 for genome 231 has distance 0.000000
+nearest neighbor  1 for genome 231 has distance 0.000000
+nearest neighbor  0 for genome 164 has distance 0.000000
+nearest neighbor  1 for genome 164 has distance 0.174628
+nearest neighbor  0 for genome 163 has distance 0.000000
+nearest neighbor  1 for genome 163 has distance 0.340188
+nearest neighbor  0 for genome 315 has distance 0.000000
+nearest neighbor  1 for genome 315 has distance 0.000000
+nearest neighbor  0 for genome 269 has distance 0.000000
+nearest neighbor  1 for genome 269 has distance 0.000000
+nearest neighbor  0 for genome 323 has distance 0.000000
+nearest neighbor  1 for genome 323 has distance 0.121107
+nearest neighbor  0 for genome 22 has distance 0.000000
+nearest neighbor  1 for genome 22 has distance 0.192451
+nearest neighbor  0 for genome 319 has distance 0.000000
+nearest neighbor  1 for genome 319 has distance 0.000000
+nearest neighbor  0 for genome 26 has distance 0.000000
+nearest neighbor  1 for genome 26 has distance 0.155306
+nearest neighbor  0 for genome 306 has distance 0.000000
+nearest neighbor  1 for genome 306 has distance 0.000000
+nearest neighbor  0 for genome 216 has distance 0.000000
+nearest neighbor  1 for genome 216 has distance 0.000000
+nearest neighbor  0 for genome 166 has distance 0.000000
+nearest neighbor  1 for genome 166 has distance 0.000000
+nearest neighbor  0 for genome 326 has distance 0.000000
+nearest neighbor  1 for genome 326 has distance 0.282583
+nearest neighbor  0 for genome 135 has distance 0.000000
+nearest neighbor  1 for genome 135 has distance 0.000000
+nearest neighbor  0 for genome 339 has distance 0.000000
+nearest neighbor  1 for genome 339 has distance 0.000000
+nearest neighbor  0 for genome 277 has distance 0.000000
+nearest neighbor  1 for genome 277 has distance 0.178759
+nearest neighbor  0 for genome 296 has distance 0.000000
+nearest neighbor  1 for genome 296 has distance 0.205402
+nearest neighbor  0 for genome 272 has distance 0.000000
+nearest neighbor  1 for genome 272 has distance 0.000000
+nearest neighbor  0 for genome 145 has distance 0.000000
+nearest neighbor  1 for genome 145 has distance 0.000000
+nearest neighbor  0 for genome 204 has distance 0.000000
+nearest neighbor  1 for genome 204 has distance 0.084806
+nearest neighbor  0 for genome 129 has distance 0.000000
+nearest neighbor  1 for genome 129 has distance 0.131256
+nearest neighbor  0 for genome 288 has distance 0.000000
+nearest neighbor  1 for genome 288 has distance 0.000000
+nearest neighbor  0 for genome 317 has distance 0.000000
+nearest neighbor  1 for genome 317 has distance 0.000000
+nearest neighbor  0 for genome 302 has distance 0.000000
+nearest neighbor  1 for genome 302 has distance 0.106164
+nearest neighbor  0 for genome 211 has distance 0.000000
+nearest neighbor  1 for genome 211 has distance 0.000000
+nearest neighbor  0 for genome 342 has distance 0.000000
+nearest neighbor  1 for genome 342 has distance 0.201790
+nearest neighbor  0 for genome 111 has distance 0.000000
+nearest neighbor  1 for genome 111 has distance 0.000000
+nearest neighbor  0 for genome 313 has distance 0.000000
+nearest neighbor  1 for genome 313 has distance 0.000000
+nearest neighbor  0 for genome 62 has distance 0.000000
+nearest neighbor  1 for genome 62 has distance 0.000000
+nearest neighbor  0 for genome 15 has distance 0.000000
+nearest neighbor  1 for genome 15 has distance 0.000000
+nearest neighbor  0 for genome 280 has distance 0.000000
+nearest neighbor  1 for genome 280 has distance 0.000000
+nearest neighbor  0 for genome 168 has distance 0.000000
+nearest neighbor  1 for genome 168 has distance 0.000000
+nearest neighbor  0 for genome 291 has distance 0.000000
+nearest neighbor  1 for genome 291 has distance 0.000000
+nearest neighbor  0 for genome 325 has distance 0.000000
+nearest neighbor  1 for genome 325 has distance 0.142857
+nearest neighbor  0 for genome 37 has distance 0.000000
+nearest neighbor  1 for genome 37 has distance 0.052383
+nearest neighbor  0 for genome 247 has distance 0.000000
+nearest neighbor  1 for genome 247 has distance 0.000000
+nearest neighbor  0 for genome 303 has distance 0.000000
+nearest neighbor  1 for genome 303 has distance 0.012806
+nearest neighbor  0 for genome 206 has distance 0.000000
+nearest neighbor  1 for genome 206 has distance 0.000000
+nearest neighbor  0 for genome 273 has distance 0.000000
+nearest neighbor  1 for genome 273 has distance 0.107964
+nearest neighbor  0 for genome 235 has distance 0.000000
+nearest neighbor  1 for genome 235 has distance 0.094345
+nearest neighbor  0 for genome 212 has distance 0.000000
+nearest neighbor  1 for genome 212 has distance 0.000000
+nearest neighbor  0 for genome 218 has distance 0.000000
+nearest neighbor  1 for genome 218 has distance 0.000000
+nearest neighbor  0 for genome 347 has distance 0.000000
+nearest neighbor  1 for genome 347 has distance 0.499820
+nearest neighbor  0 for genome 54 has distance 0.000000
+nearest neighbor  1 for genome 54 has distance 0.000000
+nearest neighbor  0 for genome 69 has distance 0.000000
+nearest neighbor  1 for genome 69 has distance 0.000000
+nearest neighbor  0 for genome 81 has distance 0.000000
+nearest neighbor  1 for genome 81 has distance 0.000000
+nearest neighbor  0 for genome 161 has distance 0.000000
+nearest neighbor  1 for genome 161 has distance 0.000000
+nearest neighbor  0 for genome 271 has distance 0.000000
+nearest neighbor  1 for genome 271 has distance 0.000000
+nearest neighbor  0 for genome 331 has distance 0.000000
+nearest neighbor  1 for genome 331 has distance 0.000000
+nearest neighbor  0 for genome 285 has distance 0.000000
+nearest neighbor  1 for genome 285 has distance 0.098528
+nearest neighbor  0 for genome 329 has distance 0.000000
+nearest neighbor  1 for genome 329 has distance 0.166666
+nearest neighbor  0 for genome 241 has distance 0.000000
+nearest neighbor  1 for genome 241 has distance 0.280003
+nearest neighbor  0 for genome 284 has distance 0.000000
+nearest neighbor  1 for genome 284 has distance 0.000000
+nearest neighbor  0 for genome 265 has distance 0.000000
+nearest neighbor  1 for genome 265 has distance 0.000000
+nearest neighbor  0 for genome 350 has distance 0.000000
+nearest neighbor  1 for genome 350 has distance 0.030561
+nearest neighbor  0 for genome 351 has distance 0.000000
+nearest neighbor  1 for genome 351 has distance 0.253306
+nearest neighbor  0 for genome 352 has distance 0.000000
+nearest neighbor  1 for genome 352 has distance 0.000000
+nearest neighbor  0 for genome 353 has distance 0.000000
+nearest neighbor  1 for genome 353 has distance 0.286157
+nearest neighbor  0 for genome 354 has distance 0.000000
+nearest neighbor  1 for genome 354 has distance 0.000000
+nearest neighbor  0 for genome 355 has distance 0.000000
+nearest neighbor  1 for genome 355 has distance 0.257876
+nearest neighbor  0 for genome 356 has distance 0.000000
+nearest neighbor  1 for genome 356 has distance 0.098528
+nearest neighbor  0 for genome 357 has distance 0.000000
+nearest neighbor  1 for genome 357 has distance 0.184255
+nearest neighbor  0 for genome 358 has distance 0.000000
+nearest neighbor  1 for genome 358 has distance 0.100000
+nearest neighbor  0 for genome 359 has distance 0.000000
+nearest neighbor  1 for genome 359 has distance 0.000000
+nearest neighbor  0 for genome 360 has distance 0.000000
+nearest neighbor  1 for genome 360 has distance 0.022472
+nearest neighbor  0 for genome 361 has distance 0.000000
+nearest neighbor  1 for genome 361 has distance 0.260434
+nearest neighbor  0 for genome 362 has distance 0.000000
+nearest neighbor  1 for genome 362 has distance 0.000000
+nearest neighbor  0 for genome 363 has distance 0.000000
+nearest neighbor  1 for genome 363 has distance 0.060216
+nearest neighbor  0 for genome 364 has distance 0.000000
+nearest neighbor  1 for genome 364 has distance 0.041437
+nearest neighbor  0 for genome 365 has distance 0.000000
+nearest neighbor  1 for genome 365 has distance 0.448674
+nearest neighbor  0 for genome 366 has distance 0.000000
+nearest neighbor  1 for genome 366 has distance 0.000000
+nearest neighbor  0 for genome 367 has distance 0.000000
+nearest neighbor  1 for genome 367 has distance 0.168722
+nearest neighbor  0 for genome 368 has distance 0.000000
+nearest neighbor  1 for genome 368 has distance 0.000000
+nearest neighbor  0 for genome 369 has distance 0.000000
+nearest neighbor  1 for genome 369 has distance 0.099674
+nearest neighbor  0 for genome 370 has distance 0.000000
+nearest neighbor  1 for genome 370 has distance 0.243505
+nearest neighbor  0 for genome 371 has distance 0.000000
+nearest neighbor  1 for genome 371 has distance 0.000000
+nearest neighbor  0 for genome 372 has distance 0.000000
+nearest neighbor  1 for genome 372 has distance 0.107964
+nearest neighbor  0 for genome 373 has distance 0.000000
+nearest neighbor  1 for genome 373 has distance 0.106164
+nearest neighbor  0 for genome 374 has distance 0.000000
+nearest neighbor  1 for genome 374 has distance 0.110950
+nearest neighbor  0 for genome 375 has distance 0.000000
+nearest neighbor  1 for genome 375 has distance 0.018221
+nearest neighbor  0 for genome 376 has distance 0.000000
+nearest neighbor  1 for genome 376 has distance 0.128596
+nearest neighbor  0 for genome 377 has distance 0.000000
+nearest neighbor  1 for genome 377 has distance 0.000000
+nearest neighbor  0 for genome 378 has distance 0.000000
+nearest neighbor  1 for genome 378 has distance 0.097412
+nearest neighbor  0 for genome 379 has distance 0.000000
+nearest neighbor  1 for genome 379 has distance 0.110950
+nearest neighbor  0 for genome 380 has distance 0.000000
+nearest neighbor  1 for genome 380 has distance 0.000000
+nearest neighbor  0 for genome 381 has distance 0.000000
+nearest neighbor  1 for genome 381 has distance 0.000000
+nearest neighbor  0 for genome 382 has distance 0.000000
+nearest neighbor  1 for genome 382 has distance 0.000000
+nearest neighbor  0 for genome 383 has distance 0.000000
+nearest neighbor  1 for genome 383 has distance 0.116698
+nearest neighbor  0 for genome 384 has distance 0.000000
+nearest neighbor  1 for genome 384 has distance 0.153473
+nearest neighbor  0 for genome 385 has distance 0.000000
+nearest neighbor  1 for genome 385 has distance 0.049487
+nearest neighbor  0 for genome 386 has distance 0.000000
+nearest neighbor  1 for genome 386 has distance 0.000000
+nearest neighbor  0 for genome 387 has distance 0.000000
+nearest neighbor  1 for genome 387 has distance 0.010050
+nearest neighbor  0 for genome 388 has distance 0.000000
+nearest neighbor  1 for genome 388 has distance 0.187691
+nearest neighbor  0 for genome 389 has distance 0.000000
+nearest neighbor  1 for genome 389 has distance 0.000000
+nearest neighbor  0 for genome 390 has distance 0.000000
+nearest neighbor  1 for genome 390 has distance 0.027821
+nearest neighbor  0 for genome 391 has distance 0.000000
+nearest neighbor  1 for genome 391 has distance 0.083905
+nearest neighbor  0 for genome 392 has distance 0.000000
+nearest neighbor  1 for genome 392 has distance 0.092898
+nearest neighbor  0 for genome 393 has distance 0.000000
+nearest neighbor  1 for genome 393 has distance 0.000000
+nearest neighbor  0 for genome 394 has distance 0.000000
+nearest neighbor  1 for genome 394 has distance 0.000000
+nearest neighbor  0 for genome 395 has distance 0.000000
+nearest neighbor  1 for genome 395 has distance 0.240211
+nearest neighbor  0 for genome 396 has distance 0.000000
+nearest neighbor  1 for genome 396 has distance 0.040472
+nearest neighbor  0 for genome 397 has distance 0.000000
+nearest neighbor  1 for genome 397 has distance 0.000000
+nearest neighbor  0 for genome 398 has distance 0.000000
+nearest neighbor  1 for genome 398 has distance 0.000000
+nearest neighbor  0 for genome 399 has distance 0.000000
+nearest neighbor  1 for genome 399 has distance 0.075339
+experiment end gen: Thu Jun 28 23:23:46 2018
+
+------------ generation 8 ------------
+experiment start gen: Thu Jun 28 23:23:46 2018
+
+ crossover for genome 400 - p1: 222 p2: 360
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent1
+ST from parent1
+ crossover for genome 401 - p1: 375 p2: 111
+AJ1 from parent2
+AJ2 from parent2
+B from parent2
+C from parent1
+ST from parent1
+ crossover for genome 402 - p1: 288 p2: 255
+AJ1 from parent2
+AJ2 from parent2
+B from parent1
+C from parent1
+ST from parent2
+ crossover for genome 403 - p1: 289 p2: 166
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 404 - p1: 300 p2: 389
+AJ1 from parent2
+AJ2 from parent2
+B from parent1
+C from parent1
+ST from parent2
+ crossover for genome 405 - p1: 247 p2: 370
+AJ1 from parent2
+AJ2 from parent2
+B from parent2
+C from parent1
+ST from parent1
+ crossover for genome 406 - p1: 222 p2: 334
+AJ1 from parent1
+AJ2 from parent2
+B from parent2
+C from parent2
+ST from parent2
+ crossover for genome 407 - p1: 291 p2: 366
+AJ1 from parent1
+AJ2 from parent2
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 408 - p1: 338 p2: 247
+AJ1 from parent2
+AJ2 from parent2
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 409 - p1: 288 p2: 271
+AJ1 from parent1
+AJ2 from parent1
+B from parent1
+C from parent2
+ST from parent2
+ crossover for genome 410 - p1: 273 p2: 164
+AJ1 from parent2
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 411 - p1: 160 p2: 361
+AJ1 from parent1
+AJ2 from parent1
+B from parent1
+C from parent2
+ST from parent1
+ crossover for genome 412 - p1: 388 p2: 374
+AJ1 from parent1
+AJ2 from parent2
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 413 - p1: 241 p2: 294
+AJ1 from parent2
+AJ2 from parent1
+B from parent2
+C from parent1
+ST from parent1
+ crossover for genome 414 - p1: 373 p2: 334
+AJ1 from parent2
+AJ2 from parent1
+B from parent1
+C from parent1
+ST from parent1
+ crossover for genome 415 - p1: 166 p2: 327
+AJ1 from parent2
+AJ2 from parent2
+B from parent1
+C from parent1
+ST from parent2
+ crossover for genome 416 - p1: 371 p2: 204
+AJ1 from parent2
+AJ2 from parent2
+B from parent1
+C from parent2
+ST from parent1
+ crossover for genome 417 - p1: 334 p2: 69
+AJ1 from parent2
+AJ2 from parent1
+B from parent1
+C from parent2
+ST from parent2
+ crossover for genome 418 - p1: 350 p2: 316
+AJ1 from parent2
+AJ2 from parent1
+B from parent1
+C from parent2
+ST from parent1
+ crossover for genome 419 - p1: 388 p2: 396
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent2
+ crossover for genome 420 - p1: 271 p2: 379
+AJ1 from parent2
+AJ2 from parent2
+B from parent2
+C from parent1
+ST from parent1
+ crossover for genome 421 - p1: 164 p2: 354
+AJ1 from parent1
+AJ2 from parent1
+B from parent1
+C from parent2
+ST from parent2
+ crossover for genome 422 - p1: 255 p2: 227
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 423 - p1: 372 p2: 350
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent1
+ST from parent1
+ crossover for genome 424 - p1: 344 p2: 289
+AJ1 from parent1
+AJ2 from parent2
+B from parent2
+C from parent2
+ST from parent2
+ crossover for genome 425 - p1: 238 p2: 354
+AJ1 from parent2
+AJ2 from parent1
+B from parent2
+C from parent1
+ST from parent1
+ crossover for genome 426 - p1: 338 p2: 333
+AJ1 from parent2
+AJ2 from parent1
+B from parent1
+C from parent2
+ST from parent2
+ crossover for genome 427 - p1: 374 p2: 22
+AJ1 from parent2
+AJ2 from parent2
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 428 - p1: 269 p2: 332
+AJ1 from parent1
+AJ2 from parent2
+B from parent1
+C from parent1
+ST from parent1
+ crossover for genome 429 - p1: 247 p2: 166
+AJ1 from parent2
+AJ2 from parent2
+B from parent2
+C from parent1
+ST from parent2
+ crossover for genome 430 - p1: 300 p2: 54
+AJ1 from parent1
+AJ2 from parent2
+B from parent1
+C from parent1
+ST from parent1
+ crossover for genome 431 - p1: 300 p2: 372
+AJ1 from parent1
+AJ2 from parent1
+B from parent1
+C from parent2
+ST from parent1
+ crossover for genome 432 - p1: 373 p2: 382
+AJ1 from parent2
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent2
+ crossover for genome 433 - p1: 300 p2: 286
+AJ1 from parent2
+AJ2 from parent1
+B from parent1
+C from parent2
+ST from parent2
+ crossover for genome 434 - p1: 116 p2: 328
+AJ1 from parent2
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent2
+ crossover for genome 435 - p1: 253 p2: 328
+AJ1 from parent1
+AJ2 from parent2
+B from parent1
+C from parent2
+ST from parent2
+ crossover for genome 436 - p1: 351 p2: 247
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent1
+ST from parent1
+ crossover for genome 437 - p1: 293 p2: 382
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 438 - p1: 206 p2: 360
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 439 - p1: 306 p2: 288
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent2
+ crossover for genome 440 - p1: 385 p2: 204
+AJ1 from parent1
+AJ2 from parent2
+B from parent2
+C from parent1
+ST from parent2
+ crossover for genome 441 - p1: 332 p2: 354
+AJ1 from parent1
+AJ2 from parent2
+B from parent2
+C from parent1
+ST from parent2
+ crossover for genome 442 - p1: 160 p2: 387
+AJ1 from parent2
+AJ2 from parent1
+B from parent1
+C from parent1
+ST from parent2
+ crossover for genome 443 - p1: 332 p2: 333
+AJ1 from parent2
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent2
+ crossover for genome 444 - p1: 204 p2: 310
+AJ1 from parent2
+AJ2 from parent2
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 445 - p1: 253 p2: 334
+AJ1 from parent1
+AJ2 from parent2
+B from parent2
+C from parent2
+ST from parent1
+ crossover for genome 446 - p1: 383 p2: 247
+AJ1 from parent2
+AJ2 from parent1
+B from parent1
+C from parent1
+ST from parent2
+ crossover for genome 447 - p1: 334 p2: 302
+AJ1 from parent2
+AJ2 from parent1
+B from parent1
+C from parent1
+ST from parent2
+ crossover for genome 448 - p1: 62 p2: 370
+AJ1 from parent1
+AJ2 from parent1
+B from parent2
+C from parent2
+ST from parent2
+ crossover for genome 449 - p1: 231 p2: 379
+AJ1 from parent1
+AJ2 from parent2
+B from parent2
+C from parent1
+ST from parent2
+mutation: swap in 400 for AJ1 between 4 and 4
+mutation: swap in 401 for B between 3 and 5
+mutation: add brain change command brainloop_-0.189280 in 402 for AJ1 at 6
+mutation: add brain change command brainnode_-0.465006|Sigmoid|0.615476 in 403 for C at 6
+mutation: add mounting command addf in 404 for ST at 0
+mutation: remove in 405 for ST at 1
+mutation: swap in 406 for C between 10 and 10
+mutation: remove in 407 for AJ2 at 6
+mutation: remove in 408 for B at 3
+mutation: remove in 409 for B at 4
+mutation: swap in 410 for AJ2 between 5 and 6
+mutation: add brain change command brainloop_-0.407931 in 411 for C at 3
+mutation: remove in 412 for ST at 7
+mutation: add brain change command brainloop_0.293820 in 413 for ST at 3
+mutation: remove in 414 for C at 6
+mutation: add mounting command addr in 415 for AJ2 at 6
+mutation: add mounting command addl in 416 for AJ2 at 5
+mutation: add brain change command brainperturb_-0.969014 in 417 for AJ1 at 1
+mutation: add moving command mover in 418 for ST at 3
+mutation: swap in 419 for AJ2 between 5 and 8
+mutation: add mounting command addf in 420 for B at 7
+mutation: add mounting command addf in 421 for AJ2 at 4
+mutation: swap in 422 for B between 2 and 5
+mutation: add brain move command brainmoveTTC_1.000000 in 423 for B at 6
+mutation: swap in 424 for C between 10 and 10
+mutation: remove in 425 for AJ1 at 2
+mutation: remove in 426 for AJ1 at 3
+mutation: swap in 427 for C between 4 and 4
+mutation: add brain change command brainloop_0.671916 in 428 for C at 1
+mutation: remove in 429 for AJ2 at 6
+mutation: add brain move command brainmoveTTS_1.000000|2.000000 in 430 for ST at 1
+mutation: remove in 431 for C at 8
+mutation: swap in 432 for B between 7 and 8
+mutation: add moving command moveb in 433 for AJ2 at 10
+mutation: add moving command movel in 434 for AJ2 at 4
+mutation: swap in 435 for C between 3 and 5
+mutation: remove in 436 for C at 3
+mutation: add letter AJ1_0.812737|Oscillator|9.622930|5.285416|6.658660 in 437 for B at 8
+mutation: remove in 438 for AJ1 at 2
+mutation: remove in 439 for AJ2 at 8
+mutation: add brain move command brainmoveFTC_1.000000 in 440 for C at 1
+mutation: add brain move command brainmoveTTS_1.000000|1.000000 in 441 for AJ2 at 11
+mutation: swap in 442 for ST between 5 and 5
+mutation: remove in 443 for ST at 3
+mutation: add brain move command brainmoveFTS_1.000000|1.000000 in 444 for ST at 9
+mutation: add brain change command brainloop_0.674387 in 445 for B at 5
+mutation: swap in 446 for B between 9 and 11
+mutation: remove in 447 for C at 9
+mutation: swap in 448 for ST between 5 and 5
+mutation: swap in 449 for AJ1 between 12 and 12
