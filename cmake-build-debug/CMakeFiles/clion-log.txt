@@ -1,0 +1,54 @@
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/karinemiras/projects/coevolution-revolve/l-system
+CMake Warning at /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:761 (message):
+  Imported targets not available for Boost version 106501
+Call Stack (most recent call first):
+  /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:865 (_Boost_COMPONENT_DEPENDENCIES)
+  /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:1454 (_Boost_MISSING_DEPENDENCIES)
+  lsystem/CMakeLists.txt:33 (find_package)
+
+
+-- Boost version: 1.65.1
+-- Found the following Boost libraries:
+--   unit_test_framework
+-- Could NOT find Qt4 (missing:  QT_CORE_INCLUDE_DIR QT_CORE_LIBRARY QT_WIDGETS_INCLUDE_DIR QT_WIDGETS_LIBRARY) (found version "4.8.7")
+CMake Warning at lsystem/CMakeLists.txt:46 (find_package):
+  By not providing "Findmlpack.cmake" in CMAKE_MODULE_PATH this project has
+  asked CMake to find a package configuration file provided by "mlpack", but
+  CMake did not find one.
+
+  Could not find a package configuration file provided by "mlpack" with any
+  of the following names:
+
+    mlpackConfig.cmake
+    mlpack-config.cmake
+
+  Add the installation prefix of "mlpack" to CMAKE_PREFIX_PATH or set
+  "mlpack_DIR" to a directory containing one of the above files.  If "mlpack"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+
+
+CMake Warning at /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:761 (message):
+  Imported targets not available for Boost version 106501
+Call Stack (most recent call first):
+  /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:865 (_Boost_COMPONENT_DEPENDENCIES)
+  /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:1454 (_Boost_MISSING_DEPENDENCIES)
+  lsystem/python/CMakeLists.txt:5 (find_package)
+
+
+CMake Warning at /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:761 (message):
+  Imported targets not available for Boost version 106501
+Call Stack (most recent call first):
+  /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:865 (_Boost_COMPONENT_DEPENDENCIES)
+  /Applications/CLion.app/Contents/bin/cmake/share/cmake-3.7/Modules/FindBoost.cmake:1454 (_Boost_MISSING_DEPENDENCIES)
+  lsystem/python/CMakeLists.txt:5 (find_package)
+
+
+-- Boost version: 1.65.1
+-- Found the following Boost libraries:
+--   system
+--   python
+-- boost: 1 - system: ON - python: ON
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/karinemiras/projects/coevolution-revolve/l-system/cmake-build-debug
