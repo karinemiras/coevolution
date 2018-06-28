@@ -1,0 +1,226 @@
+body:
+  params:
+    blue: 0
+    green: 1
+    red: 1
+  type        : Core
+  id          : module0
+  children    :
+    1:
+      slot        : 0
+      orientation : 0
+      params:
+        blue: 0.58
+        green: 0.08
+        red: 1
+      type        : ActiveHinge
+      id          : module2
+      children    :
+        1:
+          slot        : 0
+          orientation : 90
+          params:
+            blue: 0
+            green: 0
+            red: 0.7
+          type        : ActiveHinge
+          id          : module3
+          children    :
+            1:
+              slot        : 0
+              orientation : -90
+              params:
+                blue: 0.58
+                green: 0.08
+                red: 1
+              type        : ActiveHinge
+              id          : module4
+              children    :
+                1:
+                  slot        : 0
+                  orientation : 0
+                  params:
+                    blue: 0.58
+                    green: 0.08
+                    red: 1
+                  type        : ActiveHinge
+                  id          : module5
+                  children    :
+                    1:
+                      slot        : 0
+                      orientation : 90
+                      params:
+                        blue: 0
+                        green: 0
+                        red: 0.7
+                      type        : ActiveHinge
+                      id          : module6
+                      children    :
+                        1:
+                          slot        : 0
+                          orientation : -90
+                          params:
+                            blue: 0.58
+                            green: 0.08
+                            red: 1
+                          type        : ActiveHinge
+                          id          : module7
+                          children    :
+                            1:
+                              slot        : 0
+                              orientation : 90
+                              params:
+                                blue: 0
+                                green: 0
+                                red: 0.7
+                              type        : ActiveHinge
+                              id          : module8
+                              children    :
+                                1:
+                                  slot        : 0
+                                  orientation : -90
+                                  params:
+                                    blue: 1
+                                    green: 0
+                                    red: 0
+                                  type        : FixedBrick
+                                  id          : module9
+    2:
+      slot        : 0
+      orientation : 0
+      params:
+        blue: 0.58
+        green: 0.08
+        red: 1
+      type        : ActiveHinge
+      id          : module1
+brain:
+  neurons:
+    node1:
+      id: node1
+      layer: output
+      part_id: module1
+      type: Oscillator
+    node2:
+      id: node2
+      layer: output
+      part_id: module2
+      type: Oscillator
+    node3:
+      id: node3
+      layer: output
+      part_id: module3
+      type: Oscillator
+    node4:
+      id: node4
+      layer: output
+      part_id: module4
+      type: Oscillator
+    node5:
+      id: node5
+      layer: output
+      part_id: module5
+      type: Oscillator
+    node6:
+      id: node6
+      layer: output
+      part_id: module6
+      type: Oscillator
+    node7:
+      id: node7
+      layer: output
+      part_id: module7
+      type: Oscillator
+    node8:
+      id: node8
+      layer: output
+      part_id: module8
+      type: Oscillator
+    node-core1:
+      id: node-core1
+      layer: input
+      part_id: module0
+      type: Input
+    node-core2:
+      id: node-core2
+      layer: input
+      part_id: module0
+      type: Input
+    node-core3:
+      id: node-core3
+      layer: input
+      part_id: module0
+      type: Input
+    node-core4:
+      id: node-core4
+      layer: input
+      part_id: module0
+      type: Input
+    node-core5:
+      id: node-core5
+      layer: input
+      part_id: module0
+      type: Input
+    node-core6:
+      id: node-core6
+      layer: input
+      part_id: module0
+      type: Input
+  connections:
+  - dst: node2
+    src: node1
+    weight: -0.893637
+  - dst: node3
+    src: node1
+    weight: 0.137981
+  - dst: node4
+    src: node1
+    weight: 0.705398
+  - dst: node5
+    src: node1
+    weight: -0.510565
+  - dst: node7
+    src: node1
+    weight: -0.456189
+  - dst: node1
+    src: node2
+    weight: -0.456189
+  - dst: node6
+    src: node2
+    weight: 0.059406
+  - dst: node8
+    src: node2
+    weight: -0.664679
+  params:
+    node1:
+      amplitude: 5.37552
+      period: 4.41646
+      phase_offset: 9.33953
+    node2:
+      amplitude: 3.0029
+      period: 7.19746
+      phase_offset: 6.66745
+    node3:
+      amplitude: 1.03097
+      period: 6.72864
+      phase_offset: 6.4827
+    node4:
+      amplitude: 7.49238
+      period: 5.98321
+      phase_offset: 1.49092
+    node5:
+      amplitude: 5.98969
+      period: 7.46967
+      phase_offset: 1.19631
+    node6:
+      amplitude: 8.08772
+      period: 5.41654
+      phase_offset: 8.16449
+    node7:
+      amplitude: 3.0029
+      period: 7.19746
+      phase_offset: 6.66745
+    node8:
+      amplitude: 7.95978
+      period: 8.33641
+      phase_offset: 4.98658

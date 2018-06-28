@@ -1,0 +1,9 @@
+branching:0
+connectivity1:0.75
+connectivity2:0.25
+coverage:0.75
+effective_joints:0
+length_ratio:0.5
+sensors:0.142857
+symmetry:0.5
+total_components:0.06
