@@ -1,5 +1,0 @@
-AJ1 brainmoveTTS_1.000000|1.000000 addr AJ1_-0.787207|Oscillator|3.052381|4.604019|9.429526 moveb B 
-AJ2 brainmoveFTC_1.000000 addr AJ2_-0.862820|Oscillator|9.601565|7.513603|3.543043 movel brainmoveTTS_2.000000|2.000000 addf AJ2_0.554055|Oscillator|4.721207|6.725338|8.138897 movef brainmoveTTS_1.000000|1.000000 addl AJ1_-0.716585|Oscillator|6.698749|9.977254|8.020871 mover moveb 
-B brainmoveFTP_1.000000 addr brainmoveFTS_2.000000|1.000000 mover ST_0.827337 addr AJ1_-0.290288|Oscillator|4.031747|2.084837|4.138080 mover 
-C C brainmoveTTC_1.000000 addr AJ2_-0.301708|Oscillator|2.467242|1.704978|4.168308 movel brainmoveTTP_1.000000 addl AJ1_-0.963877|Oscillator|9.501385|3.736723|7.366385 mover 
-ST brainmoveFTS_1.000000|1.000000 addr AJ2_0.529530|Oscillator|5.674324|6.960094|6.875125 
