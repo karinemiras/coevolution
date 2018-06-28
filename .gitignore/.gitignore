@@ -31,5 +31,4 @@
 *.out
 *.app
 experiments
-build
 cmake-build-debug
