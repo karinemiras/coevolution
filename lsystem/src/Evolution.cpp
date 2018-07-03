@@ -1381,7 +1381,8 @@ void Evolution::calculateFinalFitness()
   {
 
     double fitness = this->population[i].getLocomotionFitness()
-
+      * this->population[i].getNoveltyFitness()
+      * this->population[i].getBalanceFitness()
     ;
 
     this->population[i].updateFinalFitness(fitness);
@@ -1394,7 +1395,7 @@ void Evolution::calculatePenaltyFitness()
   {
 
     double fitness =
-        std::max(0.1, this->population[i].getMeasures()["symmetry"]);
+        std::max(0.1, 1 - this->population[i].getMeasures()["connectivity2"]);
 
     this->population[i].updatePenaltyFitness(fitness);
   }
