@@ -945,131 +945,150 @@ void Evolution::loadIndividuals(int generation, std::string type)
       listgenomes,
       linegenome))
   {
-    std::string idgenome = "";
-    std::string idparent1 = "";
-    std::string idparent2 = "";
 
-    if(type == "population")
+    std::vector< std::string > tokens;
+    boost::split(
+        tokens,
+        linegenome,
+        boost::is_any_of("_"));
+
+    // if it is a body file for pop recovery, or archive recovery
+    if(tokens[0] == "body" or type != "population")
     {
-      std::vector< std::string > tokens;
-      boost::split(
-          tokens,
-          linegenome,
-          boost::is_any_of("_."));
-      idgenome  = tokens[1];
-      idparent1 = tokens[3];
-      idparent2 = tokens[5];
-    }else
-    {
-      std::vector< std::string > tokens;
-      boost::split(
-          tokens,
-          linegenome,
-          boost::is_any_of(" "));
-      idgenome  = tokens[0];
-      idparent1 = tokens[1];
-      idparent2 = tokens[2];
-    }
+      std::string idgenome = "";
+      std::string idparent1 = "";
+      std::string idparent2 = "";
 
-    Genome gen = Genome(idgenome, idparent1, idparent2);
+      if (type == "population")
+      {
+        boost::split(
+            tokens,
+            linegenome,
+            boost::is_any_of("_."));
+        idgenome = tokens[1];
+        idparent1 = tokens[3];
+        idparent2 = tokens[5];
+      }
+      else
+      {
+        boost::split(
+            tokens,
+            linegenome,
+            boost::is_any_of(" "));
+        idgenome = tokens[0];
+        idparent1 = tokens[1];
+        idparent2 = tokens[2];
+      }
 
-    // finds number of generation to which the genome belongs to
-    int generation_genome = this->getGeneration_genome(idgenome);
+      Genome gen = Genome(
+          idgenome,
+          idparent1,
+          idparent2);
 
-    // reads the file with the genome
-    std::ifstream listalphabet(
-        this->path+"experiments/" + this->experiment_name + "/offspringpop" +
-        std::to_string(generation_genome) + "/genome" + idgenome +
-        ".txt");
-    std::string linealphabet;
-    // for each letter of the alphabet
-    while (getline(
-        listalphabet,
-        linealphabet))
-    {
+      // finds number of generation to which the genome belongs to
+      int generation_genome = this->getGeneration_genome(idgenome);
 
-      // gets letter and production rule from file
-      std::vector< std::string > items;
-      boost::split(
-          items,
-          linealphabet,
-          boost::is_any_of(" "));
-      std::vector< std::string > items_rule(
-          items.begin() + 1,
-          items.begin() + items.size() -
-          1);
+      // reads the file with the genome
+      std::ifstream listalphabet(
+          this->path + "experiments/" + this->experiment_name +
+          "/offspringpop" +
+          std::to_string(generation_genome) + "/genome" + idgenome +
+          ".txt");
+      std::string linealphabet;
+      // for each letter of the alphabet
+      while (getline(
+          listalphabet,
+          linealphabet))
+      {
 
-      // build a genetic-string with the production rule for the letter
-      auto lgs =  GeneticString();
-      lgs = gen.build_genetic_string(
-          lgs,
-          items_rule);
+        // gets letter and production rule from file
+        std::vector< std::string > items;
+        boost::split(
+            items,
+            linealphabet,
+            boost::is_any_of(" "));
+        std::vector< std::string > items_rule(
+            items.begin() + 1,
+            items.begin() + items.size() -
+            1);
 
-      // adds letter and its production rule (made a genetic-string) to the grammar of the genome
-      gen.addLetterGrammar(
-          items[0],
-          lgs);
+        // build a genetic-string with the production rule for the letter
+        auto lgs = GeneticString();
+        lgs = gen.build_genetic_string(
+            lgs,
+            items_rule);
 
-    }
+        // adds letter and its production rule (made a genetic-string) to the grammar of the genome
+        gen.addLetterGrammar(
+            items[0],
+            lgs);
 
-    // reads the measures of the genome
-    std::ifstream listmeasures(
-        this->path+"experiments/" + this->experiment_name + "/offspringpop" +
-        std::to_string(generation_genome) + "/measures" + idgenome +
-        ".txt");
-    std::string linemeasures;
-    // for each measure of the list
-    while (getline(
-        listmeasures,
-        linemeasures))
-    {
+      }
 
-      std::vector< std::string > tokens;
-      boost::split(
-          tokens,
-          linemeasures,
-          boost::is_any_of(":"));
+      // reads the measures of the genome
+      std::ifstream listmeasures(
+          this->path + "experiments/" + this->experiment_name +
+          "/offspringpop" +
+          std::to_string(generation_genome) + "/measures" + idgenome +
+          ".txt");
+      std::string linemeasures;
+      // for each measure of the list
+      while (getline(
+          listmeasures,
+          linemeasures))
+      {
 
-      gen.updateMeasure(
-          tokens[0],
-          std::stod(tokens[1]));
-    }
+        std::vector< std::string > tokens;
+        boost::split(
+            tokens,
+            linemeasures,
+            boost::is_any_of(":"));
 
-    // reads fitness of the genome
-    std::ifstream fitness(
-        this->path+"experiments/" + this->experiment_name + "/offspringpop" +
-        std::to_string(generation_genome) + "/fitness_" + idgenome +
-        ".txt");
-    if (fitness.is_open())
-    {
-      std::string linefitness;
-      getline(
-          fitness,
-          linefitness);
-      gen.updateLocomotionFitness(std::stod(linefitness));
-    }
+        gen.updateMeasure(
+            tokens[0],
+            std::stod(tokens[1]));
+      }
 
-    std::ifstream fitness2(
-        this->path+"experiments/" + this->experiment_name + "/offspringpop" +
-        std::to_string(generation_genome) + "/fitness2_" + idgenome +
-        ".txt");
-    if (fitness2.is_open())
-    {
-      std::string linefitness;
-      getline(
-          fitness2,
-          linefitness);
-      gen.updateBalanceFitness(std::stod(linefitness));
-    }
+      // reads fitness of the genome
+      std::ifstream fitness(
+          this->path + "experiments/" + this->experiment_name +
+          "/offspringpop" +
+          std::to_string(generation_genome) + "/fitness_" + idgenome +
+          ".txt");
+      if (fitness.is_open())
+      {
+        std::string linefitness;
+        getline(
+            fitness,
+            linefitness);
+        gen.updateLocomotionFitness(std::stod(linefitness));
+      }
+
+      std::ifstream fitness2(
+          this->path + "experiments/" + this->experiment_name +
+          "/offspringpop" +
+          std::to_string(generation_genome) + "/fitness2_" + idgenome +
+          ".txt");
+      if (fitness2.is_open())
+      {
+        std::string linefitness;
+        getline(
+            fitness2,
+            linefitness);
+        gen.updateBalanceFitness(std::stod(linefitness));
+      }
 
 
-    if(type == "population")
-    {
-      // adds genome to the population
-      this->population.push_back(gen);
-    }else{
-      // adds genome to the archive
-      this->archive.push_back(gen);
+      if (type == "population")
+      {
+        // adds genome to the population
+        this->population.push_back(gen);
+      }
+      else
+      {
+        // adds genome to the archive
+        this->archive.push_back(gen);
+      }
     }
 
   }
@@ -1106,12 +1125,14 @@ int Evolution::loadExperiment()
             std::to_string(gi + 1);
   system(("exec rm -r " + pathdir).c_str());
 
-
+  std::cout<<"clean folders "<<std::endl;
   // loads  population and archive
   this->loadIndividuals(gi, "population");
+
+  std::cout<<"load pop "<<std::endl;
   this->loadIndividuals(0, "archive");
 
-
+  std::cout<<"clean archive "<<std::endl;
   // loads state of the morphological_grid_accumulated
   std::string line;
   std::ifstream myfile(
@@ -1143,6 +1164,7 @@ int Evolution::loadExperiment()
     }
     this->morphological_grid_accumulated[tokens[0]] = points;
   }
+  std::cout<<"load grid "<<std::endl;
   myfile.close();
 
   return gi;

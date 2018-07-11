@@ -113,6 +113,8 @@ void Measures::initalizeMeasures() {
   // average ratio of inhibitory/excitatory input to oscilltors
     this->gen->updateMeasure("synaptic_reception", 0);
 
+
+
 }
 
 double Measures::median(std::vector<double> medi) {
