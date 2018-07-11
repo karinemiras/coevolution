@@ -5,13 +5,6 @@
 
 #include "LSystem.h"
 
-/**
- * Transfer functions for the brain.
- */
-void LSystem::build_brain_functions(){
-    brainfunctions.push_back("Simple");
-    brainfunctions.push_back("Sigmoid");
-}
 
 /**
  * Builds a vector with the body mounting commands for the l-system.
@@ -39,39 +32,25 @@ void LSystem::build_moving_commands(){
 /**
  * Builds a vector with the body moving commands for the brain in the l-system.
  */
-void LSystem::build_brainmove_commands(){
-
-
-    // change 'from' of current-edge to child of current-from
-    brainmove_commands.push_back("brainmoveFTC");
-    // change 'from' of current-edge to parent of current-from
-    brainmove_commands.push_back("brainmoveFTP");
+void LSystem::build_brainmove_commands()
+{
     // change 'from' of current-edge to sibling of current-from
     brainmove_commands.push_back("brainmoveFTS");
-    // change 'to' of current-edge to child of current-to
-    brainmove_commands.push_back("brainmoveTTC");
-    // change 'to' of current-edge to child of current-to
-    brainmove_commands.push_back("brainmoveTTP");
     // change 'to' of current-edge to sibling of current-to
     brainmove_commands.push_back("brainmoveTTS");
-    // invert 'from' with 'to'
-    brainmove_commands.push_back("brainmoveInv");
 }
 
 /**
  * Builds a vector with commands for the l-system thatn change the brain.
  */
-void LSystem::build_brainchange_commands(){
+void LSystem::build_brainchange_commands()
+{
 
     // add link between nodes idfrom and idto with w: brainedge_w
-    // add node between nodes
-    brainchange_commands.push_back("brainnode");
-    // add edge between nodes
     brainchange_commands.push_back("brainedge");
     // perturb weight of connection between fromid and toid with: brainperturb_w
     brainchange_commands.push_back("brainperturb");
-    // add new node between current fromid and toid with w from new to toid,
-    // add self connection to fromid node with w: brainloop_w
+    // add self connection to toid with w: brainloop_w
     brainchange_commands.push_back("brainloop");
 
 }
@@ -115,7 +94,8 @@ std::string LSystem::buildBrainCommand(std::string braincommand)
     std::random_device rd;
     std::default_random_engine generator(rd());
     std::uniform_real_distribution<double> weight_uni(-1, 1);
-    std::uniform_real_distribution<double> weight_uni2(1, 10);
+    std::uniform_real_distribution<double> weight_uni2
+        (this->params["oscillator_min"], this->params["oscillator_max"]);
     std::normal_distribution<double> weight_nor(0, 1);
     std::uniform_int_distribution<int> func(0, this->brainfunctions.size()-1);
 
@@ -123,15 +103,12 @@ std::string LSystem::buildBrainCommand(std::string braincommand)
     {
         // new connection weight
         braincommand += "_"+std::to_string(weight_uni(generator));
-        // transfer/activation function
-        std::string function = "Oscillator";
-        braincommand += "|" + function;
 
-        // amplitude
-        braincommand += "|" + std::to_string(weight_uni2(generator));
         // period
         braincommand += "|" + std::to_string(weight_uni2(generator));
         // phase_offset
+        braincommand += "|" + std::to_string(weight_uni2(generator));
+        // amplitude (gain)
         braincommand += "|" + std::to_string(weight_uni2(generator));
     }
 
@@ -146,34 +123,9 @@ std::string LSystem::buildBrainCommand(std::string braincommand)
         // new connection weight
         braincommand += "_"+std::to_string(weight_uni(generator));
 
-    if(  braincommand == "brainnode")
-    {
-        // new connection weight
-        braincommand += "_" + std::to_string(weight_uni(generator));
-        // transfer/activation function
-        auto function = this->brainfunctions[func(generator)];
-        braincommand += "|" + function;
-        // bias weight
-        braincommand += "|" + std::to_string(weight_uni(generator));
-    }
-
     if(braincommand == "brainperturb")
         braincommand += "_"+std::to_string(weight_nor(generator));
 
-    if(braincommand == "brainmoveInv")
-      braincommand += "_"+std::to_string(weight_uni(generator));
-
-    // its more likely that a node has a number of conn close to 1
-
-    if(   braincommand == "brainmoveFTC"
-          or  braincommand == "brainmoveFTP"
-          or braincommand == "brainmoveTTC"
-          or  braincommand == "brainmoveTTP")
-    {
-        double child = weight_nor(generator);
-        child = ceil(sqrt(child*child));
-        braincommand += "_"+std::to_string(child);
-    }
 
     if(   braincommand == "brainmoveTTS"
           or  braincommand == "brainmoveFTS")

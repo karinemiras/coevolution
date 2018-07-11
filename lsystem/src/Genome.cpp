@@ -129,34 +129,23 @@ void Genome::build_grammar(
   std::default_random_engine generator(rd());
 
   // distribution for the number of components
-  std::uniform_int_distribution< int > dist_1(
-      1,
+  std::uniform_int_distribution< int > dist_1(1,
       (int) params["num_initial_comp"]);
   // distribution for letters of the alphabet
   std::uniform_int_distribution< int > dist_2(
-      0,
-      (int) LS.getAlphabetIndex().size() -
-      1);
+      0, (int) LS.getAlphabetIndex().size() - 1);
   // distribution for the mounting commands
   std::uniform_int_distribution< int > dist_3(
-      0,
-      (int) LS.getMountingCommands().size() -
-      1);
+      0, (int) LS.getMountingCommands().size() - 1);
   // distribution for the moving commands
   std::uniform_int_distribution< int > dist_4(
-      0,
-      (int) LS.getMovingCommands().size() -
-      1);
+      0, (int) LS.getMovingCommands().size() - 1);
   // distribution for the brain moving commands
   std::uniform_int_distribution< int > dist_5(
-      0,
-      (int) LS.getBrainMoveCommands().size() -
-      1);
+      0, (int) LS.getBrainMoveCommands().size() - 1);
   // distribution for the brain change commands
   std::uniform_int_distribution< int > dist_6(
-      0,
-      (int) LS.getBrainChangeCommands().size() -
-      1);
+      0, (int) LS.getBrainChangeCommands().size() - 1);
 
   // for each letter of the alphabet
   for (const auto &letterPair : LS.getAlphabet())
@@ -171,10 +160,10 @@ void Genome::build_grammar(
     }
 
     // while a raffled number of components is not achieved
-    // (times group size (4):
-    // brainmove, mountcom, letter, movecom
+    // (times group size (5):
+    // brainmove, brainchange, mountcom, letter, movecom
     int groups = dist_1(generator);
-    while (letter_items.size() < (groups * 4))
+    while (letter_items.size() < (groups * 5))
     {
       // raffles a letter to be included
       auto item = LS.getAlphabetIndex()[
@@ -183,13 +172,19 @@ void Genome::build_grammar(
       // prevents core component of being (re)included in the rule
       if (item != "C")
       {
-        // if its a joint, adds neuron info
+        // if its a joint or sensor, adds conn/neuron info
         if(item.substr(0,1) == "A" or item.substr(0,1) == "S"){
           item = LS.buildBrainCommand(item);
         }
 
         // raffles a brain move command to be included
-        auto braincommand = LS.buildBrainCommand(LS.getBrainMoveCommands()[dist_5(generator)]);
+        auto braincommand = LS.buildBrainCommand(LS.getBrainMoveCommands()
+                                                 [dist_5(generator)]);
+        letter_items.push_back(braincommand);
+
+        // raffles a brain change command to be included
+        braincommand = LS.buildBrainCommand(LS.getBrainChangeCommands()
+                                            [dist_6(generator)]);
         letter_items.push_back(braincommand);
 
         // raffles a mounting command to be included
@@ -964,17 +959,9 @@ void Genome::convertYamlBrain(std::string _directoryPath)
     if (node.second->function == "Oscillator" )
     {
       robot_file << "    node" << node.first << ":" << std::endl;
-      robot_file << "      amplitude: " << node.second->amplitude << std::endl;
       robot_file << "      period: " << node.second->period << std::endl;
       robot_file << "      phase_offset: " << node.second->phase_offset << std::endl;
-    }else
-    {
-      if(node.second->layer != "input")
-      {
-        robot_file << "    node" << node.first << ":" << std::endl;
-        robot_file << "      bias: " << node.second->bias << std::endl;
-        robot_file << "      gain: 1"<< std::endl; // make it evolvable?
-      }
+      robot_file << "      amplitude: " << node.second->amplitude << std::endl;
     }
   }
 

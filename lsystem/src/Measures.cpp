@@ -35,40 +35,299 @@ Genome * Measures::getGenome() {
 
 void Measures::initalizeMeasures() {
 
+  //     brick-components
+    this->gen->updateMeasure("total_bricks", 0);
 
-    this->gen->updateMeasure("total_bricks", 0); //     brick-components
-    this->gen->updateMeasure("total_active_joints_horizontal",
-                             0); //   total amount of horizontal active-joint-components
-    this->gen->updateMeasure("total_active_joints_vertical",
-                             0); //    vertical active-joint-components
-    this->gen->updateMeasure("coverage",
-                             0); // proportion of the expected area (given the horizontal e vertical lengths) that is covered with components
-    this->gen->updateMeasure("horizontal_symmetry",
-                             0); // proportion of components in the left side which match with the same type of component in the same relative position on the right side
-    this->gen->updateMeasure("vertical_symmetry",
-                             0); // proportion of components in the top side which match with the same type of component in the same relative position on the bottom side
-    this->gen->updateMeasure("connectivity2",
-                             0); //    components with two sides connected to another component
-    this->gen->updateMeasure("connectivity4",
-                             0); //   components with four sides connected to another component
-    this->gen->updateMeasure("effective_joints",
-                             0); //   joints connected by both sides to a brick or core component
-    this->gen->updateMeasure("connectivity1",
-                             0); //    components with one side connected to another component
-    this->gen->updateMeasure("symmetry",
-                             0); //   maximum of horizontal and vertical symmetry
-    this->gen->updateMeasure("total_components",
-                             0); //  proportion of components of all types  in the body given the maximum possible size
-    this->gen->updateMeasure("length_ratio",
-                             0); // length of the shortest side dived by the longest
-    this->gen->updateMeasure("branching",
-                             0); //  connectivity4,  divided by the total ofcomponents
-    this->gen->updateMeasure("sensors_slots",
-                             0); // number of sensors per slot
-    this->gen->updateMeasure("sensors",
-                             0); // number of sensors
+  //   total amount of horizontal active-joi
+    this->gen->updateMeasure("total_active_joints_horizontal", 0);
+
+  //    vertical active-joint-components
+    this->gen->updateMeasure("total_active_joints_vertical", 0);
+
+  // proportion of the expected area (given the horizontal e vertical lengths) that is covered with components
+    this->gen->updateMeasure("coverage", 0);
+
+  // proportion of components in the left side which match with the same type of component in the same relative position on the right side
+    this->gen->updateMeasure("horizontal_symmetry", 0);
+
+  // proportion of components in the top side which match with the same type of component in the same relative position on the bottom side
+    this->gen->updateMeasure("vertical_symmetry", 0);
+
+  //    components with two sides connected to another component
+    this->gen->updateMeasure("connectivity2", 0);
+
+  //   components with four sides connected to another component
+    this->gen->updateMeasure("connectivity4", 0);
+
+  //   joints connected by both sides to a brick or core component
+    this->gen->updateMeasure("effective_joints", 0);
+
+  //    components with one side connected to another component
+    this->gen->updateMeasure("connectivity1", 0);
+
+  //   maximum of horizontal and vertical symmetry
+    this->gen->updateMeasure("symmetry", 0);
+
+  //  proportion of components of all types  in the body given the maximum possible size
+    this->gen->updateMeasure("total_components", 0);
+
+ // length of the shortest side dived by the longest
+    this->gen->updateMeasure("length_ratio", 0);
+
+  //  connectivity4,  divided by the total of components
+    this->gen->updateMeasure("branching", 0);
+
+  // number of sensors per slot
+    this->gen->updateMeasure("sensors_slots", 0);
+
+  // number of sensors
+    this->gen->updateMeasure("sensors", 0);
+
+  // average value of amplitude param
+    this->gen->updateMeasure("amplitude_average", 0);
+
+  // deviation relative to average for amplitude param
+    this->gen->updateMeasure("amplitude_deviation", 0);
+
+  // average value of offset param
+    this->gen->updateMeasure("offset_average", 0);
+
+  // deviation relative to average for offset param
+    this->gen->updateMeasure("offset_deviation", 0);
+
+  // average value of period param
+    this->gen->updateMeasure("period_average", 0);
+
+  // deviation relative to average for period param
+    this->gen->updateMeasure("period_deviation", 0);
+
+  // average of the deviation among osci params
+    this->gen->updateMeasure("params_dev_average", 0);
+
+  // average of how broad the inputs' connectionsare
+    this->gen->updateMeasure("inputs_reach", 0);
+
+  // proportion of hidden+out with self recurrence
+    this->gen->updateMeasure("recurrence", 0);
+
+  // average ratio of inhibitory/excitatory input to oscilltors
+    this->gen->updateMeasure("synaptic_reception", 0);
+
 }
 
+double Measures::median(std::vector<double> medi) {
+  int size = medi.size();
+  double tmedian;
+
+  sort(medi.begin(), medi.end());
+  if (size % 2 == 0) { // even
+    tmedian = (medi[medi.size() / 2 - 1] + medi[medi.size() / 2]) / 2;
+  }
+
+  else //odd
+    tmedian = medi[medi.size() / 2];
+  return (tmedian);
+}
+
+
+double Measures::mean(std::vector<double> v)
+{
+  std::cout<<"array size "<<v.size()<<std::endl;
+  double sum=0;
+  for(int i=0;i<v.size();i++)
+    sum+=v[i];
+
+  if(v.size()>0)
+    return sum/v.size();
+  else
+    return 0;
+}
+
+/* standard deviation of the population (not sample) */
+double Measures::deviation(std::vector<double> v, double ave)
+{
+  double E=0;
+  for(int i=0;i<v.size();i++)
+    E+=(v[i] - ave)*(v[i] - ave);
+  E = E/v.size();
+  return sqrt(E);
+}
+
+void Measures::measurePhenotypeBrain()
+{
+
+  int n_output = 0;
+  int n_input = 0;
+  double aux_inputs_reach = 0;
+  double aux_params_deviation = 0;
+  double aux = 0;
+  double recurrence = 0;
+  double inhibitory_synapses_mean = 0;
+  double excitatory_synapses_mean = 0;
+
+  auto nodes = this->getGenome()->getDgs().getBrain_nodes();
+  auto edges = this->getGenome()->getDgs().getBrain_edges();
+
+  std::vector<double> period_values = std::vector<double>();
+  std::vector<double> offset_values = std::vector<double>();
+  std::vector<double> amplitude_values = std::vector<double>();
+  std::vector<double> params_devs = std::vector<double>();
+  std::vector<double> inputs_reach = std::vector<double>();
+  std::vector<double> synaptic_reception = std::vector<double>();
+
+
+
+  // counts types of neurons
+  for (const auto &it : nodes)
+  {
+    if (it.second->layer == "input") n_input += 1;
+
+    if (it.second->layer == "output") n_output += 1;
+  }
+
+
+  // pre calculations
+  for (const auto &it : nodes)
+  {
+    std::cout<<"node "<<it.first<<std::endl;
+    if(it.second->layer == "input")
+    {
+      // inputs reach
+      if (it.second->to_nodes.size()>0)
+      {
+        aux_inputs_reach = it.second->to_nodes.size()
+              /
+            (float)(n_output);
+      }else{ aux_inputs_reach = 0; }
+      inputs_reach.push_back(aux_inputs_reach);
+      std::cout<<"part 1 "<<std::endl;
+    }
+
+
+    if(it.second->layer == "output")
+    {
+
+      period_values.push_back(it.second->period);
+      offset_values.push_back(it.second->phase_offset);
+      amplitude_values.push_back(it.second->amplitude);
+
+      // params deviation
+      aux_params_deviation = this->mean({it.second->period,it.second->phase_offset,it.second->amplitude});
+      aux_params_deviation = this->deviation({it.second->period,it.second->phase_offset,it.second->amplitude}, aux_params_deviation)
+                     / aux_params_deviation;
+      if (aux_params_deviation > 1) aux_params_deviation = 1;
+      params_devs.push_back(aux_params_deviation);
+      std::cout<<"part 2 "<<std::endl;
+      // self recursion
+      for(int i=0; i<it.second->to_nodes.size(); i++)
+      {
+        if(it.second->id == it.second->to_nodes[i]->id)
+          recurrence += 1;
+      }
+      std::cout<<"part 3"<<std::endl;
+      // synaptic reception
+      std::vector<double> inhibitory_synapses = std::vector<double>();
+      std::vector<double> excitatory_synapses = std::vector<double>();
+      for(int i=0; i<it.second->from_nodes.size(); i++)
+      {
+        std::pair< int, int > key = std::make_pair(
+                                 it.second->from_nodes[i]->id, it.second->id);
+
+        if(edges[key] < 0)
+            inhibitory_synapses.push_back(edges[key] * -1);
+        else
+            excitatory_synapses.push_back(edges[key]);
+      }
+      std::cout<<"part 4 "<<std::endl;
+      inhibitory_synapses_mean = this->mean(inhibitory_synapses);
+      excitatory_synapses_mean = this->mean(excitatory_synapses);
+
+      if (inhibitory_synapses_mean < excitatory_synapses_mean)
+      {
+        synaptic_reception.push_back(
+                              inhibitory_synapses_mean
+                              /
+                              excitatory_synapses_mean);
+        std::cout<<"part 5 "<<std::endl;
+      }
+      else
+      {
+        if (inhibitory_synapses_mean > 0)
+        {
+          synaptic_reception.push_back(
+                        excitatory_synapses_mean
+                        /
+                        inhibitory_synapses_mean);
+          std::cout<<"part 6 "<<std::endl;
+        }
+        else
+          synaptic_reception.push_back(0);
+      }
+
+    }
+  }
+
+
+  // calculates measures ragarding outputs
+  if(n_output > 0)
+  {
+    aux = this->median(period_values)
+          / this->params["oscillator_max"];
+    this->gen->updateMeasure("period_average", aux);
+    std::cout<<"part 7 "<<std::endl;
+    aux = this->mean(period_values);
+    aux = this->deviation(
+                 period_values,
+                 aux)
+          / aux;
+    if (aux > 1) aux = 1;
+    this->gen->updateMeasure("period_deviation", aux);
+    std::cout<<"part 8 "<<std::endl;
+    aux = this->median(offset_values)
+          / this->params["oscillator_max"];
+    this->gen->updateMeasure("offset_average", aux);
+    std::cout<<"part 9 "<<std::endl;
+    aux = this->mean(offset_values);
+    aux = this->deviation(
+                 offset_values,
+                 aux)
+          / aux;
+    if (aux > 1) aux = 1;
+    this->gen->updateMeasure("offset_deviation", aux);
+    std::cout<<"part 10 "<<std::endl;
+    aux = this->median(amplitude_values)
+          / this->params["oscillator_max"];
+    this->gen->updateMeasure("amplitude_average", aux);
+    std::cout<<"part 11 "<<std::endl;
+    aux = this->mean(amplitude_values);
+    aux = this->deviation(
+                 amplitude_values,
+                 aux)
+          / aux;
+    if (aux > 1) aux = 1;
+    this->gen->updateMeasure("amplitude_deviation", aux);
+    std::cout<<"part 12 "<<std::endl;
+    aux = this->median(params_devs);
+    this->gen->updateMeasure("params_dev_average", aux);
+    std::cout<<"part 13 "<<std::endl;
+    aux = this->median(synaptic_reception);
+    this->gen->updateMeasure("synaptic_reception", aux);
+    std::cout<<"part 14"<<std::endl;
+    recurrence = recurrence
+                  / (float) (n_output);
+    this->gen->updateMeasure("recurrence", recurrence);
+    std::cout<<"part 15 "<<std::endl;
+  }
+
+  // calculates measures regarding input
+  if(n_input > 0)
+  {
+    aux = this->median(inputs_reach);
+    this->gen->updateMeasure("inputs_reach", aux);
+    std::cout<<"part 16 "<<std::endl;
+  }
+
+}
 
 /**
  * Calculates several measures for a morphology.
@@ -91,6 +350,9 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
 
     // roams graph calculating all measures
     this->measureComponent("bottom", "root", root, root, params);
+  std::cout<<"mediu comp"<<std::endl;
+
+    this->measurePhenotypeBrain();
 
 
     /* BEGINNING:  calculating measures  */
@@ -329,6 +591,9 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
     this->gen->removeMeasure("horizontal_symmetry");
     this->gen->removeMeasure("vertical_symmetry");
     this->gen->removeMeasure("sensors_slots");
+
+
+
 
 
     // #TEST: checks if there is any measure ouy of the expected range

@@ -13,7 +13,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    EvolutionIndirect evolve_generation = EvolutionIndirect("test","../../");
+    EvolutionIndirect evolve_generation = EvolutionIndirect("test","../."
+        "./");
 
     /* test setup */
       evolve_generation.setupEvolution();

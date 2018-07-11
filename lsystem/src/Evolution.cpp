@@ -193,6 +193,8 @@ void Evolution::exportPop(int generation)
                            this->population[i].getId_parent2() +
                            ".png";
 
+    std::string filename2 = "/brain_" + this->population[i].getId()+ ".png";
+
     std::string pathfrom = this->path+"experiments/"
                            + this->experiment_name + "/offspringpop" +
                            std::to_string(generation_genome);
@@ -204,6 +206,9 @@ void Evolution::exportPop(int generation)
     // copies phenotype file from offspring folder to selected population folder
     system(("exec cp " + pathfrom + filename + " " + pathto +
             filename).c_str());
+    system(("exec cp " + pathfrom + filename2 + " " + pathto +
+            filename2).c_str());
+
 
     // copies values of metrics to file of selected population
     std::string line;
@@ -356,6 +361,7 @@ void Evolution::measureIndividuals(
        i < individuals.size();
        i++)
   {
+    std::cout<<"idgen"<<individuals[i].getId()<<std::endl;
 
     Measures m = Measures(
         this->experiment_name,
@@ -368,7 +374,7 @@ void Evolution::measureIndividuals(
         this->params,
         dirpath,
         generation);
-
+    std::cout<<"mediu"<<std::endl;
     // compares measures between individuals
     if (individuals[i].getId_parent1() != "N")
     {
@@ -389,6 +395,7 @@ void Evolution::measureIndividuals(
       differences_file << " " << dif << std::endl;
 
     }
+    std::cout<<"comparou"<<std::endl;
   }
 
   differences_file.close();
@@ -436,11 +443,9 @@ void Evolution::createHeader()
   path = this->path+"experiments/" + this->experiment_name + "/measures.txt";
   file.open(path);
   file << "generation idgenome";
-  for (int i = 0;
-       i < this->measures_names.size();
-       i++)
+  for (const auto &it : this->measures_names)
   {
-    file << " " << this->measures_names[i];
+    file << " " << it.first;
   }
   file << std::endl;
   file.close();
@@ -545,10 +550,12 @@ int Evolution::tournament_single()
 
 int Evolution::tournament()
 {
-  if (this->getParams()["objective"] == 0)
-    return  this->tournament_single();
-  else
-    return  this->tournament_multi();
+  if (this->getParams()["objective"] == 0){
+    return this->tournament_single();
+  }
+  else{
+    return this->tournament_multi();
+  }
 }
 
 
@@ -1248,6 +1255,7 @@ void Evolution::calculateNovelty()
       individuals_compare[0].getMeasures().size(),
       individuals_compare.size());
 
+
   for (int i = 0; i < individuals_compare.size(); i++)
   {
     int m = 0;
@@ -1380,9 +1388,9 @@ void Evolution::calculateFinalFitness()
   for (int i = 0; i < this->population.size(); i++)
   {
 
-    double fitness = this->population[i].getLocomotionFitness()
-      * this->population[i].getNoveltyFitness()
-      * this->population[i].getBalanceFitness()
+    double fitness = //this->population[i].getLocomotionFitness()
+                   //*
+        this->population[i].getNoveltyFitness()
     ;
 
     this->population[i].updateFinalFitness(fitness);
@@ -1423,7 +1431,7 @@ double Evolution::runExperiment_part1(
       this->path);
 
   // loads alphabet with letters and commands
-  LSystem LS;
+  LSystem LS(this->getParams());
 
   this->aux.logs("------------ generation " + std::to_string(generation) + " ------------");
   this->logsTime("start gen");

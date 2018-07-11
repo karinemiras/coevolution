@@ -15,5 +15,7 @@ export_phenotypes 1
 export_genomes 1
 size_component 40
 spacing 1
+oscillator_min 1
+oscillator_max 10
 max_attempt_multi 20
 objective 0

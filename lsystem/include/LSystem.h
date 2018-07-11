@@ -20,7 +20,6 @@ public:
     void build_mounting_commands();
     void build_brainmove_commands();
     void build_brainchange_commands();
-    void build_brain_functions();
     void build_alphabet();
     std::map< std::string, std::string > getAlphabet();
     std::vector<std::string> getAlphabetIndex();
@@ -32,13 +31,13 @@ public:
     std::vector<std::string> getBrainChangeCommands();
     std::string buildBrainCommand(std::string braincommand);
 
-    LSystem(){
+    LSystem(std::map<std::string, double> params){
         build_moving_commands();
         build_mounting_commands();
         build_brainmove_commands();
         build_brainchange_commands();
-        build_brain_functions();
         build_alphabet();
+        this->params = params;
     };
 
 private:
@@ -59,6 +58,8 @@ private:
     // auxiliar vector for type of items in the alphabet
     std::map< std::string, std::string > alphabet_type = std::map<std::string,
             std::string >();
+
+    std::map<std::string, double> params = std::map<std::string, double>();
 };
 
 

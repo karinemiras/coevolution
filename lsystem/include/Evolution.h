@@ -30,16 +30,25 @@ public:
         this->experiment_name = experiment_name;
         this->path = path;
 
-        this->measures_names.push_back("branching");
-        this->measures_names.push_back("connectivity1");
-        this->measures_names.push_back("connectivity2");
-        this->measures_names.push_back("coverage");
-        this->measures_names.push_back("effective_joints");
-        this->measures_names.push_back("length_ratio");
-        this->measures_names.push_back("sensors");
-        this->measures_names.push_back("symmetry");
-        this->measures_names.push_back("total_components");
-
+        this->measures_names["branching"] = "branching";
+        this->measures_names["connectivity1"] = "connectivity1";
+        this->measures_names["connectivity2"] = "connectivity2";
+        this->measures_names["coverage"] = "coverage";
+        this->measures_names["effective_joints"] = "effective_joints";
+        this->measures_names["length_ratio"] = "length_ratio";
+        this->measures_names["sensors"] = "sensors";
+        this->measures_names["symmetry"] = "symmetry";
+        this->measures_names["total_components"] = "total_components";
+        this->measures_names["amplitude_average"] = "amplitude_average";
+        this->measures_names["amplitude_deviation"] = "amplitude_deviation";
+        this->measures_names["offset_average"] = "offset_average";
+        this->measures_names["offset_deviation"] = "offset_deviation";
+        this->measures_names["period_average"] = "period_average";
+        this->measures_names["period_deviation"] = "period_deviation";
+        this->measures_names["params_dev_average"] = "params_dev_average";
+        this->measures_names["inputs_reach"] = "inputs_reach";
+        this->measures_names["recurrence"] = "recurrence";
+        this->measures_names["synaptic_reception"] = "synaptic_reception";
     }
 
     void saveHistory(int generation);
@@ -110,8 +119,9 @@ public:
 
 protected:
 
-    std::vector<std::string> measures_names =
-            std::vector<std::string>();
+
+   std::map< std::string, std::string >
+      measures_names = std::map< std::string, std::string >();
 
     std::map<std::string, double> params =
             std::map<std::string, double>(); // contains the list of parameters loaded from parameter file

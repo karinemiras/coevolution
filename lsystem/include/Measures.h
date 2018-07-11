@@ -33,12 +33,16 @@ public:
     void initalizeMeasures();
     void measurePhenotype(std::map<std::string, double> params,
                           std::string dirpath, int generation);
+    void measurePhenotypeBrain();
     void measureComponent(std::string reference,
                           std::string direction,
                           DecodedGeneticString::Vertex * c1,
                           DecodedGeneticString::Vertex * c2,
                           std::map<std::string, double> params);
     std::map< std::string, double> getMeasures();
+    double median(std::vector<double> medi);
+    double mean(std::vector<double> v);
+    double deviation(std::vector<double> v, double ave);
     void setGenome(Genome &gen);
     Genome * getGenome();
     std::pair<int, int> find_points(DecodedGeneticString::Vertex * c1,
