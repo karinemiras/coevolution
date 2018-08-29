@@ -134,7 +134,6 @@ double Measures::median(std::vector<double> medi) {
 
 double Measures::mean(std::vector<double> v)
 {
-  std::cout<<"array size "<<v.size()<<std::endl;
   double sum=0;
   for(int i=0;i<v.size();i++)
     sum+=v[i];
@@ -191,7 +190,6 @@ void Measures::measurePhenotypeBrain()
   // pre calculations
   for (const auto &it : nodes)
   {
-    std::cout<<"node "<<it.first<<std::endl;
     if(it.second->layer == "input")
     {
       // inputs reach
@@ -202,7 +200,6 @@ void Measures::measurePhenotypeBrain()
             (float)(n_output);
       }else{ aux_inputs_reach = 0; }
       inputs_reach.push_back(aux_inputs_reach);
-      std::cout<<"part 1 "<<std::endl;
     }
 
 
@@ -219,14 +216,14 @@ void Measures::measurePhenotypeBrain()
                      / aux_params_deviation;
       if (aux_params_deviation > 1) aux_params_deviation = 1;
       params_devs.push_back(aux_params_deviation);
-      std::cout<<"part 2 "<<std::endl;
+
       // self recursion
       for(int i=0; i<it.second->to_nodes.size(); i++)
       {
         if(it.second->id == it.second->to_nodes[i]->id)
           recurrence += 1;
       }
-      std::cout<<"part 3"<<std::endl;
+
       // synaptic reception
       std::vector<double> inhibitory_synapses = std::vector<double>();
       std::vector<double> excitatory_synapses = std::vector<double>();
@@ -240,7 +237,7 @@ void Measures::measurePhenotypeBrain()
         else
             excitatory_synapses.push_back(edges[key]);
       }
-      std::cout<<"part 4 "<<std::endl;
+
       inhibitory_synapses_mean = this->mean(inhibitory_synapses);
       excitatory_synapses_mean = this->mean(excitatory_synapses);
 
@@ -250,7 +247,7 @@ void Measures::measurePhenotypeBrain()
                               inhibitory_synapses_mean
                               /
                               excitatory_synapses_mean);
-        std::cout<<"part 5 "<<std::endl;
+
       }
       else
       {
@@ -260,7 +257,7 @@ void Measures::measurePhenotypeBrain()
                         excitatory_synapses_mean
                         /
                         inhibitory_synapses_mean);
-          std::cout<<"part 6 "<<std::endl;
+
         }
         else
           synaptic_reception.push_back(0);
@@ -276,7 +273,7 @@ void Measures::measurePhenotypeBrain()
     aux = this->median(period_values)
           / this->params["oscillator_max"];
     this->gen->updateMeasure("period_average", aux);
-    std::cout<<"part 7 "<<std::endl;
+
     aux = this->mean(period_values);
     aux = this->deviation(
                  period_values,
@@ -284,11 +281,11 @@ void Measures::measurePhenotypeBrain()
           / aux;
     if (aux > 1) aux = 1;
     this->gen->updateMeasure("period_deviation", aux);
-    std::cout<<"part 8 "<<std::endl;
+
     aux = this->median(offset_values)
           / this->params["oscillator_max"];
     this->gen->updateMeasure("offset_average", aux);
-    std::cout<<"part 9 "<<std::endl;
+
     aux = this->mean(offset_values);
     aux = this->deviation(
                  offset_values,
@@ -296,11 +293,11 @@ void Measures::measurePhenotypeBrain()
           / aux;
     if (aux > 1) aux = 1;
     this->gen->updateMeasure("offset_deviation", aux);
-    std::cout<<"part 10 "<<std::endl;
+
     aux = this->median(amplitude_values)
           / this->params["oscillator_max"];
     this->gen->updateMeasure("amplitude_average", aux);
-    std::cout<<"part 11 "<<std::endl;
+
     aux = this->mean(amplitude_values);
     aux = this->deviation(
                  amplitude_values,
@@ -308,17 +305,17 @@ void Measures::measurePhenotypeBrain()
           / aux;
     if (aux > 1) aux = 1;
     this->gen->updateMeasure("amplitude_deviation", aux);
-    std::cout<<"part 12 "<<std::endl;
+
     aux = this->median(params_devs);
     this->gen->updateMeasure("params_dev_average", aux);
-    std::cout<<"part 13 "<<std::endl;
+
     aux = this->median(synaptic_reception);
     this->gen->updateMeasure("synaptic_reception", aux);
-    std::cout<<"part 14"<<std::endl;
+
     recurrence = recurrence
                   / (float) (n_output);
     this->gen->updateMeasure("recurrence", recurrence);
-    std::cout<<"part 15 "<<std::endl;
+
   }
 
   // calculates measures regarding input
@@ -326,7 +323,6 @@ void Measures::measurePhenotypeBrain()
   {
     aux = this->median(inputs_reach);
     this->gen->updateMeasure("inputs_reach", aux);
-    std::cout<<"part 16 "<<std::endl;
   }
 
 }
@@ -352,7 +348,6 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
 
     // roams graph calculating all measures
     this->measureComponent("bottom", "root", root, root, params);
-  std::cout<<"mediu comp"<<std::endl;
 
     this->measurePhenotypeBrain();
 

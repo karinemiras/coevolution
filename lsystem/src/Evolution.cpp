@@ -361,7 +361,6 @@ void Evolution::measureIndividuals(
        i < individuals.size();
        i++)
   {
-    std::cout<<"idgen"<<individuals[i].getId()<<std::endl;
 
     Measures m = Measures(
         this->experiment_name,
@@ -374,7 +373,7 @@ void Evolution::measureIndividuals(
         this->params,
         dirpath,
         generation);
-    std::cout<<"mediu"<<std::endl;
+
     // compares measures between individuals
     if (individuals[i].getId_parent1() != "N")
     {
@@ -395,7 +394,6 @@ void Evolution::measureIndividuals(
       differences_file << " " << dif << std::endl;
 
     }
-    std::cout<<"comparou"<<std::endl;
   }
 
   differences_file.close();
@@ -1410,8 +1408,10 @@ void Evolution::calculateFinalFitness()
   for (int i = 0; i < this->population.size(); i++)
   {
 
-    double fitness = //this->population[i].getLocomotionFitness()
-                   //*
+    double fitness = this->population[i].getLocomotionFitness()
+        *
+        this->population[i].getPenaltyFitness()
+        *
         this->population[i].getNoveltyFitness()
     ;
 
@@ -1523,7 +1523,7 @@ double Evolution::runExperiment_part2(int generation)
 
   //this->calculateNoveltyLocomotion();
 
-  //this->calculatePenaltyFitness();
+  this->calculatePenaltyFitness();
 
   this->calculateFinalFitness();
 
