@@ -1409,10 +1409,10 @@ void Evolution::calculateFinalFitness()
   {
 
     double fitness = this->population[i].getLocomotionFitness()
-        *
-        this->population[i].getPenaltyFitness()
-        *
-        this->population[i].getNoveltyFitness()
+       // *
+       // this->population[i].getPenaltyFitness()
+       // *
+       // this->population[i].getNoveltyFitness()
     ;
 
     this->population[i].updateFinalFitness(fitness);

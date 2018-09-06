@@ -589,7 +589,16 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
     this->gen->removeMeasure("vertical_symmetry");
     this->gen->removeMeasure("sensors_slots");
 
-
+    this->gen->removeMeasure("amplitude_average");
+    this->gen->removeMeasure("amplitude_deviation");
+    this->gen->removeMeasure("offset_average");
+    this->gen->removeMeasure("offset_deviation");
+    this->gen->removeMeasure("period_average");
+    this->gen->removeMeasure("period_deviation");
+    this->gen->removeMeasure("params_dev_average");
+    this->gen->removeMeasure("inputs_reach");
+    this->gen->removeMeasure("recurrence");
+    this->gen->removeMeasure("synaptic_reception");
 
 
 

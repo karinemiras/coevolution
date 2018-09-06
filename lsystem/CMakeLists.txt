@@ -29,31 +29,40 @@ endif ()
 # _____________________________________________________________________________
 
 # Find the boost lib and headers.
-set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
+# Don't do a find_package in config mode before searching for a regular
+# boost install.
+set(Boost_NO_BOOST_CMAKE ON)
 find_package(Boost COMPONENTS REQUIRED
+        "system"
         "unit_test_framework"
         )
 include_directories(${Boost_INCLUDE_DIRS})
 
-find_package(Qt4 COMPONENTS
-        Core
-        Widgets
-        )
+#find_package(Qt4 COMPONENTS
+#        Core
+#        Widgets
+#        )
 
+find_package(Qt4 REQUIRED)
+include(${QT_USE_FILE})
 
 include_directories(SYSTEM ${MPI_INCLUDE_PATH})
 
-find_package(mlpack)
+if (${APPLE})
+  include_directories("/usr/local/includes/mlpack")
+  link_directories("/usr/local/lib/")
+else()
+  # I guess this is how it goes for Linux
+  include_directories("/usr/includes/mlpack")
+endif ()
 
 find_package(armadillo)
 
 # Source subdirectories
 # _____________________________________________________________________________
 
-
 include_directories(include)
 add_subdirectory(src)
-
 
 file(GLOB_RECURSE SOURCES
         src/GeneticString.cpp
@@ -69,7 +78,6 @@ file(GLOB_RECURSE SOURCES
 
 # Generate
 # _____________________________________________________________________________
-
 
 add_library(lsystem_proto_lib STATIC ${SOURCES})
 add_executable(lsystem_proto  main.cpp)
