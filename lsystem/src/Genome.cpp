@@ -16,12 +16,12 @@ unsigned int Genome::getTo()
   //return 4; //test of testing
 }
 
-void Genome::setGeneticString(GeneticString  _gs)
+void Genome::setGeneticString(GeneticString _gs)
 {
   this->gs = _gs;
 }
 
-GeneticString  Genome::getGeneticString()
+GeneticString Genome::getGeneticString()
 {
   return this->gs;
 }
@@ -73,13 +73,14 @@ void Genome::removeMeasure(std::string key)
 
 }
 
-QGraphicsScene * Genome::getScene(){
+QGraphicsScene *Genome::getScene()
+{
   return this->scene;
 }
 
 
 void Genome::setGrammar(
-    std::map< std::string, GeneticString  > grammar)
+    std::map< std::string, GeneticString > grammar)
 {
   this->grammar = grammar;
 }
@@ -129,23 +130,29 @@ void Genome::build_grammar(
   std::default_random_engine generator(rd());
 
   // distribution for the number of components
-  std::uniform_int_distribution< int > dist_1(1,
+  std::uniform_int_distribution< int > dist_1(
+      1,
       (int) params["num_initial_comp"]);
   // distribution for letters of the alphabet
   std::uniform_int_distribution< int > dist_2(
-      0, (int) LS.getAlphabetIndex().size() - 1);
+      0,
+      (int) LS.getAlphabetIndex().size() - 1);
   // distribution for the mounting commands
   std::uniform_int_distribution< int > dist_3(
-      0, (int) LS.getMountingCommands().size() - 1);
+      0,
+      (int) LS.getMountingCommands().size() - 1);
   // distribution for the moving commands
   std::uniform_int_distribution< int > dist_4(
-      0, (int) LS.getMovingCommands().size() - 1);
+      0,
+      (int) LS.getMovingCommands().size() - 1);
   // distribution for the brain moving commands
   std::uniform_int_distribution< int > dist_5(
-      0, (int) LS.getBrainMoveCommands().size() - 1);
+      0,
+      (int) LS.getBrainMoveCommands().size() - 1);
   // distribution for the brain change commands
   std::uniform_int_distribution< int > dist_6(
-      0, (int) LS.getBrainChangeCommands().size() - 1);
+      0,
+      (int) LS.getBrainChangeCommands().size() - 1);
 
   // for each letter of the alphabet
   for (const auto &letterPair : LS.getAlphabet())
@@ -173,18 +180,25 @@ void Genome::build_grammar(
       if (item != "C")
       {
         // if its a joint or sensor, adds conn/neuron info
-        if(item.substr(0,1) == "A" or item.substr(0,1) == "S"){
+        if (item.substr(
+            0,
+            1) == "A" or item.substr(
+            0,
+            1) == "S")
+        {
           item = LS.buildBrainCommand(item);
         }
 
         // raffles a brain move command to be included
-        auto braincommand = LS.buildBrainCommand(LS.getBrainMoveCommands()
-                                                 [dist_5(generator)]);
+        auto braincommand = LS.buildBrainCommand(
+            LS.getBrainMoveCommands()
+            [dist_5(generator)]);
         letter_items.push_back(braincommand);
 
         // raffles a brain change command to be included
-        braincommand = LS.buildBrainCommand(LS.getBrainChangeCommands()
-                                            [dist_6(generator)]);
+        braincommand = LS.buildBrainCommand(
+            LS.getBrainChangeCommands()
+            [dist_6(generator)]);
         letter_items.push_back(braincommand);
 
         // raffles a mounting command to be included
@@ -199,7 +213,7 @@ void Genome::build_grammar(
     }
 
     // build a genetic-string with the the production rule for the letter
-    GeneticString lgs =  GeneticString();
+    GeneticString lgs = GeneticString();
 
     this->build_genetic_string(
         lgs,
@@ -211,7 +225,6 @@ void Genome::build_grammar(
         lgs);
   }
 }
-
 
 
 /**
@@ -273,7 +286,7 @@ void Genome::build_genome_direct(
   }
 
   // build the genetic-string
-  GeneticString  gs = GeneticString();
+  GeneticString gs = GeneticString();
   this->build_genetic_string(
       gs,
       letter_items);
@@ -301,7 +314,7 @@ void Genome::generate_final_string(
     this->gs.replaces(this->grammar);
   }
 
-  std::cout<<"genotype :" <<this->getId()<<std::endl;
+  std::cout << "genotype :" << this->getId() << std::endl;
   this->gs.display_list();
 
   if (export_genomes == 1)
@@ -347,8 +360,8 @@ void Genome::exportGenome(std::string dirpath)
  * @param _gs - new genetic-string to be populated with the vector of items.
  * @param genetic_string_items - vector of items that will compose teh genetic-string.
  */
-GeneticString  Genome::build_genetic_string(
-    GeneticString  &_gs,
+GeneticString Genome::build_genetic_string(
+    GeneticString &_gs,
     std::vector< std::string > genetic_string_items)
 {
   try
@@ -457,10 +470,7 @@ void Genome::constructor(
 
     // draw brain graph
     std::string auxcom =
-        "dot -Tpng " + path + "/tempbrain"
-            ".dot "
-            "-o " + path + "/brain_" + this->id +
-        ".png";
+        "dot -Tpng " + path + "/tempbrain.dot -o " + path + "/brain_" + this->id + ".png";
     std::system(auxcom.c_str());
   }
 
@@ -716,12 +726,20 @@ void Genome::draw_component(
     // add info to the components
     tsign = std::to_string(c2->id) + " " + tsign + "\n";
     tsign = tsign
-            + c2->sensor_left.substr(1, 1)
-            + c2->sensor_front.substr(1, 1)
-            + c2->sensor_right.substr(1, 1);
+            + c2->sensor_left.substr(
+        1,
+        1)
+            + c2->sensor_front.substr(
+        1,
+        1)
+            + c2->sensor_right.substr(
+        1,
+        1);
     if (c2 == c1)
     {
-      tsign = tsign + c2->sensor_back.substr(1, 1);
+      tsign = tsign + c2->sensor_back.substr(
+          1,
+          1);
     }
 
     sign->setPlainText(QString::fromStdString(tsign)); //draws sign over the component
@@ -884,7 +902,7 @@ void Genome::convertYamlBrain(std::string _directoryPath)
 {
   std::ofstream robot_file;
   auto path =
-       _directoryPath
+      _directoryPath
       + "/robot_" + this->getId() + ".yaml";
   robot_file.open(
       path,
@@ -918,7 +936,7 @@ void Genome::convertYamlBrain(std::string _directoryPath)
     if (node.second->direction != "")
     {
       robot_file << "    node" << node.first << "-2:" << std::endl;
-      robot_file << "      id: node" << node.first<<"-2" << std::endl;
+      robot_file << "      id: node" << node.first << "-2" << std::endl;
       robot_file << "      layer: " << node.second->layer << std::endl;
       robot_file << "      part_id: module" << node.second->id_comp;
       robot_file << "sensor-" << node.second->direction;
@@ -927,8 +945,9 @@ void Genome::convertYamlBrain(std::string _directoryPath)
     }
   }
   // inputs to core-component
-  for(int i=1; i<=6; i++){
-    robot_file << "    node-core" << i << ":"<<std::endl;
+  for (int i = 1; i <= 6; i++)
+  {
+    robot_file << "    node-core" << i << ":" << std::endl;
     robot_file << "      id: node-core" << i << std::endl;
     robot_file << "      layer: input" << std::endl;
     robot_file << "      part_id: module0" << std::endl;
@@ -938,7 +957,9 @@ void Genome::convertYamlBrain(std::string _directoryPath)
 
   // adds connections
   if (this->dgs.getBrain_edges().size() > 0)
+  {
     robot_file << "  connections:" << std::endl;
+  }
 
   for (const auto &edge : this->dgs.getBrain_edges())
   {
@@ -956,11 +977,12 @@ void Genome::convertYamlBrain(std::string _directoryPath)
 
   for (const auto &node : this->dgs.getBrain_nodes())
   {
-    if (node.second->function == "Oscillator" )
+    if (node.second->function == "Oscillator")
     {
       robot_file << "    node" << node.first << ":" << std::endl;
       robot_file << "      period: " << node.second->period << std::endl;
-      robot_file << "      phase_offset: " << node.second->phase_offset << std::endl;
+      robot_file << "      phase_offset: " << node.second->phase_offset
+                 << std::endl;
       robot_file << "      amplitude: " << node.second->amplitude << std::endl;
     }
   }
@@ -996,7 +1018,7 @@ void Genome::convertYamlBody(
 
   std::ofstream robot_file;
   std::string path =
-                     _directoryPath + "/robot_" + this->getId() + ".yaml";
+      _directoryPath + "/robot_" + this->getId() + ".yaml";
   robot_file.open(
       path,
       std::ofstream::app);
@@ -1162,7 +1184,7 @@ void Genome::createEmbryo()
   axiom.push_back("C");
 
   // initializes the genetic-string with the axiom
-  GeneticString  gs =  GeneticString();
+  GeneticString gs = GeneticString();
   this->setGeneticString(
       this->build_genetic_string(
           gs,
@@ -1243,7 +1265,7 @@ void Genome::updateBalanceFitness(double fitness)
   this->balance_fitness = fitness;
 }
 
-std::map< std::string, GeneticString  > Genome::getGrammar()
+std::map< std::string, GeneticString > Genome::getGrammar()
 {
   return this->grammar;
 }
@@ -1251,7 +1273,7 @@ std::map< std::string, GeneticString  > Genome::getGrammar()
 
 void Genome::addLetterGrammar(
     std::string letter,
-    GeneticString  lgs)
+    GeneticString lgs)
 {
   this->grammar.emplace(
       letter,
