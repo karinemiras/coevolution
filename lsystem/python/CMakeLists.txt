@@ -1,4 +1,4 @@
-# python3 libraries
+# python2 libraries
 find_package(PythonLibs REQUIRED)
 
 # boost python
@@ -8,17 +8,18 @@ message(STATUS "boost::system: ${Boost_SYSTEM_FOUND}")
 message(STATUS "boost::python: ${Boost_PYTHON_FOUND}")
 
 if (NOT ${Boost_FOUND})
-    if (${APPLE})
-        message(FATAL_ERROR "boost python not found, try to run command\n"
-                "$ brew install boost-python")
-    endif ()
 
-    if (NOT ${Boost_FOUND})
-        message(FATAL_ERROR "boost python not found")
-    endif ()
     message(STATUS "boost: ${Boost_FOUND}")
     message(STATUS "boost::system: ${Boost_SYSTEM_FOUND}")
     message(STATUS "boost::python: ${Boost_PYTHON_FOUND}")
+
+    if (${APPLE})
+        message(FATAL_ERROR "boost python not found, try to run command\n"
+                "$ brew install boost-python")
+    else()
+        message(FATAL_ERROR "boost python not found")
+    endif ()
+
 endif ()
 
 if (${APPLE})
@@ -49,7 +50,14 @@ target_link_libraries(lsystem_python
         )
 
 # install
-#install(TARGETS revolve_brain_python DESTINATION lib)
+execute_process ( COMMAND python2 -c
+        "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+set(OLD_CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+set(CMAKE_INSTALL_PREFIX "/")
+install(TARGETS lsystem_python DESTINATION ${PYTHON_SITE_PACKAGES})
+#install(TARGETS executable DESTINATION "${OLD_CMAKE_INSTALL_PREFIX}/bin")
 
 
 message("Boost Libraries: ${Boost_LIBRARIES}")
