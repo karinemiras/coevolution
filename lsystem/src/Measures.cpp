@@ -16,6 +16,14 @@
 #include "Tests.h"
 
 
+void Measures::initializer() {
+
+    points = std::map<std::pair<int, int>, double>();
+    params = std::map<std::string, double>();
+
+}
+
+
 /**
  * Sets a variable with the genome for which the measures will be calculated.
  * @param gen - genome

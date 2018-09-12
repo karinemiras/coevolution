@@ -28,6 +28,7 @@ public:
         this->experiment_name = experiment_name;
         this->params = params;
         this->path = path;
+        initializer();
     }
 
     void initalizeMeasures();
@@ -45,6 +46,7 @@ public:
     double deviation(std::vector<double> v, double ave);
     void setGenome(Genome &gen);
     Genome * getGenome();
+    void initializer();
     std::pair<int, int> find_points(DecodedGeneticString::Vertex * c1,
                                     DecodedGeneticString::Vertex * c2,
                                     int x,
@@ -54,12 +56,11 @@ public:
 private:
 
     Genome * gen = nullptr; // pointer to the genome to be measured
-    // points outlining the polygon formed by the morphology through the components
-    std::map< std::pair<int, int> , double> points = std::map< std::pair<int, int> , double>();
     std::string experiment_name = "";
-    std::map<std::string, double> params =  std::map<std::string, double>();
     std::string path = "";
-
+    // points outlining the polygon formed by the morphology through the components
+    std::map< std::pair<int, int> , double> points;
+    std::map<std::string, double> params;
 };
 
 #endif //LSYSTEM_PROTO_MEASURES_H
