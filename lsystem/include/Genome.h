@@ -38,10 +38,13 @@ public:
         id = _id;
         id_parent1 = _id_parent1;
         id_parent2 = _id_parent2;
+        initializer();
     }
 
 
     unsigned int getTo();
+
+    void  initializer();
 
     GeneticString  build_genetic_string(GeneticString  &gs,
                                          std::vector<std::string> genetic_string_items);
@@ -196,21 +199,16 @@ protected:
     QGraphicsScene * scene = NULL; // scene holding the phenotype
 
     // letter(s) of the alphabet to build the initial developmental state of the genetic-string
-    std::vector<std::string>
-            axiom = std::vector<std::string>();
+    std::vector<std::string> axiom;
 
     // genetic-strings of production rules for each letter of the alphabet
-    std::map< std::string, GeneticString  > grammar = std::map< std::string,
-        GeneticString  >();
+    std::map< std::string, GeneticString  > grammar;
 
     // list of body metrics about the genome
-    std::map< std::string, double >
-            measures = std::map< std::string, double >();
+    std::map< std::string, double > measures;
 
     // list of all components of the body, keys are coordinates, value is a letter
-    std::map< std::pair<int, int>, std::string >
-            list_components = std::map< std::pair<int, int>, std::string >();
-
+    std::map< std::pair<int, int>, std::string > list_components;
 
 };
 

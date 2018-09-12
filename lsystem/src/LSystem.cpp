@@ -6,6 +6,21 @@
 #include "LSystem.h"
 
 
+
+
+void LSystem::initializer()
+{
+    moving_commands = std::vector<std::string>();
+    mounting_commands = std::vector<std::string>();
+    brainmove_commands = std::vector<std::string>();
+    brainchange_commands = std::vector<std::string>();
+    alphabet = std::map<std::string, std::string >();
+    brainfunctions = std::vector<std::string>();
+    alphabet_index = std::vector<std::string>();
+    alphabet_type = std::map<std::string, std::string >();
+    params = std::map<std::string, double>();
+}
+
 /**
  * Builds a vector with the body mounting commands for the l-system.
  */

@@ -14,6 +14,14 @@
 #include "LSystem.h"
 
 
+void DecodedGeneticString::initializers()
+{
+   brain_edges = std::map< std::pair<int, int>, double >();
+   brain_nodes = std::map< int, Vertex2 *>();
+   fromNode = std::vector<Vertex2 *>();
+   toNode = std::vector<Vertex2 *>();
+}
+
 
 
 // * Transforms the main genetic-string of the genome into graphs that

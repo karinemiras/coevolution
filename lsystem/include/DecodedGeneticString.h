@@ -31,6 +31,7 @@ public:
   DecodedGeneticString(){
     root = NULL;
     ids=0;
+    initializers();
   }
 
   ~DecodedGeneticString(){}
@@ -88,6 +89,8 @@ public:
 
   DecodedGeneticString::Vertex * getRoot();
 
+  void initializers();
+
   void decodeBrainNode(std::string direction,
                        std::string item,
                        int id_comp,
@@ -112,23 +115,19 @@ private:
 
   Vertex *root;  // root of the body graph
 
-  // edges of brain graph
-  std::map< std::pair<int, int>, double > // <<origin, destination>, weight>
-      brain_edges = std::map< std::pair<int, int>, double >();
+  // edges of brain graph // <<origin, destination>, weight>
+  std::map< std::pair<int, int>, double > brain_edges;
 
   // nodes of brain graph
-  std::map< int, Vertex2 * >
-      brain_nodes = std::map< int, Vertex2 *>();
+  std::map< int, Vertex2 * > brain_nodes;
 
   // pointers to current-edge of brain graph:
 
   //  'from' node(s) in current-edge
-  std::vector<Vertex2 *> fromNode =
-      std::vector<Vertex2 *>();
+  std::vector<Vertex2 *> fromNode;
 
   //  'to' node(s) in current-edge
-  std::vector<Vertex2 *> toNode =
-      std::vector<Vertex2 *>();
+  std::vector<Vertex2 *> toNode;
 
   int ids; // count of ids so far
 };

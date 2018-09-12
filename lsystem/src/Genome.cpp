@@ -11,6 +11,15 @@
 #include "Genome.h"
 
 
+void Genome::initializer()
+{
+  axiom = std::vector<std::string>();
+  grammar = std::map< std::string, GeneticString  >();
+  measures = std::map< std::string, double >();
+  list_components = std::map< std::pair<int, int>, std::string >();
+}
+
+
 unsigned int Genome::getTo()
 {
   //return 4; //test of testing
@@ -1180,8 +1189,8 @@ void Genome::convertYamlBody(
 void Genome::createEmbryo()
 {
 
-  std::vector< std::string > axiom;
-  axiom.push_back("C");
+
+  this->axiom.push_back("C");
 
   // initializes the genetic-string with the axiom
   GeneticString gs = GeneticString();
