@@ -1,5 +1,5 @@
-pop_size 2
-num_generations 2
+pop_size 100
+num_generations 100
 k_neighbors 1
 mutation_prob 1
 num_initial_comp 3
