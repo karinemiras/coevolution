@@ -18,7 +18,7 @@
 #include <boost/algorithm/string/split.hpp>
 
 
-#include <mlpack/core.hpp>
+//#include <mlpack/core.hpp>
 #include <mlpack/methods/neighbor_search/neighbor_search.hpp>
 
 using namespace mlpack;
@@ -31,6 +31,20 @@ using namespace mlpack::metric; // EuclideanDistance
 #include "LSystem.h"
 #include "Measures.h"
 
+
+
+
+
+void Evolution::initializer()
+{
+    measures_names = std::map< std::string, std::string >();
+    params = std::map<std::string, double>();
+    morphological_grid_generation = std::map<std::string, std::vector<double>>();
+    morphological_grid_accumulated = std::map<std::string, std::vector<std::string>>();
+    population =  std::vector<Genome>();
+    offspring =  std::vector<Genome>();
+    archive = std::vector<Genome> ();
+}
 
 /**
  * Reads parameters from file.

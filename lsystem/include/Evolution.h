@@ -29,6 +29,7 @@ public:
 
         this->experiment_name = experiment_name;
         this->path = path;
+        initializer();
 
         this->measures_names["branching"] = "branching";
         this->measures_names["connectivity1"] = "connectivity1";
@@ -114,48 +115,43 @@ public:
     virtual void initPopulation(LSystem LS){};
     virtual void crossover(LSystem LS){};
     virtual void mutation(LSystem LS){};
+    void initializer();
 
 
 
 protected:
 
-
-   std::map< std::string, std::string >
-      measures_names = std::map< std::string, std::string >();
-
-    std::map<std::string, double> params =
-            std::map<std::string, double>(); // contains the list of parameters loaded from parameter file
-
-    int next_id = 0; // id that will be given for the next genome to be created
-
     std::string experiment_name = ""; // name for the experiment
 
     std::string path = ""; // path of the lsystem
 
-    // points in a grid representing the morphological space
-    std::map<std::string, std::vector<double>>
-            morphological_grid_generation =
-            std::map<std::string, std::vector<double>>();
-
-    std::map<std::string, std::vector<std::string>>
-            morphological_grid_accumulated =
-            std::map<std::string, std::vector<std::string>>();
-
-     // containsgeneral auxiliar methods for the experiments
+    // containsgeneral auxiliar methods for the experiments
     Aux aux = Aux(this->experiment_name,this->getParams(),this->path);
     // contains methods with tests for the system
     Tests tests = Tests(this->experiment_name,
                         this->getParams(),
                         this->path);
 
+    int next_id = 0; // id that will be given for the next genome to be created
+
+
+    std::map< std::string, std::string > measures_names;
+
+    std::map<std::string, double> params; // contains the list of parameters loaded from parameter file
+
+    // points in a grid representing the morphological space
+    std::map<std::string, std::vector<double>> morphological_grid_generation;
+
+    std::map<std::string, std::vector<std::string>> morphological_grid_accumulated;
+
     // contains the genomes of all the individuals of the current population
-    std::vector<Genome>  population =  std::vector<Genome>();
+    std::vector<Genome>  population;
 
     // contains the genomes of all the individuals the new offspring
-    std::vector<Genome>  offspring =  std::vector<Genome>();
+    std::vector<Genome>  offspring;
 
     // contains the genomes of all individuals in the archive
-    std::vector<Genome>  archive = std::vector<Genome> ();
+    std::vector<Genome>  archive;
 
 
 };

@@ -48,13 +48,13 @@ include(${QT_USE_FILE})
 
 include_directories(SYSTEM ${MPI_INCLUDE_PATH})
 
-if (${APPLE})
-  include_directories("/usr/local/includes/mlpack")
-  link_directories("/usr/local/lib/")
-else()
+#if (${APPLE})
+  #include_directories("/usr/local/include/mlpack")
+  #link_directories("/usr/local/lib/")
+#else()
   # I guess this is how it goes for Linux
-  include_directories("/usr/includes/mlpack")
-endif ()
+ # include_directories("/usr/includes/mlpack")
+#endif ()
 
 find_package(armadillo)
 
