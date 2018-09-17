@@ -26,9 +26,9 @@ public:
              std::string path)
     {
         this->experiment_name = experiment_name;
+        initializer();
         this->params = params;
         this->path = path;
-        initializer();
     }
 
     void initalizeMeasures();
@@ -43,6 +43,7 @@ public:
     std::map< std::string, double> getMeasures();
     double median(std::vector<double> medi);
     double mean(std::vector<double> v);
+    double sum(std::vector<double> v);
     double deviation(std::vector<double> v, double ave);
     void setGenome(Genome &gen);
     Genome * getGenome();

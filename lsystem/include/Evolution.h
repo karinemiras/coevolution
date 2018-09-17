@@ -40,16 +40,16 @@ public:
         this->measures_names["sensors"] = "sensors";
         this->measures_names["symmetry"] = "symmetry";
         this->measures_names["total_components"] = "total_components";
-      //  this->measures_names["amplitude_average"] = "amplitude_average";
-      //  this->measures_names["amplitude_deviation"] = "amplitude_deviation";
-      //  this->measures_names["offset_average"] = "offset_average";
-      //  this->measures_names["offset_deviation"] = "offset_deviation";
-      //  this->measures_names["period_average"] = "period_average";
-       // this->measures_names["period_deviation"] = "period_deviation";
-      //  this->measures_names["params_dev_average"] = "params_dev_average";
-       // this->measures_names["inputs_reach"] = "inputs_reach";
-       // this->measures_names["recurrence"] = "recurrence";
-       // this->measures_names["synaptic_reception"] = "synaptic_reception";
+//        this->measures_names["amplitude_average"] = "amplitude_average";
+//        this->measures_names["amplitude_deviation"] = "amplitude_deviation";
+//        this->measures_names["offset_average"] = "offset_average";
+//        this->measures_names["offset_deviation"] = "offset_deviation";
+//        this->measures_names["period_average"] = "period_average";
+//        this->measures_names["period_deviation"] = "period_deviation";
+//        this->measures_names["params_dev_average"] = "params_dev_average";
+//        this->measures_names["inputs_reach"] = "inputs_reach";
+//        this->measures_names["recurrence"] = "recurrence";
+//        this->measures_names["synaptic_reception"] = "synaptic_reception";
     }
 
     void saveHistory(int generation);

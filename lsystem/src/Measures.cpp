@@ -19,7 +19,6 @@
 void Measures::initializer() {
 
     points = std::map<std::pair<int, int>, double>();
-    params = std::map<std::string, double>();
 
 }
 
@@ -150,6 +149,15 @@ double Measures::mean(std::vector<double> v)
         return sum/v.size();
     else
         return 0;
+}
+
+double Measures::sum(std::vector<double> v)
+{
+    double sum=0;
+    for(int i=0;i<v.size();i++)
+        sum+=v[i];
+
+    return sum;
 }
 
 /* standard deviation of the population (not sample) */
@@ -304,6 +312,10 @@ void Measures::measurePhenotypeBrain()
 
         aux = this->median(amplitude_values)
               / this->params["oscillator_max"];
+
+        std::cout<<"median"<<aux;
+        std::cout<<"oscillator_max"<<this->params["oscillator_max"];
+
         this->gen->updateMeasure("amplitude_average", aux);
 
         aux = this->mean(amplitude_values);

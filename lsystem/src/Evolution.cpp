@@ -38,19 +38,12 @@ using namespace mlpack::metric; // EuclideanDistance
 void Evolution::initializer()
 {
     measures_names = std::map< std::string, std::string >();
-
-    params =
-            std::map<std::string, double>();
-
+    params = std::map<std::string, double>();
     morphological_grid_generation = std::map<std::string, std::vector<double>>();
-
-   morphological_grid_accumulated = std::map<std::string, std::vector<std::string>>();
-
-   population =  std::vector<Genome>();
-
-   offspring =  std::vector<Genome>();
-
-   archive = std::vector<Genome> ();}
+    morphological_grid_accumulated = std::map<std::string, std::vector<std::string>>();
+    population =  std::vector<Genome>();
+    offspring =  std::vector<Genome>();
+    archive = std::vector<Genome> ();}
 
 /**
  * Reads parameters from file.
