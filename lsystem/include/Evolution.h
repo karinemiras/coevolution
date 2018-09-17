@@ -125,6 +125,8 @@ protected:
 
     std::string path = ""; // path of the lsystem
 
+    std::map<std::string, double> params; // contains the list of parameters loaded from parameter file
+
     // containsgeneral auxiliar methods for the experiments
     Aux aux = Aux(this->experiment_name,this->getParams(),this->path);
     // contains methods with tests for the system
@@ -136,8 +138,6 @@ protected:
 
 
     std::map< std::string, std::string > measures_names;
-
-    std::map<std::string, double> params; // contains the list of parameters loaded from parameter file
 
     // points in a grid representing the morphological space
     std::map<std::string, std::vector<double>> morphological_grid_generation;

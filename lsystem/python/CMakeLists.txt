@@ -9,9 +9,9 @@ message(STATUS "boost::python: ${Boost_PYTHON_FOUND}")
 
 if (NOT ${Boost_FOUND})
 
-    message(STATUS "boost: ${Boost_FOUND}")
-    message(STATUS "boost::system: ${Boost_SYSTEM_FOUND}")
-    message(STATUS "boost::python: ${Boost_PYTHON_FOUND}")
+    #message(STATUS "boost: ${Boost_FOUND}")
+    #message(STATUS "boost::system: ${Boost_SYSTEM_FOUND}")
+    #message(STATUS "boost::python: ${Boost_PYTHON_FOUND}")
 
     if (${APPLE})
         message(FATAL_ERROR "boost python not found, try to run command\n"
