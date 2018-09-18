@@ -1,5 +1,6 @@
 # python2 libraries
-find_package(PythonLibs REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(PYTHON REQUIRED python2)
 
 # boost python
 find_package(Boost REQUIRED COMPONENTS python)
@@ -23,30 +24,30 @@ if (NOT ${Boost_FOUND})
 endif ()
 
 if (${APPLE})
-    set(PYTHON_INCLUDE_DIRS
-            "/usr/include/python2.7"
-            ${PYTHON_INCLUDE_DIRS})
-    set(Python_LIBRARIES
+    set(PYTHON_LIBRARIES
             "/usr/local/Cellar/python@2/2.7.15_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib"
-            ${Python_LIBRARIES} )
-   # set(Python_LIBRARIES ${Python_LIBRARIES}
-   #          "/usr/local/Cellar/python@2/2.7.15_1/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib")
+            ${PYTHON_LIBRARIES} )
 endif ()
+
+message("python includes: ${PYTHON_INCLUDE_DIRS}")
+message("python libraries: ${PYTHON_LIBRARIES}")
 
 # includes
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
 
 # add python wrapper target
-python_add_module(lsystem_python
+add_library(lsystem_python SHARED
         EvolutionIndirect_python.cpp
         )
+set_target_properties(lsystem_python PROPERTIES PREFIX "")
+set_target_properties(lsystem_python PROPERTIES SUFFIX ".so")
 
 # link libraries
 target_link_libraries(lsystem_python
         lsystem_proto_lib
         ${Boost_LIBRARIES}
-        ${Python_LIBRARIES}
+        ${PYTHON_LIBRARIES}
         )
 
 # install

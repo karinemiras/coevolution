@@ -80,6 +80,8 @@ file(GLOB_RECURSE SOURCES
 # _____________________________________________________________________________
 
 add_library(lsystem_proto_lib STATIC ${SOURCES})
+set_property(TARGET lsystem_proto_lib PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 add_executable(lsystem_proto  main.cpp)
 
 target_link_libraries(lsystem_proto_lib
