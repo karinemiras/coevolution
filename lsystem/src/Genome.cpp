@@ -11,6 +11,8 @@
 #include "Genome.h"
 
 
+
+
 void Genome::initializer()
 {
   axiom = std::vector<std::string>();
@@ -427,14 +429,11 @@ void Genome::constructor(
     std::string path)
 {
 
-  QApplication app(
-      argc,
-      argv);
+
 
   this->scene = new QGraphicsScene(); // scene that holds the chart representing the phenotype
 
   QGraphicsView *view = new QGraphicsView(scene);
-  view->show();
 
   std::vector< QGraphicsRectItem * > items;
 
@@ -486,7 +485,7 @@ void Genome::constructor(
   // show drawn robot on the screen
   if (params["show_phenotypes"] == 1)
   {
-    app.exec();
+    this->app->exec();
   }
 }
 

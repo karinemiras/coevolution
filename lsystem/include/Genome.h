@@ -39,6 +39,9 @@ public:
         id_parent1 = _id_parent1;
         id_parent2 = _id_parent2;
         initializer();
+        int p_argc = 1;
+        char *p_argv[] = {"a"};
+        this->app = new QApplication(p_argc,p_argv);
     }
 
 
@@ -195,6 +198,8 @@ protected:
     GeneticString  gs =  GeneticString();
 
     DecodedGeneticString dgs; // graph that logically represents the connections among the components forming the body
+
+    QApplication* app;
 
     QGraphicsScene * scene = NULL; // scene holding the phenotype
 
