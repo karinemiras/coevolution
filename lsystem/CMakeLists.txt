@@ -56,7 +56,7 @@ include_directories(SYSTEM ${MPI_INCLUDE_PATH})
  # include_directories("/usr/includes/mlpack")
 #endif ()
 
-find_package(armadillo)
+find_package(Armadillo)
 
 # Source subdirectories
 # _____________________________________________________________________________
