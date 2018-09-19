@@ -1072,7 +1072,11 @@ void Evolution::loadIndividuals(int generation, std::string type)
         getline(
             fitness,
             linefitness);
-        gen.updateLocomotionFitness(std::stod(linefitness));
+            linefitness = linefitness.c_str();
+            std::stringstream iss(linefitness);
+            double d = 0;
+            iss >> d;
+           gen.updateLocomotionFitness(d);
       }
 
       std::ifstream fitness2(
@@ -1086,7 +1090,11 @@ void Evolution::loadIndividuals(int generation, std::string type)
         getline(
             fitness2,
             linefitness);
-        gen.updateBalanceFitness(std::stod(linefitness));
+          linefitness = linefitness.c_str();
+          std::stringstream iss(linefitness);
+          double d = 0;
+          iss >> d;
+          gen.updateBalanceFitness(d);
       }
 
 
@@ -1450,8 +1458,8 @@ void Evolution::calculatePenaltyFitness()
 double Evolution::runExperiment_part1(
     int generation, int load_experiment)
 {
-  int argc = 1;
-  char *argv[] = {"a"};
+  int argc = 1;  //
+  char *argv[] = {"a"}; //
 
 
   if(load_experiment == 1)
@@ -1532,11 +1540,11 @@ double Evolution::runExperiment_part2(int generation)
     this->population.push_back(this->offspring[j]);
   }
 
-  this->calculateNovelty();
+  //this->calculateNovelty();
 
   //this->calculateNoveltyLocomotion();
 
-  this->calculatePenaltyFitness();
+  //this->calculatePenaltyFitness();
 
   this->calculateFinalFitness();
 
