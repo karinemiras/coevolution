@@ -1,0 +1,87 @@
+Determining if the Q_WS_X11 exist failed with the following output:
+Change Dir: /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_64b82/fast"
+/Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_64b82.dir/build.make CMakeFiles/cmTC_64b82.dir/build
+Building CXX object CMakeFiles/cmTC_64b82.dir/CheckSymbolExists.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++   -I/usr/local/include -F/usr/local/lib   -o CMakeFiles/cmTC_64b82.dir/CheckSymbolExists.cxx.o -c /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: use of undeclared identifier 'Q_WS_X11'
+  return ((int*)(&Q_WS_X11))[argc];
+                  ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_64b82.dir/CheckSymbolExists.cxx.o] Error 1
+make: *** [cmTC_64b82/fast] Error 2
+
+File /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_X11
+  return ((int*)(&Q_WS_X11))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the Q_WS_WIN exist failed with the following output:
+Change Dir: /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_757f9/fast"
+/Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_757f9.dir/build.make CMakeFiles/cmTC_757f9.dir/build
+Building CXX object CMakeFiles/cmTC_757f9.dir/CheckSymbolExists.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++   -I/usr/local/include -F/usr/local/lib   -o CMakeFiles/cmTC_757f9.dir/CheckSymbolExists.cxx.o -c /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: use of undeclared identifier 'Q_WS_WIN'
+  return ((int*)(&Q_WS_WIN))[argc];
+                  ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_757f9.dir/CheckSymbolExists.cxx.o] Error 1
+make: *** [cmTC_757f9/fast] Error 2
+
+File /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_WIN
+  return ((int*)(&Q_WS_WIN))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the Q_WS_QWS exist failed with the following output:
+Change Dir: /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1c642/fast"
+/Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_1c642.dir/build.make CMakeFiles/cmTC_1c642.dir/build
+Building CXX object CMakeFiles/cmTC_1c642.dir/CheckSymbolExists.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++   -I/usr/local/include -F/usr/local/lib   -o CMakeFiles/cmTC_1c642.dir/CheckSymbolExists.cxx.o -c /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: use of undeclared identifier 'Q_WS_QWS'
+  return ((int*)(&Q_WS_QWS))[argc];
+                  ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_1c642.dir/CheckSymbolExists.cxx.o] Error 1
+make: *** [cmTC_1c642/fast] Error 2
+
+File /Users/karinemiras/projects/environments/l-system/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <QtCore/qglobal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef Q_WS_QWS
+  return ((int*)(&Q_WS_QWS))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+

@@ -407,6 +407,8 @@ void Evolution::measureIndividuals(
       differences_file << " " << dif << std::endl;
 
     }
+
+    std::cout<<"Robot "<<individuals[i].getId()<<" has been measured."<<std::endl;
   }
 
   differences_file.close();
@@ -762,7 +764,7 @@ void Evolution::cleanMemory(std::vector< int > index_selected)
         item = item2;
       }
 
-//      std::cout<<"grammar genetic-strings"<<std::endl;
+//       cleans grammar genetic-strings // PROBLEMATIC CLEANING THOUGH
 //      for( auto &g: this->population[i].getGrammar())
 //      {
 //        item = g.second.getStart();
@@ -913,6 +915,8 @@ void Evolution::developIndividuals(
         LS,
         generation,
         this->path+"experiments/"+dir);
+
+    std::cout<<"Robot "<<individuals[i].getId()<<" has been late developed."<<std::endl;
   }
 }
 
@@ -1354,6 +1358,7 @@ void Evolution::calculateNovelty()
     this->population[i].updateNoveltyFitness(fitness);
 
   }
+    std::cout<<"Novelty has been calculated."<<std::endl;
 }
 
 void Evolution::calculateNoveltyLocomotion()
@@ -1419,6 +1424,7 @@ void Evolution::calculateNoveltyLocomotion()
     this->population[i].updateNoveltyLocomotionFitness(fitness);
 
   }
+  std::cout<<"Novelty of locomotion has been calculated."<<std::endl;
 }
 
 /**
@@ -1430,14 +1436,11 @@ void Evolution::calculateFinalFitness()
   {
 
     double fitness = this->population[i].getLocomotionFitness()
-       // *
-       // this->population[i].getPenaltyFitness()
-       // *
-       // this->population[i].getNoveltyFitness()
     ;
 
     this->population[i].updateFinalFitness(fitness);
   }
+  std::cout<<"Final fitnesses have been calculated."<<std::endl;
 }
 
 void Evolution::calculatePenaltyFitness()
@@ -1450,6 +1453,7 @@ void Evolution::calculatePenaltyFitness()
 
     this->population[i].updatePenaltyFitness(fitness);
   }
+  std::cout<<"Penalty Fitness have been calculated."<<std::endl;
 }
 
 /**
@@ -1488,6 +1492,7 @@ double Evolution::runExperiment_part1(
 
     // initializes population
     this->initPopulation(LS);
+    std::cout<<"First population has been created."<<std::endl;
   }
   else{
 
@@ -1498,9 +1503,11 @@ double Evolution::runExperiment_part1(
 
     // creates offspring
     this->crossover(LS);
+    std::cout<<"Crossovers of generation "<<generation<<" have been realized."<<std::endl;
 
     // mutates new individuals
     this->mutation(LS);
+    std::cout<<"Mutations of generation "<<generation<<" have been realized."<<std::endl;
 
   }
 
@@ -1557,6 +1564,7 @@ double Evolution::runExperiment_part2(int generation)
   {
     // selects individuals, keeping the population with a fixed size
     this->selection();
+    std::cout<<"Selection of generation "<<generation<<" has been realized."<<std::endl;
 
     // saves phenotypes of the selected population to a separated folder (only for visualization issues)
     this->exportPop(generation);

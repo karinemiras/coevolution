@@ -19,6 +19,9 @@ void Genome::initializer()
   grammar = std::map< std::string, GeneticString  >();
   measures = std::map< std::string, double >();
   list_components = std::map< std::pair<int, int>, std::string >();
+  int p_argc = 1;
+  char *p_argv[] = {"a"};
+  this->app = new QApplication(p_argc,p_argv);
 }
 
 
@@ -87,6 +90,11 @@ void Genome::removeMeasure(std::string key)
 QGraphicsScene *Genome::getScene()
 {
   return this->scene;
+}
+
+QApplication *Genome::getApp()
+{
+  return this->app;
 }
 
 
@@ -325,7 +333,7 @@ void Genome::generate_final_string(
     this->gs.replaces(this->grammar);
   }
 
-  std::cout << "genotype :" << this->getId() << std::endl;
+  std::cout << std::endl<< "Early developed robot " << this->getId()<<":" << std::endl;
   this->gs.display_list();
 
   if (export_genomes == 1)
@@ -429,11 +437,9 @@ void Genome::constructor(
     std::string path)
 {
 
-
-
   this->scene = new QGraphicsScene(); // scene that holds the chart representing the phenotype
 
-  QGraphicsView *view = new QGraphicsView(scene);
+  //QGraphicsView *view = new QGraphicsView(scene);
 
   std::vector< QGraphicsRectItem * > items;
 
@@ -1235,9 +1241,9 @@ void Genome::developGenomeIndirect(
   // generates robot-graphics
   this->constructor(
       argc,
-      argv,
-      params,
-      path + std::to_string(generation));
+    argv,
+            params,
+            path + std::to_string(generation));
 }
 
 

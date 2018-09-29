@@ -317,7 +317,6 @@ void GeneticString::display_list()
         return;
     }
     current = start;
-    std::cout << "The genetic-string List is :" << std::endl;
     while (current != nullptr)
     {
         std::cout << current->item << " ";

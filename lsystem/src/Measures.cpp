@@ -111,13 +111,13 @@ void Measures::initalizeMeasures() {
     // average of the deviation among osci params
     this->gen->updateMeasure("params_dev_average", 0);
 
-    // average of how broad the inputs' connectionsare
+    // average of how broad the inputs' connections are
     this->gen->updateMeasure("inputs_reach", 0);
 
     // proportion of hidden+out with self recurrence
     this->gen->updateMeasure("recurrence", 0);
 
-    // average ratio of inhibitory/excitatory input to oscilltors
+    // average ratio of inhibitory/excitatory input to oscillators
     this->gen->updateMeasure("synaptic_reception", 0);
 
 
@@ -179,8 +179,8 @@ void Measures::measurePhenotypeBrain()
     double aux_params_deviation = 0;
     double aux = 0;
     double recurrence = 0;
-    double inhibitory_synapses_mean = 0;
-    double excitatory_synapses_mean = 0;
+    double inhibitory_synapses_sum = 0;
+    double excitatory_synapses_sum = 0;
 
     auto nodes = this->getGenome()->getDgs().getBrain_nodes();
     auto edges = this->getGenome()->getDgs().getBrain_edges();
@@ -254,25 +254,25 @@ void Measures::measurePhenotypeBrain()
                     excitatory_synapses.push_back(edges[key]);
             }
 
-            inhibitory_synapses_mean = this->mean(inhibitory_synapses);
-            excitatory_synapses_mean = this->mean(excitatory_synapses);
+            inhibitory_synapses_sum = this->sum(inhibitory_synapses);
+            excitatory_synapses_sum = this->sum(excitatory_synapses);
 
-            if (inhibitory_synapses_mean < excitatory_synapses_mean)
+            if (inhibitory_synapses_sum < excitatory_synapses_sum)
             {
                 synaptic_reception.push_back(
-                        inhibitory_synapses_mean
+                        inhibitory_synapses_sum
                         /
-                        excitatory_synapses_mean);
+                        excitatory_synapses_sum);
 
             }
             else
             {
-                if (inhibitory_synapses_mean > 0)
+                if (inhibitory_synapses_sum > 0)
                 {
                     synaptic_reception.push_back(
-                            excitatory_synapses_mean
+                            excitatory_synapses_sum
                             /
-                            inhibitory_synapses_mean);
+                            inhibitory_synapses_sum);
 
                 }
                 else
@@ -313,8 +313,6 @@ void Measures::measurePhenotypeBrain()
         aux = this->median(amplitude_values)
               / this->params["oscillator_max"];
 
-        std::cout<<"median"<<aux;
-        std::cout<<"oscillator_max"<<this->params["oscillator_max"];
 
         this->gen->updateMeasure("amplitude_average", aux);
 
@@ -609,16 +607,16 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
     this->gen->removeMeasure("vertical_symmetry");
     this->gen->removeMeasure("sensors_slots");
 
-    this->gen->removeMeasure("amplitude_average");
-    this->gen->removeMeasure("amplitude_deviation");
-    this->gen->removeMeasure("offset_average");
-    this->gen->removeMeasure("offset_deviation");
-    this->gen->removeMeasure("period_average");
-    this->gen->removeMeasure("period_deviation");
-    this->gen->removeMeasure("params_dev_average");
-    this->gen->removeMeasure("inputs_reach");
-    this->gen->removeMeasure("recurrence");
-    this->gen->removeMeasure("synaptic_reception");
+//    this->gen->removeMeasure("amplitude_average");
+//    this->gen->removeMeasure("amplitude_deviation");
+//    this->gen->removeMeasure("offset_average");
+//    this->gen->removeMeasure("offset_deviation");
+//    this->gen->removeMeasure("period_average");
+//    this->gen->removeMeasure("period_deviation");
+//    this->gen->removeMeasure("params_dev_average");
+//    this->gen->removeMeasure("inputs_reach");
+//    this->gen->removeMeasure("recurrence");
+//    this->gen->removeMeasure("synaptic_reception");
 
 
 
