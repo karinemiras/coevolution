@@ -46,7 +46,8 @@ public:
         this->measures_names["offset_deviation"] = "offset_deviation";
         this->measures_names["period_average"] = "period_average";
         this->measures_names["period_deviation"] = "period_deviation";
-        this->measures_names["params_dev_average"] = "params_dev_average";
+        this->measures_names["intra_params_dev_average"] = "intra_params_dev_average";
+        this->measures_names["inter_params_dev_average"] = "inter_params_dev_average";
         this->measures_names["inputs_reach"] = "inputs_reach";
         this->measures_names["recurrence"] = "recurrence";
         this->measures_names["synaptic_reception"] = "synaptic_reception";

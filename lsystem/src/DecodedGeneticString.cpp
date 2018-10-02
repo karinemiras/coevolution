@@ -39,7 +39,7 @@ void DecodedGeneticString::decode(GeneticString gs,
   std::ofstream file;
   file.open(path +"/tempbrain.dot");
   file<<" digraph g{ forcelabels=true;"<<std::endl;
-  file.close();
+
 
   int num_components = 0;
   std::string mountingcommand = "";
@@ -345,7 +345,7 @@ void DecodedGeneticString::decode(GeneticString gs,
       // if it is a brain command
       if (typecommand == "bra")
       {
-        this->decodeBrainCommand(current_gs_item->item, path);
+        this->decodeBrainCommand(current_gs_item->item, path,  params);
       }
 
 
@@ -354,8 +354,31 @@ void DecodedGeneticString::decode(GeneticString gs,
   }
 
 
-  // writes edges to visualization
-  file.open(path +"/tempbrain.dot", std::ofstream::app);
+  for (const auto &c : this->brain_nodes)
+  {
+        // sets input nodes in the visualization
+        if (c.second->layer == "input") {
+            file << c.second->id << "[label=<"<<c.second->id<<"<BR/>M"<<c.second->id_comp<<">"
+                                ",color=\"grey\",style=filled,fontsize=8];"<<std::endl;
+        }
+
+      if (c.second->layer == "output") {
+
+          // sets output node in the visualization
+          auto output_text = std::to_string(c.second->id) + " [label=<"
+                             + std::to_string(c.second->id) + "<BR />" + c.second->function
+                             + " M" + std::to_string(c.second->id_comp) + "<BR />";
+
+          output_text += " period: " + std::to_string(c.second->period) + "<BR />";
+          output_text += " phase_offset: " + std::to_string(c.second->phase_offset) + "<BR />";
+          output_text += " amplitude: " + std::to_string(c.second->amplitude);
+          output_text += ">, shape=box,color=red,style=filled,fontsize=8];";
+
+          file << output_text;
+      }
+  }
+
+
   for (const auto &c : this->brain_edges)
   {
     auto origin = c.first.first;
@@ -365,6 +388,7 @@ void DecodedGeneticString::decode(GeneticString gs,
         <<"[label=\""<<weight<<" \",fontsize=\"8\"];"<<std::endl;
   }
   file<<" }"<<std::endl;
+
   file.close();
 
 }
@@ -376,19 +400,64 @@ void DecodedGeneticString::decode(GeneticString gs,
 // *
 
 void DecodedGeneticString::decodeBrainCommand(std::string item,
-                                              std::string path)
+                                              std::string path,
+                                              std::map<std::string, double> params)
 {
-  // if there is a current-edge
-  if(this->toNode.size() != 0 and this->fromNode.size() != 0 )
-  {
-    std::ofstream file;
-    file.open( path +"/tempbrain.dot", std::ofstream::app);
-
     std::vector<std::string> tokens;
     boost::split(tokens, item,  boost::is_any_of("_"));
 
     auto command = tokens[0];
     auto param = tokens[1];
+
+
+    // if there is a current idto
+    if(this->toNode.size() != 0)
+    {
+
+        // perturbs amplitude of current idto
+        if (command == "brainampperturb")
+        {
+            this->toNode[0]->amplitude =
+                    this->toNode[0]->amplitude + std::stod(param);
+            if (this->toNode[0]->amplitude > params["oscillator_max"]) {
+                this->toNode[0]->amplitude = params["oscillator_max"];
+            }
+            if (this->toNode[0]->amplitude < params["oscillator_min"]) {
+                this->toNode[0]->amplitude = params["oscillator_min"];
+            }
+        }
+
+        // perturbs offset of current idto
+        if (command == "brainoffperturb")
+        {
+            this->toNode[0]->phase_offset =
+                    this->toNode[0]->phase_offset + std::stod(param);
+            if (this->toNode[0]->phase_offset > params["oscillator_max"]) {
+                this->toNode[0]->phase_offset = params["oscillator_max"];
+            }
+            if (this->toNode[0]->phase_offset < params["oscillator_min"]) {
+                this->toNode[0]->phase_offset = params["oscillator_min"];
+            }
+        }
+
+
+        // perturbs period of current idto
+        if (command == "brainperperturb")
+        {
+            this->toNode[0]->period =
+                    this->toNode[0]->period + std::stod(param);
+            if (this->toNode[0]->period > params["oscillator_max"]) {
+                this->toNode[0]->period = params["oscillator_max"];
+            }
+            if (this->toNode[0]->period < params["oscillator_min"]) {
+                this->toNode[0]->period = params["oscillator_min"];
+            }
+        }
+    }
+
+   // if there is a current-edge
+  if(this->toNode.size() != 0 and this->fromNode.size() != 0 )
+  {
 
     auto edge = std::make_pair(
         this->fromNode[0]->id,
@@ -419,6 +488,7 @@ void DecodedGeneticString::decodeBrainCommand(std::string item,
         this->toNode[0]->to_nodes.push_back(this->toNode[0]);
       }
     }
+
 
     // creates edge
     if(command == "brainedge")
@@ -481,7 +551,7 @@ void DecodedGeneticString::decodeBrainCommand(std::string item,
       this->toNode[0] =
           this->toNode[0]->from_nodes[intermediate]->to_nodes[sibling];
     }
-    file.close();
+
   }
 }
 
@@ -498,8 +568,7 @@ void DecodedGeneticString::decodeBrainNode(std::string direction,
                                            int id_comp,
                                            std::string path)
 {
-  std::ofstream file;
-  file.open(path +"/tempbrain.dot", std::ofstream::app);
+
 
   std::vector<std::string> tokens;
   boost::split(tokens, item,  boost::is_any_of("_"));
@@ -557,17 +626,6 @@ void DecodedGeneticString::decodeBrainNode(std::string direction,
           this->toNode.begin() + this->toNode.size() - 1);
     }
 
-    // sets node in the visualization
-    if (item == "SL") {
-      file << v->id << "[label=<"<<v->id<<"<BR/>M"<<v->id_comp<<">"
-          ",color=\"lightgrey\",style=filled,fontsize=8];"
-          ""<<std::endl;
-    }
-    if (item == "ST") {
-      file << v->id << "[label=<"<<v->id<<"<BR/>M"<<v->id_comp<<">"
-          ",color=\"grey\",style=filled,fontsize=8];"
-          ""<<std::endl;
-    }
 
     // updates list of nodes
     this->brain_nodes[this->ids] = v;
@@ -583,10 +641,9 @@ void DecodedGeneticString::decodeBrainNode(std::string direction,
     v->weight = std::stod(tokens[0]);
     v->function = "Oscillator";
 
-    v->amplitude = std::stod(tokens[1]);
-    v->period = std::stod(tokens[2]);
-    v->phase_offset = std::stod(tokens[3]);
-
+    v->period = std::stod(tokens[1]);
+    v->phase_offset = std::stod(tokens[2]);
+    v->amplitude = std::stod(tokens[3]);
 
     // if there's no input node yet
     // adds node to the list of 'to' nodes of current-edge
@@ -627,24 +684,11 @@ void DecodedGeneticString::decodeBrainNode(std::string direction,
           this->fromNode.begin() + this->fromNode.size() - 1);
     }
 
-    // sets node in the visualization
-    auto output_text = std::to_string(v->id) + " [label=<"
-                       +std::to_string(v->id) +"<BR />" +v->function
-                       +" M"+std::to_string(v->id_comp)+"<BR />";
-
-    output_text += " period: " + std::to_string(v->period)+"<BR />";
-    output_text += " phase_offset: " + std::to_string(v->phase_offset)+"<BR />";
-    output_text += " amplitude: " + std::to_string(v->amplitude);
-
-
-    output_text +=">, shape=box,color=red,style=filled,fontsize=8];";
-
-    file << output_text<<std::endl;
 
     // updates list of nodes
     this->brain_nodes[this->ids] = v;
   }
-  file.close();
+ // file.close();
 }
 
 

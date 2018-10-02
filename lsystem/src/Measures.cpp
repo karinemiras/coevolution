@@ -108,8 +108,11 @@ void Measures::initalizeMeasures() {
     // deviation relative to average for period param
     this->gen->updateMeasure("period_deviation", 0);
 
-    // average of the deviation among osci params
-    this->gen->updateMeasure("params_dev_average", 0);
+    // average of the deviation  of params inside osci
+    this->gen->updateMeasure("intra_params_dev_average", 0);
+
+    // average of the deviation of params among osci
+    this->gen->updateMeasure("inter_params_dev_average", 0);
 
     // average of how broad the inputs' connections are
     this->gen->updateMeasure("inputs_reach", 0);
@@ -228,9 +231,10 @@ void Measures::measurePhenotypeBrain()
 
             // params deviation
             aux_params_deviation = this->mean({it.second->period,it.second->phase_offset,it.second->amplitude});
-            aux_params_deviation = this->deviation({it.second->period,it.second->phase_offset,it.second->amplitude}, aux_params_deviation)
-                                   / aux_params_deviation;
-            if (aux_params_deviation > 1) aux_params_deviation = 1;
+            aux_params_deviation = this->deviation({it.second->period,it.second->phase_offset,it.second->amplitude},
+                                                    aux_params_deviation);
+
+            aux_params_deviation = 1/(1 + exp(-aux_params_deviation));
             params_devs.push_back(aux_params_deviation);
 
             // self recursion
@@ -283,7 +287,7 @@ void Measures::measurePhenotypeBrain()
     }
 
 
-    // calculates measures ragarding outputs
+    // calculates measures regarding outputs
     if(n_output > 0)
     {
         aux = this->median(period_values)
@@ -291,23 +295,21 @@ void Measures::measurePhenotypeBrain()
         this->gen->updateMeasure("period_average", aux);
 
         aux = this->mean(period_values);
-        aux = this->deviation(
-                period_values,
-                aux)
-              / aux;
-        if (aux > 1) aux = 1;
+        aux = this->deviation(period_values, aux);
+        this->gen->updateMeasure("inter_params_dev_average", aux);
+        aux = 1/(1 + exp(-aux));
         this->gen->updateMeasure("period_deviation", aux);
+
 
         aux = this->median(offset_values)
               / this->params["oscillator_max"];
         this->gen->updateMeasure("offset_average", aux);
 
         aux = this->mean(offset_values);
-        aux = this->deviation(
-                offset_values,
-                aux)
-              / aux;
-        if (aux > 1) aux = 1;
+        aux = this->deviation(offset_values, aux);
+        this->gen->updateMeasure("inter_params_dev_average",
+                                 this->gen->getMeasures()["inter_params_dev_average"] + aux);
+        aux = 1/(1 + exp(-aux));
         this->gen->updateMeasure("offset_deviation", aux);
 
         aux = this->median(amplitude_values)
@@ -317,15 +319,14 @@ void Measures::measurePhenotypeBrain()
         this->gen->updateMeasure("amplitude_average", aux);
 
         aux = this->mean(amplitude_values);
-        aux = this->deviation(
-                amplitude_values,
-                aux)
-              / aux;
-        if (aux > 1) aux = 1;
+        aux = this->deviation(amplitude_values, aux);
+        this->gen->updateMeasure("inter_params_dev_average",
+                                 this->gen->getMeasures()["inter_params_dev_average"] + aux);
+        aux = 1/(1 + exp(-aux));
         this->gen->updateMeasure("amplitude_deviation", aux);
 
         aux = this->median(params_devs);
-        this->gen->updateMeasure("params_dev_average", aux);
+        this->gen->updateMeasure("intra_params_dev_average", aux);
 
         aux = this->median(synaptic_reception);
         this->gen->updateMeasure("synaptic_reception", aux);
@@ -333,6 +334,10 @@ void Measures::measurePhenotypeBrain()
         recurrence = recurrence
                      / (float) (n_output);
         this->gen->updateMeasure("recurrence", recurrence);
+
+        aux = this->gen->getMeasures()["inter_params_dev_average"] / 3;
+        aux = 1/(1 + exp(-aux));
+        this->gen->updateMeasure("inter_params_dev_average", aux);
 
     }
 
@@ -606,17 +611,6 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
     this->gen->removeMeasure("horizontal_symmetry");
     this->gen->removeMeasure("vertical_symmetry");
     this->gen->removeMeasure("sensors_slots");
-
-//    this->gen->removeMeasure("amplitude_average");
-//    this->gen->removeMeasure("amplitude_deviation");
-//    this->gen->removeMeasure("offset_average");
-//    this->gen->removeMeasure("offset_deviation");
-//    this->gen->removeMeasure("period_average");
-//    this->gen->removeMeasure("period_deviation");
-//    this->gen->removeMeasure("params_dev_average");
-//    this->gen->removeMeasure("inputs_reach");
-//    this->gen->removeMeasure("recurrence");
-//    this->gen->removeMeasure("synaptic_reception");
 
 
 

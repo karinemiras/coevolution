@@ -63,10 +63,16 @@ void LSystem::build_brainchange_commands()
 
     // add link between nodes idfrom and idto with w: brainedge_w
     brainchange_commands.push_back("brainedge");
-    // perturb weight of connection between fromid and toid with: brainperturb_w
+    // perturbs weight of connection between fromid and toid with: brainperturb_w
     brainchange_commands.push_back("brainperturb");
     // add self connection to toid with w: brainloop_w
     brainchange_commands.push_back("brainloop");
+    // perturbs amplitude of current idto
+    brainchange_commands.push_back("brainampperturb");
+    // perturbs period of current idto
+    brainchange_commands.push_back("brainperperturb");
+    // perturbs offset of current idto
+    brainchange_commands.push_back("brainoffperturb");
 
 }
 
@@ -123,7 +129,7 @@ std::string LSystem::buildBrainCommand(std::string braincommand)
         braincommand += "|" + std::to_string(weight_uni2(generator));
         // phase_offset
         braincommand += "|" + std::to_string(weight_uni2(generator));
-        // amplitude (gain)
+        //  amplitude
         braincommand += "|" + std::to_string(weight_uni2(generator));
     }
 
@@ -138,9 +144,12 @@ std::string LSystem::buildBrainCommand(std::string braincommand)
         // new connection weight
         braincommand += "_"+std::to_string(weight_uni(generator));
 
-    if(braincommand == "brainperturb")
+    if(braincommand == "brainperturb" or
+       braincommand == "brainampperturb"  or
+       braincommand == "brainperperturb"  or
+       braincommand == "brainoffperturb"
+       )
         braincommand += "_"+std::to_string(weight_nor(generator));
-
 
     if(   braincommand == "brainmoveTTS"
           or  braincommand == "brainmoveFTS")

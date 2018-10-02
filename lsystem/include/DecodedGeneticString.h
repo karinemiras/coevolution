@@ -97,7 +97,8 @@ public:
                        std::string path);
 
   void decodeBrainCommand(std::string item,
-                          std::string path);
+                          std::string path,
+                          std::map<std::string, double> params);
 
   // builds graphs
   void decode(GeneticString gs,
