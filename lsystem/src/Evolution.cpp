@@ -920,6 +920,13 @@ void Evolution::developIndividuals(
   }
 }
 
+
+/**
+ * Loads, develops, and measures individuals from all generations
+ * of a previous run.
+ */
+void measureIndividualsPost(std::string dirpath);
+
 /**
  * Loads population of genomes from files, from previous experiment.
  **/

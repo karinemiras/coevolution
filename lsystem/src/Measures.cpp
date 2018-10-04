@@ -234,7 +234,6 @@ void Measures::measurePhenotypeBrain()
             aux_params_deviation = this->deviation({it.second->period,it.second->phase_offset,it.second->amplitude},
                                                     aux_params_deviation);
 
-            aux_params_deviation = 1/(1 + exp(-aux_params_deviation));
             params_devs.push_back(aux_params_deviation);
 
             // self recursion
@@ -326,6 +325,7 @@ void Measures::measurePhenotypeBrain()
         this->gen->updateMeasure("amplitude_deviation", aux);
 
         aux = this->median(params_devs);
+        aux = 1/(1 + exp(-aux));
         this->gen->updateMeasure("intra_params_dev_average", aux);
 
         aux = this->median(synaptic_reception);
@@ -335,7 +335,8 @@ void Measures::measurePhenotypeBrain()
                      / (float) (n_output);
         this->gen->updateMeasure("recurrence", recurrence);
 
-        aux = this->gen->getMeasures()["inter_params_dev_average"] / 3;
+        aux = this->gen->getMeasures()["inter_params_dev_average"]
+                / 3;
         aux = 1/(1 + exp(-aux));
         this->gen->updateMeasure("inter_params_dev_average", aux);
 
