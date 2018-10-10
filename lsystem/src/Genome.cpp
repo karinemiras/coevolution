@@ -21,7 +21,6 @@ void Genome::initializer()
   list_components = std::map< std::pair<int, int>, std::string >();
   int p_argc = 1;
   char *p_argv[] = {"a"};
-  this->app = new QApplication(p_argc,p_argv);
 }
 
 
@@ -437,11 +436,14 @@ void Genome::constructor(
     std::string path)
 {
 
+  this->app = new QApplication(argc,argv);
+
   this->scene = new QGraphicsScene(); // scene that holds the chart representing the phenotype
 
   //QGraphicsView *view = new QGraphicsView(scene);
 
   std::vector< QGraphicsRectItem * > items;
+
 
   DecodedGeneticString::Vertex *c = NULL;
   c = this->dgs.getRoot();
@@ -493,6 +495,18 @@ void Genome::constructor(
   {
     this->app->exec();
   }
+
+    // cleans up
+    QList< QGraphicsItem * > all = this->getScene()->items();
+    for (int i = 0; i < all.size(); i++)
+    {
+        QGraphicsItem *gi = all[i];
+        if (gi->parentItem() == NULL) delete gi;
+    }
+    delete this->getScene();
+
+    delete this->app;
+    this->app = NULL;
 }
 
 

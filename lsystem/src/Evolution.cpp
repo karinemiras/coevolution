@@ -416,10 +416,6 @@ void Evolution::measureIndividuals(
 
 
 
-/*
- *
- * */
-
 
 
 
@@ -778,16 +774,6 @@ void Evolution::cleanMemory(std::vector< int > index_selected)
 
       this->cleanVertex(this->population[i].getDgs().getRoot());
 
-      if(this->population[i].getScene() != NULL)
-      {
-        QList< QGraphicsItem * > all = this->population[i].getScene()->items();
-        for (int i = 0; i < all.size(); i++)
-        {
-          QGraphicsItem *gi = all[i];
-          if (gi->parentItem() == NULL) delete gi;
-        }
-        delete this->population[i].getScene();
-      }
     }
   }
   std::cout<<"FINISH cleaning memory for non-selected individuals"<<std::endl;
@@ -921,11 +907,6 @@ void Evolution::developIndividuals(
 }
 
 
-/**
- * Loads, develops, and measures individuals from all generations
- * of a previous run.
- */
-void measureIndividualsPost(std::string dirpath);
 
 /**
  * Loads population of genomes from files, from previous experiment.

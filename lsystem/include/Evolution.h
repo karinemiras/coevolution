@@ -63,7 +63,6 @@ public:
                             std::vector<Genome>  &individuals,
                             std::string dirpath);
 
-    void measureIndividualsPost(std::string dirpath);
 
     void evaluateLocomotion(int generation,
                      std::vector<Genome >  &individuals);
