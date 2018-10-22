@@ -13,19 +13,27 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    EvolutionIndirect evolve_generation = EvolutionIndirect("test","../../");
 
-    /* test setup */
-      evolve_generation.setupEvolution();
-      int load_generation = 0;
-      int ini = 1;
-    /* test setup */
 
-    for(int i=ini; i <= evolve_generation.getParams()["num_generations"]; i++)
+    EvolutionIndirect evolve_generation = EvolutionIndirect("random_1","../../");
+
+    evolve_generation.setupEvolution();
+
+    for(int e=1; e <= evolve_generation.getParams()["num_runs"]; e++)
     {
-        evolve_generation.runExperiment_part1(i, load_generation);
-        evolve_generation.runExperiment_part2(i);
-        load_generation = 0;
+    
+          evolve_generation = EvolutionIndirect("random_"+std::to_string(e),"../../");
+
+          evolve_generation.setupEvolution();
+          int load_generation = 0;
+          int ini = 1;
+
+        for(int i=ini; i <= evolve_generation.getParams()["num_generations"]; i++)
+        {
+            evolve_generation.runExperiment_part1(i, load_generation);
+            evolve_generation.runExperiment_part2(i);
+            load_generation = 0;
+        }
     }
 
 
