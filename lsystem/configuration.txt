@@ -19,3 +19,4 @@ oscillator_min 1
 oscillator_max 10
 max_attempt_multi 20
 objective 0
+num_runs 10

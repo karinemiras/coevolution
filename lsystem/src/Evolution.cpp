@@ -1418,9 +1418,7 @@ void Evolution::calculateNoveltyLocomotion()
 /**
  * Consolidates final fitness for evolution.
  **/
-void Evolution::calculate
-
-ness()
+void Evolution::calculateFinalFitness()
 {
   for (int i = 0; i < this->population.size(); i++)
   {
