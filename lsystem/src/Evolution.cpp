@@ -1418,7 +1418,9 @@ void Evolution::calculateNoveltyLocomotion()
 /**
  * Consolidates final fitness for evolution.
  **/
-void Evolution::calculateFinalFitness()
+void Evolution::calculate
+
+ness()
 {
   for (int i = 0; i < this->population.size(); i++)
   {
@@ -1535,11 +1537,11 @@ double Evolution::runExperiment_part2(int generation)
     this->population.push_back(this->offspring[j]);
   }
 
-  //this->calculateNovelty();
+  this->calculateNovelty();
 
-  //this->calculateNoveltyLocomotion();
+  this->calculateNoveltyLocomotion();
 
-  //this->calculatePenaltyFitness();
+  this->calculatePenaltyFitness();
 
   this->calculateFinalFitness();
 
