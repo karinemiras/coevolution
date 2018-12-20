@@ -124,7 +124,6 @@ void Measures::initalizeMeasures() {
     this->gen->updateMeasure("synaptic_reception", 0);
 
 
-
 }
 
 double Measures::median(std::vector<double> medi) {
@@ -596,10 +595,13 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
 
 
     // checks validity of morphology
-    if ( this->gen->getMeasures()["total_active_joints_horizontal"] == 0
-         and this->gen->getMeasures()["total_active_joints_vertical"] == 0)
-    { // if there is no active joint, morphology is invalid
-        this->gen->setValid(0);
+    if(params["minimum_robot"] == 1)
+    {
+        if (this->gen->getMeasures()["total_active_joints_horizontal"] == 0
+            and this->gen->getMeasures()["total_active_joints_vertical"] == 0)
+        { // if there is no active joint, morphology is invalid
+            this->gen->setValid(0);
+        }
     }
 
 
@@ -612,7 +614,6 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
     this->gen->removeMeasure("horizontal_symmetry");
     this->gen->removeMeasure("vertical_symmetry");
     this->gen->removeMeasure("sensors_slots");
-
 
 
     // #TEST: checks if there is any measure ouy of the expected range

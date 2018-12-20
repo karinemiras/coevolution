@@ -34,11 +34,13 @@ public:
 
     Genome(std::string _id,
            std::string _id_parent1,
-           std::string _id_parent2){
+           std::string _id_parent2,
+           double _init_fitness){
         id = _id;
         id_parent1 = _id_parent1;
         id_parent2 = _id_parent2;
         initializer();
+        locomotion_fitness = _init_fitness;
     }
 
 
@@ -180,7 +182,7 @@ protected:
 
     std::string id_parent2; // id of parent2 of genome
 
-    double locomotion_fitness = 0;
+    double locomotion_fitness;
 
     double balance_fitness = 0;
 

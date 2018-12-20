@@ -14,7 +14,6 @@
 #include "Measures.h"
 #include "Tests.h"
 
-//from tol.spec import get_body_spec, get_brain_spec
 
 /**
  * Evolutionary algorithms.
@@ -87,6 +86,7 @@ public:
     void calculatePenaltyFitness();
     void calculateRankFitness();
     void saveParameters();
+    void surv_selection_tournament();
     void logsTime(std::string moment);
     void setupEvolution();
     void writesEvolutionState(int generation, int next_id);

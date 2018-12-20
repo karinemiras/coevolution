@@ -38,7 +38,7 @@ void Tests::testMeasures(std::string id_genome, std::map< std::string, double> m
 void Tests::testParents(int parent1, int parent2) {
 
     if(parent1 == parent2 ) { // if parent are the same genome
-        std::cout << " crossover with equal parents " <<parent1<<std::endl;
+        std::cout << " crossover with equal parents when not supposed to" <<parent1<<std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -48,7 +48,7 @@ void Tests::testParents(int parent1, int parent2) {
  **/
 void Tests::testPopsize(std::vector<Genome> population, int pop_size){
 
-    if(population.size() > pop_size){
+    if(population.size() > pop_size or population.size() > pop_size){
         std::cout << " population size is unappropriate with value " <<population.size()<<std::endl;
         exit(EXIT_FAILURE);
     }

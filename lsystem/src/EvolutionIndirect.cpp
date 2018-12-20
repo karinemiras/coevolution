@@ -38,8 +38,8 @@ void EvolutionIndirect::initPopulation(LSystem LS)
     // initial genomes receive personal ids, but the ids of the parents are none
     Genome gen = Genome(std::to_string(this->next_id),
                         "N",
-                        "N");
-
+                        "N",
+                        this->params["init_fitness"]);
 
     // creates genetic-strings for the production rules of the letters in the grammar (initial random rules)
     gen.build_grammar(LS,
@@ -63,7 +63,12 @@ void EvolutionIndirect::crossover(
 {
 
 
-  // creates new individuals via crossover (size of offspring is relative to the size of population)
+    std::random_device rd;
+    std::default_random_engine generator(rd());
+    std::uniform_real_distribution< double > prob(0.0,
+                                                  1.0);
+
+    // creates new individuals via crossover (size of offspring is relative to the size of population)
   for (int i = 0;
        i < ceil(this->params["pop_size"] * this->params["offspring_prop"]); i++)
   {
@@ -75,19 +80,20 @@ void EvolutionIndirect::crossover(
 
     int parent2 = parent1;
 
-    while (parent2 == parent1)
-    { // makes sure that parent2 is different from parent1
-      parent2 = this->tournament();
+    // different parents
+    if(prob(generator) <= this->params["crossover_prob"])
+    {
+        while (parent2 == parent1) {
+            parent2 = this->tournament();
+        }
     }
 
-    // #TEST: Tests if selected parents are different.
-    this->tests.testParents(parent1,
-                            parent2);
 
     // creates new offspring genome
     Genome gen = Genome(std::to_string(this->next_id),
                         this->population[parent1].getId(),
-                        this->population[parent2].getId());
+                        this->population[parent2].getId(),
+                        this->params["init_fitness"]);
 
     this->aux.logs(" crossover for genome " + std::to_string(this->next_id)
                    + " - p1: " + this->population[parent1].getId()
@@ -98,32 +104,26 @@ void EvolutionIndirect::crossover(
     std::map< std::string, GeneticString  > grammar =
         std::map< std::string, GeneticString  >();
 
-    std::random_device rd;
-    std::default_random_engine generator(rd());
-
-    std::uniform_real_distribution< double > prob(0.0, 1.0);
-
     // for each letter in the grammar
     for (const auto &letter : LS.getAlphabet())
     {
-      if (prob(generator) <= prob(generator))
-      {
-        this->aux.logs(letter.first + " from parent1");
+        int parent = -1;
 
-        // copies object of rule from the genome parent1
-        GeneticString gsp1 = GeneticString(this->population[parent1]
-                                              .getGrammar()[letter.first]);
-        grammar.emplace(letter.first, gsp1); // gets it from parent1
-      }
-      else
-      {
-        this->aux.logs(letter.first + " from parent2");
+        if (prob(generator) <= prob(generator))
+        {
+            this->aux.logs(letter.first + " from parent1");
+            parent = parent1;
+        }else
+        {
+            this->aux.logs(letter.first + " from parent2");
+            parent = parent2;
+        }
 
-        // copies object of rule from the genome parent2
-        GeneticString gsp2 = GeneticString(this->population[parent2]
-                                               .getGrammar()[letter.first]);
-        grammar.emplace(letter.first, gsp2); // gets it from parent1
-      }
+        std::vector<std::string>  items = this->population[parent].getGrammar()[letter.first].getItems();
+        GeneticString gs = GeneticString();
+        gen.build_genetic_string(gs, items);
+        grammar.emplace(letter.first, gs);
+
     }
 
     gen.setGrammar(grammar); // sets grammar for the new genome
@@ -273,7 +273,7 @@ void EvolutionIndirect::mutation(
         std::uniform_int_distribution< int > type_adding(1,
                                                          5);
         int type_of_adding = type_adding(generator);
-        int aux =0;
+        int aux = 0;
 
         std::string genetic_string_item = "";
 

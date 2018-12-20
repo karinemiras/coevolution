@@ -17,8 +17,6 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-
-//#include <mlpack/core.hpp>
 #include <mlpack/methods/neighbor_search/neighbor_search.hpp>
 
 using namespace mlpack;
@@ -33,8 +31,6 @@ using namespace mlpack::metric; // EuclideanDistance
 
 
 
-
-
 void Evolution::initializer()
 {
     measures_names = std::map< std::string, std::string >();
@@ -43,7 +39,8 @@ void Evolution::initializer()
     morphological_grid_accumulated = std::map<std::string, std::vector<std::string>>();
     population =  std::vector<Genome>();
     offspring =  std::vector<Genome>();
-    archive = std::vector<Genome> ();}
+    archive = std::vector<Genome> ();
+}
 
 /**
  * Reads parameters from file.
@@ -53,24 +50,39 @@ void Evolution::readParams()
   std::string line;
   std::ifstream myfile(this->path+"lsystem/configuration.txt");
 
-  /*   pop_size - size of the population of genomes
-  *    offspring_prop - proportion of the population size to dcalculate size of offspring
-  *    num_initial_comp - number of initial (random) components in the production rules of the grammar
-  *    show_phenotypes - flag to show the phenotype graphic
-  *    export_phenotypes - if exports the phenotypes to images (1) or not (0)
-  *    export_genomes - if exports the genomes to files (1) or not (0)
-  *    replacement_iterations - number of replacement iterations for the l-system
-  *    size_component - size of each component in pixels
-  *    spacing - spacing between components in pixels
-  *    mutation_prob - probability of adding/removing/swaping items (letters/commands) to the genetic-string in the mutation
-  *    max_comps - maximum number of components allowed per phenotype
-  *    prob_add_archive - probability of adding any genome to the archive
-  *    grid_bins - number of bins to break morphological space
-  *    logs_to_screen - if exports the logs to the screen (1) or not (0)
-  *    logs_to_file - if exports logs to a file (1) or not (0)
-  *    max_attempt_multi  - maximum number of tournaments for multiobjetive
-  *    objective - 0 for single and 1 for multi
+  /*   pop_size: integer
+       num_generations: integer, local experiments
+       k_neighbors: integer, for novelty search
+       mutation_prob: 0-1, probability
+       num_initial_comp: integer, number of initial (random) components in the production rules of the grammar
+       prob_add_archive: 0-1, probability of a genome being added to the novelty archive
+       replacement_iterations: integer, number of replacement iterations for the l-system
+       offspring_prop: 0-1, proportion of the population size to dcalculate size of offspring
+       max_comps: integer, maximum number of components allowed per phenotype
+       grid_bins: integer, number of bins to break morphological space
+       logs_to_screen: if exports the logs to the screen (1) or not (0)
+       logs_to_file: if exports logs to a file (1) or not (0)
+       show_phenotypes: flag to show the phenotype graphic
+       export_phenotypes: if exports the phenotypes to images (1) or not (0)
+       export_genomes: if exports the genomes to files (1) or not (0)
+       size_component: size of each component in pixels
+       spacing: spacing between components in pixels
+       oscillator_min: integer, minimum for oscillator paramters
+       oscillator_max: integer, maximum for oscillator paramters
+       max_attempt_multi: maximum number of tournaments for multiobjetive
+       objective:  *1) for single and (2) for multi
+       num_runs: 1, local experiments
+       init_fitness: initial value of fitness variables
+       minimum_robot: if there is a minimum robot size (1), and (0) if not
+       tournament_size: integer, for selection
+       crossover_prob: 0-1, probability
+       fitness: types of fitness (1) speed1, (2) speed2, (3) speed3, (4) novelty, (5) behavior novelty
+       surv_selection: (1) tournaments, (2) PplusO
   */
+
+
+
+
 
   if (myfile.is_open())
   {
@@ -535,31 +547,38 @@ int Evolution::tournament_single()
 
   std::random_device rd;
   std::default_random_engine generator(rd());
-  std::uniform_int_distribution< int > dist_1(
-      0,
-      (int) this->population.size() -
-      1); // size of current pop (parents+offspring)
+  std::uniform_int_distribution< int > dist_1(0, (int) this->population.size() - 1); // size of current pop (parents+offspring)
 
-  int genome1 = dist_1(generator); // random genome 1
-  int genome2 = dist_1(generator); // random genome 2
+  int genome;
+  int new_genome;
+  double fitness;
+  double new_fitness;
 
-  // return the genome with higher fitness
-  if (this->population[genome1].getFinalFitness() >
-      this->population[genome2].getFinalFitness())
+  for(int i=0; i<this->getParams()["tournament_size"]; i++)
   {
+      new_genome = dist_1(generator);
+      new_fitness = this->population[new_genome].getFinalFitness();
 
-    return genome1;
+      if(i==0)
+      {
+          genome = new_genome;
+          fitness = new_fitness;
+      }else{
+          if (new_fitness >= fitness)
+          {
+              genome = new_genome;
+              fitness = new_fitness;
+          }
+      }
   }
-  else
-  {
-    return genome2;
-  }
+
+  return genome;
 
 }
 
 int Evolution::tournament()
 {
-  if (this->getParams()["objective"] == 0){
+  if (this->getParams()["objective"] == 1){
     return this->tournament_single();
   }
   else{
@@ -634,69 +653,12 @@ int Evolution::tournament_multi()
 
 }
 
-//
-//int Evolution::tournament_multi()
-//{
-//
-//  std::random_device rd;
-//  std::default_random_engine generator(rd());
-//  std::uniform_int_distribution< int > dist_1(0,
-//                                              (int) this->population.size() - 1); // size of current pop (parents+offspring)
-//
-//  int genome1 = -1; // random genome 1
-//  int genome2 = -1; // random genome 2
-//  int dominant = -1;
-//  int attempts = 0;
-//
-//  std::cout<<"-----------------"<<std::endl;
-//  while( dominant == -1 and attempts <= this->getParams()["max_attempt_multi"] )
-//  {
-//
-//    genome1 = dist_1(generator);
-//    genome2 = dist_1(generator);
-//
-//    attempts = attempts + 1;
-//
-//    std::cout<<attempts<<std::endl;
-//    std::cout<<this->population[genome1].getPenaltyFitness()<<std::endl;
-//    std::cout<<this->population[genome2].getPenaltyFitness()<<std::endl;
-//    std::cout<<this->population[genome1].getLocomotionFitness()<<std::endl;
-//    std::cout<<this->population[genome2].getLocomotionFitness()<<std::endl;
-//
-//    // genome1 dominates
-//    if (this->population[genome1].getPenaltyFitness()
-//        > this->population[genome2].getPenaltyFitness()
-//        and this->population[genome1].getLocomotionFitness()
-//            > this->population[genome2].getLocomotionFitness()
-//            and this->population[genome2].getNoveltyFitness()
-//                > this->population[genome1].getNoveltyFitness()
-//        ) dominant = genome1;
-//
-//    // genome2 dominates
-//    if (this->population[genome2].getPenaltyFitness()
-//        > this->population[genome1].getPenaltyFitness()
-//        and this->population[genome2].getLocomotionFitness()
-//            > this->population[genome1].getLocomotionFitness()
-//            and this->population[genome2].getNoveltyFitness()
-//                >= this->population[genome1].getNoveltyFitness()
-//
-//        ) dominant = genome2;
-//  }
-//
-//  // if no dominent was foujd, chooses the first (random)
-//  if(dominant == -1) dominant = genome1;
-//
-//  return dominant;
-//
-//}
-//
-//
 
 /**
 *  Selection of genomes in a population.
 **/
-
-void Evolution::selection()
+//
+void Evolution::surv_selection_tournament()
 {
   std::vector< Genome > selected = std::vector< Genome >();
   std::vector< int > index_selected = std::vector< int >();
@@ -711,7 +673,6 @@ void Evolution::selection()
     // selects one genome by tournament
     genome = this->tournament();
 
-
     // makes sure that the same genome wont be selected more than once
     while (std::find(
         index_selected.begin(),
@@ -720,8 +681,10 @@ void Evolution::selection()
     {
       genome = this->tournament();
     }
+
     selected.push_back(this->population[genome]);
     index_selected.push_back(genome);
+
   }
 
   this->cleanMemory(index_selected);
@@ -733,6 +696,7 @@ void Evolution::selection()
       this->population,
       (int) this->params["pop_size"]);
 }
+
 
 /*
  * Deallocate memory used by the non-selected individuals.
@@ -811,7 +775,7 @@ void Evolution::exportGenerationMetrics(
   // fetches all types of fitness
   for(int f=0; f<6; f++)
   {
-    double maximum_fitness = 0;
+    double maximum_fitness;
     std::string best_genome = "0";
     double average_fitness = 0;
     double fitness = 0;
@@ -834,10 +798,15 @@ void Evolution::exportGenerationMetrics(
         fitness = this->getPopulation()[i].getPenaltyFitness();
 
       // finds the maximum/best fitness of the population
-      if (fitness > maximum_fitness)
+      if(i==0)
       {
-        best_genome = this->getPopulation()[i].getId();
-        maximum_fitness = fitness;
+          maximum_fitness = fitness;
+          best_genome = this->getPopulation()[0].getId();
+      }else{
+          if (fitness > maximum_fitness) {
+              best_genome = this->getPopulation()[i].getId();
+              maximum_fitness = fitness;
+          }
       }
       average_fitness += fitness;
     }
@@ -986,7 +955,8 @@ void Evolution::loadIndividuals(int generation, std::string type)
       Genome gen = Genome(
           idgenome,
           idparent1,
-          idparent2);
+          idparent2,
+          this->params["init_fitness"]);
 
       // finds number of generation to which the genome belongs to
       int generation_genome = this->getGeneration_genome(idgenome);
@@ -1282,6 +1252,10 @@ void Evolution::calculateNovelty()
   individuals_compare.insert(individuals_compare.end(),
                              this->archive.begin(), this->archive.end());
 
+
+  std::map< std::string, double > measures;
+
+
   //matrix with all individuals
   // columns: number of metrics / lines: number of genomes
   arma::mat compare(
@@ -1335,7 +1309,7 @@ void Evolution::calculateNovelty()
     {
       fitness += distances[j];
       this->aux.logs(
-          "nearest neighbor  " + std::to_string(j) + " for genome "
+          "nv nearest neighbor  " + std::to_string(j) + " for genome "
           + this->population[i].getId() + " has distance "
           + std::to_string(distances[j]));
     }
@@ -1399,9 +1373,9 @@ void Evolution::calculateNoveltyLocomotion()
     double fitness = 0;
     for (size_t j = 0; j < neighbors.n_elem; ++j)
     {
-      fitness += log10(distances[j])*-1;
+      fitness += distances[j];
       this->aux.logs(
-          "nearest neighbor  " + std::to_string(j) + " for genome "
+          "nv2 nearest neighbor  " + std::to_string(j) + " for genome "
           + this->population[i].getId() + " has distance "
           + std::to_string(distances[j]));
     }
@@ -1420,11 +1394,37 @@ void Evolution::calculateNoveltyLocomotion()
  **/
 void Evolution::calculateFinalFitness()
 {
-  for (int i = 0; i < this->population.size(); i++)
+
+    double fitness;
+
+ for (int i = 0; i < this->population.size(); i++)
   {
 
-    double fitness = this->population[i].getLocomotionFitness()
-    ;
+     if(this->params["fitness"] == 1) //s1
+     {
+         fitness = this->population[i].getLocomotionFitness();
+     }
+      if(this->params["fitness"] == 2) // s2
+      {
+          fitness = this->population[i].getLocomotionFitness()
+                            * this->population[i].getNoveltyFitness();
+      }
+      if(this->params["fitness"] == 3) // s3
+      {
+          fitness =  this->population[i].getLocomotionFitness()
+                            * this->population[i].getNoveltyFitness()
+                            * this->population[i].getPenaltyFitness();
+      }
+
+      if(this->params["fitness"] == 4) // phenotypic novelty
+      {
+          fitness = this->population[i].getNoveltyFitness();
+      }
+
+      if(this->params["fitness"] == 5) // s1 novelty
+      {
+          fitness = this->population[i].getNoveltyLocomotionFitness();
+      }
 
     this->population[i].updateFinalFitness(fitness);
   }
@@ -1535,11 +1535,23 @@ double Evolution::runExperiment_part2(int generation)
     this->population.push_back(this->offspring[j]);
   }
 
-  this->calculateNovelty();
+    if(this->params["fitness"] == 2
+       or this->params["fitness"] == 3
+       or this->params["fitness"] == 4
+       )
+    {
+        this->calculateNovelty();
+    }
 
-  this->calculateNoveltyLocomotion();
+    if(this->params["fitness"] == 5)
+    {
+        this->calculateNoveltyLocomotion();
+    }
 
-  this->calculatePenaltyFitness();
+    if(this->params["fitness"] == 3)
+    {
+        this->calculatePenaltyFitness();
+    }
 
   this->calculateFinalFitness();
 
@@ -1551,7 +1563,11 @@ double Evolution::runExperiment_part2(int generation)
   if(generation != 1)
   {
     // selects individuals, keeping the population with a fixed size
-    this->selection();
+    if(this->params["surv_selection"] == 1)
+    {
+      this->surv_selection_tournament();
+    }
+
     std::cout<<"Selection of generation "<<generation<<" has been realized."<<std::endl;
 
     // saves phenotypes of the selected population to a separated folder (only for visualization issues)

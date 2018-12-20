@@ -266,6 +266,22 @@ void GeneticString::replaces(std::map< std::string, GeneticString  > grammar)
     }
 }
 
+
+std::vector<std::string> GeneticString::getItems()
+{
+    std::vector<std::string> items;
+    GeneticString::Node *current;
+    current = start;
+
+    while (current not_eq nullptr)
+    {
+        items.push_back(current->item);
+        current = current->next;
+    }
+
+    return items;
+}
+
 /**
  * Creates a doubly-linked list representing a piece of genetic-string.
  * @param genetic_string_items - a vector containing all items (letters/commands) which will constitute the genetic-string to be built.

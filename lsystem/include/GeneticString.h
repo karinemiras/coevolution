@@ -48,6 +48,8 @@ public:
 
   int count();
 
+  std::vector<std::string> getItems();
+
   void replaces(std::map< std::string, GeneticString  > grammar);
 
   GeneticString::Node *getStart();

@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
           evolve_generation.setupEvolution();
           int load_generation = 0;
-          int ini = 1;
+          int ini = 1; // read from file later for load!!
 
         for(int i=ini; i <= evolve_generation.getParams()["num_generations"]; i++)
         {
