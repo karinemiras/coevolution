@@ -77,8 +77,9 @@ public:
     double runExperiment_part2(int generation);
     void exportGenerationMetrics(int generation,
                                  std::vector<int> metrics);
-    void saveLocomotionFitness(std::string genome_id, double fitness);
-    void saveBalanceFitness(std::string genome_id, double fitness);
+    void saveLocomotionInfo(std::string genome_id,
+                             double x, double y, double z, double time);
+    void saveBalance(std::string genome_id, double fitness);
     void exportPop(int generation);
     void calculateNovelty();
     void calculateNoveltyLocomotion();

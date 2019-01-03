@@ -21,8 +21,8 @@ oscillator_max 10
 max_attempt_multi 20
 objective 1
 num_runs 1
-init_fitness 0
 minimum_robot 1
 tournament_size 2
 crossover_prob 0.8
 surv_selection 1
+loco_fitness 2

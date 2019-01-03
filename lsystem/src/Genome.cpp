@@ -108,6 +108,11 @@ double Genome::getLocomotionFitness()
   return this->locomotion_fitness;
 }
 
+double Genome::getLocomotionReal()
+{
+  return this->locomotion_real;
+}
+
 double Genome::getNoveltyFitness()
 {
   return this->novelty_fitness;
@@ -1261,11 +1266,45 @@ void Genome::developGenomeIndirect(
 }
 
 
-void Genome::updateLocomotionFitness(double fitness)
+void Genome::updateLocomotionFitness(double x, double y, double z, double time,
+        std::map< std::string, double > params)
 {
-  this->locomotion_fitness = fitness;
+  // plain
+  if(params["loco_fitness"] == 1)
+  {
+    this->locomotion_fitness =
+            std::sqrt( std::pow(x, 2) + std::pow(y, 2) )
+                            / (float) time;
+
+    this->locomotion_real = this->locomotion_fitness;
+  }
+
+  // hill
+  if(params["loco_fitness"] == 2)
+  {
+    double y_adjusted = y;
+
+    if(y < 0)
+    {
+        y_adjusted = y / 10;
+    }
+
+    this->locomotion_fitness =  y_adjusted / (float) time;
+
+    if(y == 0)
+    {
+        this->locomotion_fitness  = -0.1;
+    }
+
+    this->locomotion_real =  y / (float) time;
+  }
 }
 
+
+void Genome::updateLocomotionReal(double value)
+{
+  this->locomotion_real = value;
+}
 
 void Genome::updateNoveltyFitness(double fitness)
 {

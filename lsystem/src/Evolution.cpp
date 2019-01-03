@@ -72,12 +72,12 @@ void Evolution::readParams()
        max_attempt_multi: maximum number of tournaments for multiobjetive
        objective:  *1) for single and (2) for multi
        num_runs: 1, local experiments
-       init_fitness: initial value of fitness variables
        minimum_robot: if there is a minimum robot size (1), and (0) if not
        tournament_size: integer, for selection
        crossover_prob: 0-1, probability
        fitness: types of fitness (1) speed1, (2) speed2, (3) speed3, (4) novelty, (5) behavior novelty
        surv_selection: (1) tournaments, (2) PplusO
+       loco_fitness: (1) plain ground, (2) hill
   */
 
 
@@ -444,7 +444,7 @@ void Evolution::createHeader()
       this->path+"experiments/" + this->experiment_name + "/history.txt";
   file.open(path);
   file
-      << "generation idgenome noveltyfit locofit finalfit balfit "
+      << "generation idgenome noveltyfit locofit locoreal finalfit balfit "
           "novlfit penfit idparent1 idparent2 "
       << std::endl;
   file.close();
@@ -500,16 +500,17 @@ void Evolution::saveHistory(int generation)
         path,
         std::ofstream::app);
 
-    history_file << std::to_string(generation) << " "     // generation
-                 << this->population[i].getId() << " "   // idgenome
+    history_file << std::to_string(generation) << " "
+                 << this->population[i].getId() << " "
                  << this->population[i].getNoveltyFitness() << " "
                  << this->population[i].getLocomotionFitness() << " "
+                 << this->population[i].getLocomotionReal() << " "
                  << this->population[i].getFinalFitness() << " "
                  << this->population[i].getBalanceFitness() << " "
                  << this->population[i].getNoveltyLocomotionFitness() << " "
                  << this->population[i].getPenaltyFitness() << " "
-                 << this->population[i].getId_parent1() << " "  // id of parent1
-                 << this->population[i].getId_parent2() << " " // id of parent2
+                 << this->population[i].getId_parent1() << " "
+                 << this->population[i].getId_parent2() << " "
                  << std::endl;
 
     history_file.close();
@@ -581,7 +582,7 @@ int Evolution::tournament()
   if (this->getParams()["objective"] == 1){
     return this->tournament_single();
   }
-  else{
+  if (this->getParams()["objective"] == 2){
     return this->tournament_multi();
   }
 }
@@ -610,38 +611,33 @@ int Evolution::tournament_multi()
     attempts = attempts + 1;
 
     // genome1 dominates
-    if (this->population[genome1].getBalanceFitness()
-          >= this->population[genome2].getBalanceFitness()
-        and this->population[genome1].getLocomotionFitness()
+    if (this->population[genome1].getLocomotionFitness()
           >= this->population[genome2].getLocomotionFitness()
-        and this->population[genome1].getNoveltyFitness()
-          >= this->population[genome2].getNoveltyFitness()
-        and
+        and this->population[genome1].getNoveltyLocomotionFitness()
+          >= this->population[genome2].getNoveltyLocomotionFitness()
+           and
           (
-              this->population[genome1].getBalanceFitness()
-                 > this->population[genome2].getBalanceFitness()
-              or this->population[genome1].getLocomotionFitness()
+              this->population[genome1].getLocomotionFitness()
                  > this->population[genome2].getLocomotionFitness()
-              or this->population[genome1].getNoveltyFitness()
-                 > this->population[genome2].getNoveltyFitness()
+              or this->population[genome1].getNoveltyLocomotionFitness()
+                 > this->population[genome2].getNoveltyLocomotionFitness()
+
           )
         ) dominant = genome1;
 
     // genome2 dominates
-    if (this->population[genome2].getBalanceFitness()
-            >= this->population[genome1].getBalanceFitness()
-        and this->population[genome2].getLocomotionFitness()
+    if (this->population[genome2].getLocomotionFitness()
             >= this->population[genome1].getLocomotionFitness()
-        and this->population[genome2].getNoveltyFitness()
-            >= this->population[genome1].getNoveltyFitness()
+        and this->population[genome2].getNoveltyLocomotionFitness()
+            >= this->population[genome1].getNoveltyLocomotionFitness()
+
         and
           (
-              this->population[genome2].getBalanceFitness()
-                 > this->population[genome1].getBalanceFitness()
-              or this->population[genome2].getLocomotionFitness()
+              this->population[genome2].getLocomotionFitness()
                  > this->population[genome1].getLocomotionFitness()
-              or this->population[genome2].getNoveltyFitness()
-                 > this->population[genome1].getNoveltyFitness()
+              or this->population[genome2].getNoveltyLocomotionFitness()
+                 > this->population[genome1].getNoveltyLocomotionFitness()
+
           )
         ) dominant = genome2;
   }
@@ -955,8 +951,7 @@ void Evolution::loadIndividuals(int generation, std::string type)
       Genome gen = Genome(
           idgenome,
           idparent1,
-          idparent2,
-          this->params["init_fitness"]);
+          idparent2);
 
       // finds number of generation to which the genome belongs to
       int generation_genome = this->getGeneration_genome(idgenome);
@@ -1023,34 +1018,41 @@ void Evolution::loadIndividuals(int generation, std::string type)
       }
 
       // reads fitness of the genome
-      std::ifstream fitness(
+      std::ifstream locomotion(
           this->path + "experiments/" + this->experiment_name +
           "/offspringpop" +
-          std::to_string(generation_genome) + "/fitness_" + idgenome +
+          std::to_string(generation_genome) + "/locomotion_" + idgenome +
           ".txt");
-      if (fitness.is_open())
+      if (locomotion.is_open())
       {
-        std::string linefitness;
+        std::string linelocomotion;
         getline(
-            fitness,
-            linefitness);
-            linefitness = linefitness.c_str();
-            std::stringstream iss(linefitness);
-            double d = 0;
-            iss >> d;
-           gen.updateLocomotionFitness(d);
+                locomotion,
+            linelocomotion);
+
+          std::vector< std::string > info;
+          boost::split(
+                  info,
+                  linelocomotion,
+                  boost::is_any_of(" "));
+
+           gen.updateLocomotionFitness(std::stod(info[0]),
+                                       std::stod(info[1]),
+                                       std::stod(info[2]),
+                                       std::stod(info[3]),
+                                       this->params);
       }
 
-      std::ifstream fitness2(
+      std::ifstream balance(
           this->path + "experiments/" + this->experiment_name +
           "/offspringpop" +
-          std::to_string(generation_genome) + "/fitness2_" + idgenome +
+          std::to_string(generation_genome) + "/balance_" + idgenome +
           ".txt");
-      if (fitness2.is_open())
+      if (balance.is_open())
       {
         std::string linefitness;
         getline(
-            fitness2,
+                balance,
             linefitness);
           linefitness = linefitness.c_str();
           std::stringstream iss(linefitness);
@@ -1153,16 +1155,16 @@ int Evolution::loadExperiment()
 
 /* Saves the fitness for genome.
  * */
-void Evolution::saveLocomotionFitness(
+void Evolution::saveLocomotionInfo(
     std::string genome_id,
-    double fitness)
+    double x, double y, double z, double time)
 {
 
   // updates locomotion fitness for the genome
   int index=0;
   while(this->offspring[index].getId() != genome_id)
     index++;
-  this->offspring[index].updateLocomotionFitness(fitness);
+  this->offspring[index].updateLocomotionFitness(x, y, z, time, this->params);
 
   int generation_genome = this->getGeneration_genome(this->offspring[index].getId());
 
@@ -1171,17 +1173,17 @@ void Evolution::saveLocomotionFitness(
   std::string path2 =
       this->path+"experiments/"
       + this->experiment_name + "/offspringpop" +
-      std::to_string(generation_genome)+ "/fitness_"+this->offspring[index]
+      std::to_string(generation_genome)+ "/locomotion_"+this->offspring[index]
           .getId()+".txt";
   file.open(path2);
   file
-      <<  this->offspring[index].getLocomotionFitness();
+      << x <<" "<< y <<" "<< z <<" "<< time;
   file.close();
 }
 
 /* Saves the fitness for genome.
  * */
-void Evolution::saveBalanceFitness(
+void Evolution::saveBalance(
     std::string genome_id,
     double fitness)
 {
@@ -1199,7 +1201,7 @@ void Evolution::saveBalanceFitness(
   std::string path2 =
       this->path+"experiments/"
       + this->experiment_name + "/offspringpop" +
-      std::to_string(generation_genome)+ "/fitness2_"+this->offspring[index]
+      std::to_string(generation_genome)+ "/balance_"+this->offspring[index]
           .getId()+".txt";
   file.open(path2);
   file
@@ -1259,7 +1261,8 @@ void Evolution::calculateNovelty()
   //matrix with all individuals
   // columns: number of metrics / lines: number of genomes
   arma::mat compare(
-      individuals_compare[0].getMeasures().size(),
+     // individuals_compare[0].getMeasures().size(),
+      9,
       individuals_compare.size());
 
 
@@ -1268,10 +1271,21 @@ void Evolution::calculateNovelty()
     int m = 0;
     for (const auto &it : individuals_compare[i].getMeasures())
     {
-      compare(
-          m,
-          i) = it.second;
-      m++;
+      if(it.second == 'branching'
+       or it.second == 'connectivity1'
+          or it.second == 'connectivity2'
+             or it.second == 'coverage'
+                or it.second == 'effective_joints'
+                   or it.second == 'length_ratio'
+                      or it.second == 'sensors'
+                         or it.second == 'symmetry'
+                            or it.second == 'total_components')
+      {
+        compare(
+            m,
+            i) = it.second;
+        m++;
+      }
     }
   }
 
@@ -1280,17 +1294,27 @@ void Evolution::calculateNovelty()
     // matrix with individuals which will be compared to the others
     // columns: number of metrics / single line: genome
     arma::mat reference(
-        this->population[0].getMeasures().size(),
+        //this->population[0].getMeasures().size(),
+        9,
         1);
 
     int m = 0;
     for (const auto &it : this->population[i].getMeasures())
     {
-
-      reference(
-          m,
-          0) = it.second;
-      m++;
+      if(it.second == 'branching'
+         or it.second == 'connectivity1'
+         or it.second == 'connectivity2'
+         or it.second == 'coverage'
+         or it.second == 'effective_joints'
+         or it.second == 'length_ratio'
+         or it.second == 'sensors'
+         or it.second == 'symmetry'
+         or it.second == 'total_components') {
+        reference(
+                m,
+                0) = it.second;
+        m++;
+      }
     }
 
     NeighborSearch< NearestNeighborSort, EuclideanDistance > nn(compare);
@@ -1395,25 +1419,49 @@ void Evolution::calculateNoveltyLocomotion()
 void Evolution::calculateFinalFitness()
 {
 
-    double fitness;
+  double fitness;
 
  for (int i = 0; i < this->population.size(); i++)
   {
 
-     if(this->params["fitness"] == 1) //s1
-     {
-         fitness = this->population[i].getLocomotionFitness();
-     }
+      if(this->params["fitness"] == 1) //s1
+      {
+          fitness = this->population[i].getLocomotionFitness();
+      }
+
       if(this->params["fitness"] == 2) // s2
       {
           fitness = this->population[i].getLocomotionFitness()
-                            * this->population[i].getNoveltyFitness();
+                  * this->population[i].getNoveltyFitness();
+
       }
+
       if(this->params["fitness"] == 3) // s3
       {
-          fitness =  this->population[i].getLocomotionFitness()
-                            * this->population[i].getNoveltyFitness()
-                            * this->population[i].getPenaltyFitness();
+          if(this->params["loco_fitness"] == 1)
+          {
+              fitness = this->population[i].getLocomotionFitness()
+                        * this->population[i].getNoveltyFitness()
+                        * this->population[i].getPenaltyFitness();
+          }
+
+          if(this->params["loco_fitness"] == 2)
+          {
+              if(this->population[i].getLocomotionFitness() < 0)
+              {
+                  fitness = this->population[i].getLocomotionFitness();
+              }
+              if(this->population[i].getLocomotionFitness() > 0)
+              {
+                  fitness = this->population[i].getLocomotionFitness()
+                            * (1+this->population[i].getNoveltyFitness())
+                            * (1+this->population[i].getPenaltyFitness());
+              }
+              if(this->population[i].getLocomotionFitness() == 0)
+              {
+                  fitness = -0.1;
+              }
+          }
       }
 
       if(this->params["fitness"] == 4) // phenotypic novelty
@@ -1426,8 +1474,37 @@ void Evolution::calculateFinalFitness()
           fitness = this->population[i].getNoveltyLocomotionFitness();
       }
 
+      if(this->params["fitness"] == 6) // s1 novelty + s1
+      {
+          if (this->population[i].getLocomotionFitness() < 0)
+          {
+              fitness = this->population[i].getLocomotionFitness()
+                        *
+                        this->population[i].getNoveltyLocomotionFitness();
+          }
+          if (this->population[i].getLocomotionFitness() > 0)
+          {
+              fitness = this->population[i].getLocomotionFitness()
+                        *
+                        (1 + this->population[i].getNoveltyLocomotionFitness());
+          }
+
+//          fitness = this->population[i].getLocomotionFitness()
+//                        +
+//                        (1000 * this->population[i].getNoveltyLocomotionFitness());
+
+      }
+
+//
+//      if(this->params["loco_fitness"] == 2 and this->population[i].getLocomotionFitness() == 0)
+//      {
+//          fitness = - 0.1;
+//      }
+
+
     this->population[i].updateFinalFitness(fitness);
   }
+
   std::cout<<"Final fitnesses have been calculated."<<std::endl;
 }
 
@@ -1543,7 +1620,7 @@ double Evolution::runExperiment_part2(int generation)
         this->calculateNovelty();
     }
 
-    if(this->params["fitness"] == 5)
+    if(this->params["fitness"] == 5 or this->params["fitness"] == 6)
     {
         this->calculateNoveltyLocomotion();
     }

@@ -34,13 +34,11 @@ public:
 
     Genome(std::string _id,
            std::string _id_parent1,
-           std::string _id_parent2,
-           double _init_fitness){
+           std::string _id_parent2){
         id = _id;
         id_parent1 = _id_parent1;
         id_parent2 = _id_parent2;
         initializer();
-        locomotion_fitness = _init_fitness;
     }
 
 
@@ -123,6 +121,8 @@ public:
 
     double getLocomotionFitness();
 
+    double getLocomotionReal();
+
     double getNoveltyFitness();
 
     double getPenaltyFitness();
@@ -139,7 +139,9 @@ public:
 
     void updateBalanceFitness(double fitness);
 
-    void updateLocomotionFitness(double fitness);
+    void updateLocomotionFitness(double x, double y, double z, double time, std::map< std::string, double > params);
+
+    void updateLocomotionReal(double value);
 
     void updateNoveltyFitness(double fitness);
 
@@ -182,7 +184,9 @@ protected:
 
     std::string id_parent2; // id of parent2 of genome
 
-    double locomotion_fitness;
+    double locomotion_fitness = 0 ;
+
+    double locomotion_real = 0 ;
 
     double balance_fitness = 0;
 
