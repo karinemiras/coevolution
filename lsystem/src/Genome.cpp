@@ -1291,11 +1291,6 @@ void Genome::updateLocomotionFitness(double x, double y, double z, double time,
 
     this->locomotion_fitness =  y_adjusted / (float) time;
 
-    if(y == 0)
-    {
-        this->locomotion_fitness  = -0.1;
-    }
-
     this->locomotion_real =  y / (float) time;
   }
 }
