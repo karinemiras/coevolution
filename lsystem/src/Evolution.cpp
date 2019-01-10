@@ -1261,31 +1261,31 @@ void Evolution::calculateNovelty()
   //matrix with all individuals
   // columns: number of metrics / lines: number of genomes
   arma::mat compare(
-      individuals_compare[0].getMeasures().size(),
-     // 9,
+     // individuals_compare[0].getMeasures().size(),
+      9,
       individuals_compare.size());
 
 
   for (int i = 0; i < individuals_compare.size(); i++)
   {
     int m = 0;
-//    for (const auto &it : individuals_compare[i].getMeasures())
-//    {
-//      if(it.second == 'branching'
-//       or it.second == 'connectivity1'
-//          or it.second == 'connectivity2'
-//             or it.second == 'coverage'
-//                or it.second == 'effective_joints'
-//                   or it.second == 'length_ratio'
-//                      or it.second == 'sensors'
-//                         or it.second == 'symmetry'
-//                            or it.second == 'total_components')
-//      {
+    for (const auto &it : individuals_compare[i].getMeasures())
+    {
+      if(it.second == 'branching'
+       or it.second == 'connectivity1'
+          or it.second == 'connectivity2'
+             or it.second == 'coverage'
+                or it.second == 'effective_joints'
+                   or it.second == 'length_ratio'
+                      or it.second == 'sensors'
+                         or it.second == 'symmetry'
+                            or it.second == 'total_components')
+      {
         compare(
             m,
             i) = it.second;
         m++;
-      //}
+      }
     }
   }
 
@@ -1294,27 +1294,27 @@ void Evolution::calculateNovelty()
     // matrix with individuals which will be compared to the others
     // columns: number of metrics / single line: genome
     arma::mat reference(
-        this->population[0].getMeasures().size(),
-        //9,
+        //this->population[0].getMeasures().size(),
+        9,
         1);
 
     int m = 0;
-//    for (const auto &it : this->population[i].getMeasures())
-//    {
-//      if(it.second == 'branching'
-//         or it.second == 'connectivity1'
-//         or it.second == 'connectivity2'
-//         or it.second == 'coverage'
-//         or it.second == 'effective_joints'
-//         or it.second == 'length_ratio'
-//         or it.second == 'sensors'
-//         or it.second == 'symmetry'
-//         or it.second == 'total_components') {
+    for (const auto &it : this->population[i].getMeasures())
+    {
+      if(it.second == 'branching'
+         or it.second == 'connectivity1'
+         or it.second == 'connectivity2'
+         or it.second == 'coverage'
+         or it.second == 'effective_joints'
+         or it.second == 'length_ratio'
+         or it.second == 'sensors'
+         or it.second == 'symmetry'
+         or it.second == 'total_components') {
         reference(
                 m,
                 0) = it.second;
         m++;
-      //}
+      }
     }
 
     NeighborSearch< NearestNeighborSort, EuclideanDistance > nn(compare);
@@ -1427,6 +1427,11 @@ void Evolution::calculateFinalFitness()
       if(this->params["fitness"] == 1) //s1
       {
           fitness = this->population[i].getLocomotionFitness();
+
+          if(this->params["loco_fitness"] == 2 and this->population[i].getLocomotionFitness() == 0)
+          {
+              fitness = - 0.1;
+          }
       }
 
       if(this->params["fitness"] == 2) // s2

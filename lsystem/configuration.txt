@@ -1,7 +1,7 @@
 pop_size 100
 num_generations 100
 k_neighbors 3
-fitness 5
+fitness 1
 mutation_prob 0.8
 num_initial_comp 3
 prob_add_archive 0.3
@@ -25,4 +25,4 @@ minimum_robot 1
 tournament_size 2
 crossover_prob 0.8
 surv_selection 1
-loco_fitness 2
+loco_fitness 1
