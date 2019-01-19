@@ -62,21 +62,28 @@ void Measures::initalizeMeasures() {
 
     //    components with two sides connected to another component
     this->gen->updateMeasure("connectivity2", 0);
+    this->gen->updateMeasure("connectivity2_abs", 0);
+
+    //   components with three sides connected to another component
+    this->gen->updateMeasure("connectivity3", 0);
 
     //   components with four sides connected to another component
     this->gen->updateMeasure("connectivity4", 0);
 
     //   joints connected by both sides to a brick or core component
     this->gen->updateMeasure("effective_joints", 0);
+    this->gen->updateMeasure("joints_abs", 0);
 
     //    components with one side connected to another component
     this->gen->updateMeasure("connectivity1", 0);
+    this->gen->updateMeasure("connectivity1_abs", 0);
 
     //   maximum of horizontal and vertical symmetry
     this->gen->updateMeasure("symmetry", 0);
 
     //  proportion of components of all types  in the body given the maximum possible size
     this->gen->updateMeasure("total_components", 0);
+    this->gen->updateMeasure("total_components_abs", 0);
 
     // length of the shortest side dived by the longest
     this->gen->updateMeasure("length_ratio", 0);
@@ -356,7 +363,7 @@ void Measures::measurePhenotypeBrain()
  * @param dirpath - directory where file with measures will be saved.
  */
 void Measures::measurePhenotype(std::map<std::string, double> params,
-                                std::string dirpath, int generation) {
+                                std::string dirpath, int generation, int post_measuring) {
 
 
     // size of the component plus the spacing between components
@@ -383,18 +390,14 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
             + this->gen->getMeasures()["total_active_joints_horizontal"]
             + this->gen->getMeasures()["total_active_joints_vertical"]);
 
+    this->gen->updateMeasure("joints_abs", joints);
+
     // total amount of components of all types: core + bricks + joints
     this->gen->updateMeasure("total_components",
                              1
                              + this->gen->getMeasures()["total_bricks"]
                              + joints);
 
-
-    // total of effective joints: joints with both sides connected to core/brick
-    this->gen->updateMeasure("effective_joints",
-                             this->gen->getMeasures()["effective_joints"]
-                             +
-                             this->gen->getMeasures()["viable_horizontal_joints"]);
 
     // practical limits for effective joints
     int limit_joints =
@@ -410,8 +413,9 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
                                          * 1000) / 1000);
     }
 
-    int limit_limbs = 0;
+
     // normalizes the number of limbs per total of components
+    int limit_limbs = 0;
     if (this->gen->getMeasures()["total_components"] <= 5) {
         limit_limbs = this->gen->getMeasures()["total_components"] - 1;
     } else {
@@ -423,6 +427,8 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
                       + 4;
     }
 
+    this->gen->updateMeasure("connectivity1_abs", this->gen->getMeasures()["connectivity1"]);
+
     if (limit_limbs > 0) {
         this->gen->updateMeasure("connectivity1",
                                  roundf(
@@ -430,6 +436,9 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
                                           / (float) limit_limbs)
                                          * 1000) / 1000);
     }
+
+
+    this->gen->updateMeasure("connectivity2_abs", this->gen->getMeasures()["connectivity2"]);
 
     int limit_connectivity2 = this->gen->getMeasures()["total_components"] -
                               2; // disccounts bothsidelimbs and head
@@ -577,6 +586,8 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
     /* END: covered area  */
 
 
+    this->gen->updateMeasure("total_components_abs", this->gen->getMeasures()["total_components"]);
+
     // normalizes total number of components by maximum possible number of components
     this->gen->updateMeasure("total_components",
                              this->gen->getMeasures()["total_components"] /
@@ -610,46 +621,66 @@ void Measures::measurePhenotype(std::map<std::string, double> params,
     this->gen->removeMeasure("total_bricks");
     this->gen->removeMeasure("total_active_joints_horizontal");
     this->gen->removeMeasure("total_active_joints_vertical");
-    this->gen->removeMeasure("connectivity4");
     this->gen->removeMeasure("horizontal_symmetry");
     this->gen->removeMeasure("vertical_symmetry");
     this->gen->removeMeasure("sensors_slots");
 
 
     // #TEST: checks if there is any measure ouy of the expected range
-    Tests tests = Tests(this->experiment_name, this->params, this->path);
-    tests.testMeasures(this->gen->getId(), this->gen->getMeasures());
+    //Tests tests = Tests(this->experiment_name, this->params, this->path);
+    //tests.testMeasures(this->gen->getId(), this->gen->getMeasures());
+
 
 
     /* BEGINNING: exports measures to files */
+    if(post_measuring == 0)
+    {
 
-    std::ofstream measures_file_general;
-    std::string path =
-            this->path+"experiments/" + this->experiment_name + "/measures.txt";
-    measures_file_general.open(path, std::ofstream::app);
+        std::ofstream measures_file_general;
+        std::string path =
+                this->path + "experiments/" + this->experiment_name + "/measures.txt";
+        measures_file_general.open(path, std::ofstream::app);
 
-    std::ofstream measures_file;
-    path = this->path+"experiments/" + this->experiment_name + dirpath +
-           std::to_string(generation) + "/measures" + this->gen->getId() +
-           ".txt";
-    measures_file.open(path);
+        std::ofstream measures_file;
+        path = this->path + "experiments/" + this->experiment_name + dirpath +
+               std::to_string(generation) + "/measures" + this->gen->getId() +
+               ".txt";
+        measures_file.open(path);
 
-    measures_file_general << std::to_string(generation);
-    measures_file_general << " " << this->gen->getId();
+        measures_file_general << std::to_string(generation);
+        measures_file_general << " " << this->gen->getId();
 
-    for (const auto &mea : this->gen->getMeasures()) {
+        for (const auto &mea : this->gen->getMeasures()) {
 
-        measures_file << mea.first << ":" << mea.second << std::endl;
-        measures_file_general << " " << mea.second;
+            measures_file << mea.first << ":" << mea.second << std::endl;
+            measures_file_general << " " << mea.second;
+        }
+
+        measures_file_general << std::endl;
+
+        measures_file.close();
+        measures_file_general.close();
+
+    }else
+    {
+
+        std::ofstream measures_file_general;
+        std::string path =
+                this->path + "experiments/" + this->experiment_name + "/measures_post.txt";
+        measures_file_general.open(path, std::ofstream::app);
+
+        measures_file_general << std::to_string(generation);
+        measures_file_general << " " << this->gen->getId();
+
+        for (const auto &mea : this->gen->getMeasures()) {
+            measures_file_general << " " << mea.second;
+        }
+
+        measures_file_general << std::endl;
+        measures_file_general.close();
+
     }
-
-    measures_file_general << std::endl;
-
-    measures_file.close();
-    measures_file_general.close();
-
     /* END: exports measures to files */
-
 
 
 }
@@ -761,8 +792,7 @@ void Measures::measureComponent(std::string reference,
             // if item is a joint (apart from active/passive horizontal ones)
             // and is connected to brick/core
             // counts for joints effective joints: joints connected by bothsides
-            if (c2->item == "J1" or c2->item == "J2" or c2->item == "PJ2" or
-                c2->item == "AJ2" or c2->item == "AJ1") {
+            if (c2->item == "AJ2" or c2->item == "AJ1") {
 
                 this->gen->updateMeasure("effective_joints",
                                          this->gen->getMeasures()["effective_joints"] +
@@ -777,6 +807,10 @@ void Measures::measureComponent(std::string reference,
         }
 
         if (connected_sides == 3) { // if three have connections
+              this->gen->updateMeasure("connectivity3",
+                                     this->gen->getMeasures()["connectivity3"] +
+                                     1);
+
             if (c2->item == "C" or c2->item == "B")
             {
                 this->gen->updateMeasure("sensors_slots",

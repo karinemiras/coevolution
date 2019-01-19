@@ -327,7 +327,8 @@ void Genome::generate_final_string(
     int replacement_iterations,
     int export_genomes,
     int generation,
-    std::string path)
+    std::string path,
+    int post_measuring)
 {
 
   // performs replacements for a number of iterations
@@ -340,7 +341,7 @@ void Genome::generate_final_string(
   std::cout << std::endl<< "Early developed robot " << this->getId()<<":" << std::endl;
   this->gs.display_list();
 
-  if (export_genomes == 1)
+  if (export_genomes == 1 and  post_measuring == 0)
   {
     this->exportGenome(path + std::to_string(generation));
   }
@@ -438,7 +439,8 @@ void Genome::constructor(
     int argc,
     char *argv[],
     std::map< std::string, double > params,
-    std::string path)
+    std::string path,
+    int post_measuring)
 {
 
   this->app = new QApplication(argc,argv);
@@ -467,39 +469,38 @@ void Genome::constructor(
       c,
       params);
 
-  this->convertYamlBrain(path);
 
-  // exports drawn robot into image file
-  if (params["export_phenotypes"] == 1)
-  {
-    this->scene->clearSelection();                          // Selections would also render to the file
-    this->scene->setSceneRect(
-        this->scene->itemsBoundingRect());              // Re-shrink the scene to it's bounding contents
-    QImage image(
-        this->scene->sceneRect().size().toSize(),
-        QImage::Format_ARGB32);                    // Create the image with the exact size of the shrunk scene
-    image.fill(Qt::transparent);                            // Start all pixels transparent
-    QPainter painter(&image);
-    this->scene->render(&painter);
+    if (post_measuring == 0)
+    {
 
-    QString qstr = QString::fromStdString(
-        path + "/body_" +
-        this->id + "_p1_" +
-        this->id_parent1 + "_p2_" +
-        this->id_parent2 + ".png");
-    image.save(qstr);
+      this->convertYamlBrain(path);
 
-    // draw brain graph
-    std::string auxcom =
-        "dot -Tpng " + path + "/tempbrain.dot -o " + path + "/brain_" + this->id + ".png";
-    std::system(auxcom.c_str());
-  }
+      // exports drawn robot into image file
+      if (params["export_phenotypes"] == 1)
+      {
+        this->scene->clearSelection();                          // Selections would also render to the file
+        this->scene->setSceneRect(
+            this->scene->itemsBoundingRect());              // Re-shrink the scene to it's bounding contents
+        QImage image(
+            this->scene->sceneRect().size().toSize(),
+            QImage::Format_ARGB32);                    // Create the image with the exact size of the shrunk scene
+        image.fill(Qt::transparent);                            // Start all pixels transparent
+        QPainter painter(&image);
+        this->scene->render(&painter);
 
-  // show drawn robot on the screen
-  if (params["show_phenotypes"] == 1)
-  {
-    this->app->exec();
-  }
+        QString qstr = QString::fromStdString(
+            path + "/body_" +
+            this->id + "_p1_" +
+            this->id_parent1 + "_p2_" +
+            this->id_parent2 + ".png");
+        image.save(qstr);
+
+        // draw brain graph
+        std::string auxcom =
+            "dot -Tpng " + path + "/tempbrain.dot -o " + path + "/brain_" + this->id + ".png";
+        std::system(auxcom.c_str());
+      }
+    }
 
     // cleans up
     QList< QGraphicsItem * > all = this->getScene()->items();
@@ -1240,7 +1241,8 @@ void Genome::developGenomeIndirect(
     std::map< std::string, double > params,
     LSystem LS,
     int generation,
-    std::string path)
+    std::string path,
+    int post_measuring)
 {
   // creates main genetic-string for axiom (initial developmental state of the genome)
   this->createEmbryo();
@@ -1249,7 +1251,8 @@ void Genome::developGenomeIndirect(
   this->generate_final_string((int) params["replacement_iterations"],
                               (int) params["export_genomes"],
                               generation,
-                              path);
+                              path,
+                              post_measuring);
 
   // decodes the final genetic-string into a tree of components
   this->decodeGeneticString(
@@ -1259,10 +1262,11 @@ void Genome::developGenomeIndirect(
 
   // generates robot-graphics
   this->constructor(
-      argc,
-    argv,
+            argc,
+            argv,
             params,
-            path + std::to_string(generation));
+            path + std::to_string(generation),
+            post_measuring);
 }
 
 

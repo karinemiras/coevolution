@@ -11,7 +11,6 @@ max_comps 100
 grid_bins 100
 logs_to_screen 0
 logs_to_file 1
-show_phenotypes 0
 export_phenotypes 1
 export_genomes 1
 size_component 40
@@ -20,9 +19,9 @@ oscillator_min 1
 oscillator_max 10
 max_attempt_multi 20
 objective 1
-num_runs 1
+num_runs 10
 minimum_robot 1
 tournament_size 2
 crossover_prob 0.8
 surv_selection 1
-loco_fitness 1
+loco_fitness 2

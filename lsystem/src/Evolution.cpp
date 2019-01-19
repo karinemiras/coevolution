@@ -151,7 +151,8 @@ void Evolution::loadsParams()
   }
   else
   {
-    this->aux.logs("Unable to open parameters state.");
+    std::cout<<"Unable to open parameters state."<<this->path+"experiments/"
+      << this->experiment_name << "/configuration.txt"<<std::endl;
   }
 
 }
@@ -195,12 +196,6 @@ int Evolution::getGeneration_genome(std::string idgenome)
 **/
 void Evolution::exportPop(int generation)
 {
-  std::ofstream measures_file_general;
-  std::string path =
-      this->path+"experiments/" + this->experiment_name + "/measures2.txt";
-  measures_file_general.open(
-      path,
-      std::ofstream::app);
 
   for (int i = 0;
        i < this->population.size();
@@ -255,13 +250,9 @@ void Evolution::exportPop(int generation)
           line,
           boost::is_any_of(":"));
 
-      measures_file_general << std::to_string(generation) << " "
-                            << this->population[i].getId() << " "
-                            << tokens[0] << " " << tokens[1] << std::endl;
     }
   }
 
-  measures_file_general.close();
 }
 
 
@@ -370,60 +361,66 @@ double Evolution::compareParents(
 void Evolution::measureIndividuals(
     int generation,
     std::vector< Genome > &individuals,
-    std::string dirpath)
+    std::string dirpath,
+    int post_measuring)
 {
 
-  std::ofstream differences_file;
-  std::string path =
-      this->path+"experiments/" + this->experiment_name + "/distances.txt";
-  differences_file.open(
-      path,
-      std::ofstream::app);
+      std::ofstream differences_file;
+      std::string path =
+          this->path+"experiments/" + this->experiment_name + "/distances.txt";
+      differences_file.open(
+          path,
+          std::ofstream::app);
+
+      // for each genome of the population
+      for (int i = 0;
+           i < individuals.size();
+           i++)
+      {
+
+        Measures m = Measures(
+            this->experiment_name,
+            this->params,
+            this->path
+        );
+        m.setGenome(individuals[i]);
 
 
-  // for each genome of the population
-  for (int i = 0;
-       i < individuals.size();
-       i++)
-  {
+        // measures phenotype
+        m.measurePhenotype(
+            this->params,
+            dirpath,
+            this->getGeneration_genome(individuals[i].getId()),
+            post_measuring);
 
-    Measures m = Measures(
-        this->experiment_name,
-        this->params,
-        this->path
-    );
-    m.setGenome(individuals[i]);
-    // measures phenotype
-    m.measurePhenotype(
-        this->params,
-        dirpath,
-        generation);
+        // compares measures between individuals
+          if(post_measuring == 0)
+          {
+              if (individuals[i].getId_parent1() != "N") {
 
-    // compares measures between individuals
-    if (individuals[i].getId_parent1() != "N")
-    {
+                  double dif = this->compareIndividual(
+                          m,
+                          individuals[i].getId_parent1());
+                  differences_file << individuals[i].getId() << " " << dif;
 
-      double dif = this->compareIndividual(
-          m,
-          individuals[i].getId_parent1());
-      differences_file << individuals[i].getId() << " " << dif;
+                  dif = this->compareIndividual(
+                          m,
+                          individuals[i].getId_parent2());
+                  differences_file << " " << dif;
 
-      dif = this->compareIndividual(
-          m,
-          individuals[i].getId_parent2());
-      differences_file << " " << dif;
+                  dif = this->compareParents(
+                          individuals[i].getId_parent1(),
+                          individuals[i].getId_parent2());
+                  differences_file << " " << dif << std::endl;
 
-      dif = this->compareParents(
-          individuals[i].getId_parent1(),
-          individuals[i].getId_parent2());
-      differences_file << " " << dif << std::endl;
+              }
+          }
 
-    }
+        std::cout<<"Robot "<<individuals[i].getId()<<" has been measured."<<std::endl;
 
-    std::cout<<"Robot "<<individuals[i].getId()<<" has been measured."<<std::endl;
-  }
+      }
 
-  differences_file.close();
+      differences_file.close();
 }
 
 
@@ -469,11 +466,6 @@ void Evolution::createHeader()
     file << " " << it.first;
   }
   file << std::endl;
-  file.close();
-
-  path = this->path+"experiments/" + this->experiment_name + "/measures2.txt";
-  file.open(path);
-  file << "generation genome measures value" << std::endl;
   file.close();
 
   path = this->path+"experiments/" + this->experiment_name + "/distances.txt";
@@ -839,6 +831,105 @@ void Evolution::setupEvolution()
 
 }
 
+void Evolution::postMeasuring()
+{
+    // loads state of parameters from previous experiment
+    this->loadsParams();
+    int argc = 1;  //
+    char *argv[] = {"a"}; //
+
+    LSystem LS(this->getParams());
+
+    int total_genomes = this->params["pop_size"]
+                        + (this->params["num_generations"]-1)
+                          * this->params["pop_size"]
+                          * this->params["offspring_prop"];
+
+    for (int idgenome = 0; idgenome < total_genomes; idgenome++)
+    {
+
+        Genome gen = Genome(
+                std::to_string(idgenome),
+                  "",
+                  "");
+
+          // finds number of generation to which the genome belongs to
+          int generation_genome = this->getGeneration_genome(std::to_string(idgenome));
+
+          // reads the file with the genome
+          std::ifstream listalphabet(
+                  this->path + "experiments/" + this->experiment_name +
+                  "/offspringpop" +
+                  std::to_string(generation_genome) + "/genome" + std::to_string(idgenome) +
+                  ".txt");
+          std::string linealphabet;
+          // for each letter of the alphabet
+          while (getline(
+                  listalphabet,
+                  linealphabet))
+          {
+
+              // gets letter and production rule from file
+              std::vector< std::string > items;
+              boost::split(
+                      items,
+                      linealphabet,
+                      boost::is_any_of(" "));
+              std::vector< std::string > items_rule(
+                      items.begin() + 1,
+                      items.begin() + items.size() -
+                      1);
+
+              // build a genetic-string with the production rule for the letter
+              auto lgs = GeneticString();
+              lgs = gen.build_genetic_string(
+                      lgs,
+                      items_rule);
+
+              // adds letter and its production rule (made a genetic-string) to the grammar of the genome
+              gen.addLetterGrammar(
+                      items[0],
+                      lgs);
+
+          }
+
+        // adds genome to the population
+       this->population.push_back(gen);
+
+    }
+
+
+      // develops genomes of the initial population
+      this->developIndividuals(
+              argc,
+              argv,
+              LS,
+              0,
+              this->population,
+              this->experiment_name + "/offspringpop",
+              1);
+
+        std::ofstream file;
+        std::string path = this->path+"experiments/" + this->experiment_name + "/measures_post.txt";
+        file.open(path);
+        file << "generation idgenome";
+        for (const auto &it : this->measures_names)
+        {
+            file << " " << it.first;
+        }
+        file << std::endl;
+        file.close();
+
+      // measures phenotypes of the individuals
+      this->measureIndividuals(
+              0,
+              this->population,
+              "/offspringpop",
+              1);
+
+
+}
+
 
 /**
 *  Develops genomes of the population: 1- grows genetic-string of the genome according to grammar, 2- decodes it, 3- constructs the phenotype
@@ -853,7 +944,8 @@ void Evolution::developIndividuals(
     LSystem LS,
     int generation,
     std::vector< Genome > &individuals,
-    std::string dir)
+    std::string dir,
+    int post_measuring)
 {
   // for each genome in the array
   for (size_t i = 0; i < individuals.size(); ++i)
@@ -865,7 +957,8 @@ void Evolution::developIndividuals(
         this->params,
         LS,
         generation,
-        this->path+"experiments/"+dir);
+        this->path+"experiments/"+dir,
+        post_measuring);
 
     std::cout<<"Robot "<<individuals[i].getId()<<" has been late developed."<<std::endl;
   }
@@ -1540,13 +1633,15 @@ double Evolution::runExperiment_part1(
       LS,
       generation,
       this->offspring,
-      this->experiment_name + "/offspringpop");
+      this->experiment_name + "/offspringpop",
+      0);
 
   // measures phenotypes of the individuals
   this->measureIndividuals(
       generation,
       this->offspring,
-      "/offspringpop");
+      "/offspringpop",
+      0);
 
   // updates the average measures for the population
   this->savesValidity(generation);

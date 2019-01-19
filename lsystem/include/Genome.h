@@ -57,7 +57,8 @@ public:
     void generate_final_string(int  replacement_iterations,
                                int export_genomes,
                                int generation,
-                               std::string path);
+                               std::string path,
+                               int post_measuring);
 
     void decodeGeneticString(LSystem LS,
                              std::map<std::string, double> params,
@@ -67,7 +68,8 @@ public:
                      char* argv[],
                      std::map<std::string,
                              double> params,
-                     std::string path);
+                     std::string path,
+                     int post_measuring);
 
     void draw_component( std::string parent_convertion,
                         int convertion_level,
@@ -100,7 +102,8 @@ public:
                                std::map<std::string, double> params,
                                LSystem LS,
                                int generation,
-                               std::string path);
+                               std::string path,
+                               int post_measuring);
 
     void developGenomeDirect(int argc,
                              char* argv[],

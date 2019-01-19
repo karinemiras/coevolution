@@ -50,6 +50,13 @@ public:
         this->measures_names["inputs_reach"] = "inputs_reach";
         this->measures_names["recurrence"] = "recurrence";
         this->measures_names["synaptic_reception"] = "synaptic_reception";
+        this->measures_names["total_components_abs"] = "total_components_abs";
+        this->measures_names["joints_abs"] = "joints_abs";
+        this->measures_names["connectivity4"] = "connectivity4";
+        this->measures_names["connectivity1_abs"] = "connectivity1_abs";
+        this->measures_names["connectivity2_abs"] = "connectivity2_abs";
+        this->measures_names["connectivity3"] = "connectivity3";
+
     }
 
     void saveHistory(int generation);
@@ -60,7 +67,8 @@ public:
                            std::string test_genome);
     void measureIndividuals(int generation,
                             std::vector<Genome>  &individuals,
-                            std::string dirpath);
+                            std::string dirpath,
+                            int post_measuring);
 
 
     void evaluateLocomotion(int generation,
@@ -82,6 +90,7 @@ public:
     void saveBalance(std::string genome_id, double fitness);
     void exportPop(int generation);
     void calculateNovelty();
+    void postMeasuring();
     void calculateNoveltyLocomotion();
     void calculateFinalFitness();
     void calculatePenaltyFitness();
@@ -101,7 +110,8 @@ public:
                             LSystem LS,
                             int generation,
                             std::vector<Genome>  &individuals,
-                            std::string dir);
+                            std::string dir,
+                            int post_measuring);
     int loadExperiment();
     void initExperiment(int argc, char* argv[],
                        LSystem LS);

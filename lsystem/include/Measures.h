@@ -33,7 +33,7 @@ public:
 
     void initalizeMeasures();
     void measurePhenotype(std::map<std::string, double> params,
-                          std::string dirpath, int generation);
+                          std::string dirpath, int generation, int post_measuring);
     void measurePhenotypeBrain();
     void measureComponent(std::string reference,
                           std::string direction,
