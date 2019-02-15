@@ -15,8 +15,8 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-#include <mlpack/core.hpp>
-#include <mlpack/methods/neighbor_search/neighbor_search.hpp>
+//#include <mlpack/core.hpp>
+//#include <mlpack/methods/neighbor_search/neighbor_search.hpp>
 
 #include "Aux.h"
 #include "EvolutionIndirect.h"

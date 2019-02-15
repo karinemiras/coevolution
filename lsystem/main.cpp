@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 
-    std::string type_script = "post_measuring";
+    std::string type_script = "random_search";
 
     // Experiments with random search (no simulation)
     //  ps: simulation experiments (with fitness) are started from revolve, include this as a library

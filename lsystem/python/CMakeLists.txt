@@ -3,7 +3,7 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(PYTHON REQUIRED python2)
 
 # boost python
-find_package(Boost REQUIRED COMPONENTS python)
+find_package(Boost REQUIRED COMPONENTS python27)
 message(STATUS "boost: ${Boost_FOUND}")
 message(STATUS "boost::system: ${Boost_SYSTEM_FOUND}")
 message(STATUS "boost::python: ${Boost_PYTHON_FOUND}")
@@ -25,7 +25,7 @@ endif ()
 
 if (${APPLE})
     set(PYTHON_LIBRARIES
-            "/usr/local/Cellar/python@2/2.7.15_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib"
+            "/usr/local/Cellar/python@2/2.7.15_1/Frameworks/Python.framework/Versions/2.7/lib/libpython2.7.dylib"
             ${PYTHON_LIBRARIES} )
 endif ()
 

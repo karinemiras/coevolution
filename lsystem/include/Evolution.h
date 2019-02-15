@@ -97,6 +97,7 @@ public:
     void calculateRankFitness();
     void saveParameters();
     void surv_selection_tournament();
+    void surv_selection_comma();
     void logsTime(std::string moment);
     void setupEvolution();
     void writesEvolutionState(int generation, int next_id);

@@ -48,15 +48,7 @@ include(${QT_USE_FILE})
 
 include_directories(SYSTEM ${MPI_INCLUDE_PATH})
 
-#if (${APPLE})
-  #include_directories("/usr/local/include/mlpack")
-  #link_directories("/usr/local/lib/")
-#else()
-  # I guess this is how it goes for Linux
- # include_directories("/usr/includes/mlpack")
-#endif ()
 
-find_package(Armadillo)
 
 # Source subdirectories
 # _____________________________________________________________________________
@@ -86,16 +78,10 @@ add_executable(lsystem_proto  main.cpp)
 
 target_link_libraries(lsystem_proto_lib
         Qt4::QtGui
-        mlpack
-        armadillo
-        yaml-cpp
         )
 
 target_link_libraries(lsystem_proto
         lsystem_proto_lib
         Qt4::QtGui
-        mlpack
-        armadillo
-        yaml-cpp
         )
 add_subdirectory("python")

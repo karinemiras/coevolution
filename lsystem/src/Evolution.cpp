@@ -17,11 +17,11 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-#include <mlpack/methods/neighbor_search/neighbor_search.hpp>
-
-using namespace mlpack;
-using namespace mlpack::neighbor; // NeighborSearch and NearestNeighborSort
-using namespace mlpack::metric; // EuclideanDistance
+//#include <mlpack/methods/neighbor_search/neighbor_search.hpp>
+//
+//using namespace mlpack;
+//using namespace mlpack::neighbor; // NeighborSearch and NearestNeighborSort
+//using namespace mlpack::metric; // EuclideanDistance
 
 #include "Aux.h"
 #include "Evolution.h"
@@ -526,6 +526,25 @@ void Evolution::savesValidity(int generation)
     file << this->offspring[i].getId() << " " <<  this->offspring[i].getValid()
          << std::endl;
   }
+    
+    if(this->params["revaluate_parents"] == 1)
+    {
+        // todo: make a parameter for this generation progression later!
+        if(generation == 11 or
+           generation == 31 or
+           generation == 61
+           )
+        {
+            for (int i = 0;
+                 i <  this->population.size();
+                 i++)
+            {
+                file << this->population[i].getId() << " " <<  this->population[i].getValid()
+                << std::endl;
+            }
+        }
+    }
+    
   file.close();
 }
 
@@ -686,6 +705,26 @@ void Evolution::surv_selection_tournament()
 }
 
 
+void Evolution::surv_selection_comma()
+{
+    std::vector< int > index_selected = std::vector< int >();
+    
+    // cleans up only parents memory
+    int aux_border = this->population.size()-this->offspring.size();
+    for (int i = aux_border ; i < this->population.size(); i++)
+    {
+        index_selected.push_back(i);
+    }
+    this->cleanMemory(index_selected);
+    
+    this->population = this->offspring; // kills parents, offspring lives
+    
+    // # TEST: Tests if population size remains correct.
+    this->tests.testPopsize(
+                            this->population,
+                            (int) this->params["pop_size"]);
+}
+
 /*
  * Deallocate memory used by the non-selected individuals.
  * */
@@ -704,6 +743,7 @@ void Evolution::cleanMemory(std::vector< int > index_selected)
         index_selected.end(),
         i) == index_selected.end())
     {
+        
       auto item = this->population[i].getGeneticString().getStart();
       while (item not_eq NULL)
       {
@@ -1254,52 +1294,98 @@ void Evolution::saveLocomotionInfo(
 {
 
   // updates locomotion fitness for the genome
-  int index=0;
-  while(this->offspring[index].getId() != genome_id)
-    index++;
-  this->offspring[index].updateLocomotionFitness(x, y, z, time, this->params);
+  int genome_index = -1;
+  int t_pop = -1;
+  int generation_genome = -1;
+    
+    for (int i = 0;i < population.size();i++)
+    {
+        if(this->population[i].getId() == genome_id){
+            genome_index = i;
+            t_pop = 0;
+        }
+    }
+    
+    for (int i = 0;i < offspring.size();i++)
+    {
+        if(this->offspring[i].getId() == genome_id){
+            genome_index = i;
+            t_pop = 1;
+        }
+    }
+ 
+    std::ofstream file;
+    if(t_pop == 0)
+    {
+        this->population[genome_index].updateLocomotionFitness(x, y, z, time, this->params);
+        generation_genome = this->getGeneration_genome(this->population[genome_index].getId());
+    }
+    
+    if(t_pop == 1)
+    {
+        this->offspring[genome_index].updateLocomotionFitness(x, y, z, time, this->params);
+        generation_genome = this->getGeneration_genome(this->offspring[genome_index].getId());
 
-  int generation_genome = this->getGeneration_genome(this->offspring[index].getId());
-
-  // exports fitness for recovery
-  std::ofstream file;
-  std::string path2 =
-      this->path+"experiments/"
-      + this->experiment_name + "/offspringpop" +
-      std::to_string(generation_genome)+ "/locomotion_"+this->offspring[index]
-          .getId()+".txt";
-  file.open(path2);
-  file
-      << x <<" "<< y <<" "<< z <<" "<< time;
-  file.close();
+    }
+    std::string path2 =
+    this->path+"experiments/"
+    + this->experiment_name + "/offspringpop" +
+    std::to_string(generation_genome)+ "/locomotion_"+genome_id+".txt";
+    file.open(path2);
+    file
+    << x <<" "<< y <<" "<< z <<" "<< time;
+    file.close();
+ 
+ 
 }
 
 /* Saves the fitness for genome.
  * */
 void Evolution::saveBalance(
     std::string genome_id,
-    double fitness)
+    double balance)
 {
-
-  // updates balance fitness for the genome
-  int index=0;
-  while(this->offspring[index].getId() != genome_id)
-    index++;
-  this->offspring[index].updateBalanceFitness(fitness);
-
-  int generation_genome = this->getGeneration_genome(this->offspring[index].getId());
-
-  // exports fitness for recovery
-  std::ofstream file;
-  std::string path2 =
-      this->path+"experiments/"
-      + this->experiment_name + "/offspringpop" +
-      std::to_string(generation_genome)+ "/balance_"+this->offspring[index]
-          .getId()+".txt";
-  file.open(path2);
-  file
-      <<  this->offspring[index].getBalanceFitness();
-  file.close();
+    
+    int genome_index = -1;
+    int t_pop = -1;
+    int generation_genome = -1;
+    
+    for (int i = 0;i < population.size();i++)
+    {
+        if(this->population[i].getId() == genome_id){
+            genome_index = i;
+            t_pop = 0;
+        }
+    }
+    
+    for (int i = 0;i < offspring.size();i++)
+    {
+        if(this->offspring[i].getId() == genome_id){
+            genome_index = i;
+            t_pop = 1;
+        }
+    }
+    
+     std::ofstream file;
+    if(t_pop == 0)
+    {
+        this->population[genome_index].updateBalanceFitness(balance);
+        generation_genome = this->getGeneration_genome(this->population[genome_index].getId());
+    }
+    
+    if(t_pop == 1)
+    {
+      this->offspring[genome_index].updateBalanceFitness(balance);
+      generation_genome = this->getGeneration_genome(this->offspring[genome_index].getId());
+    }
+    std::string path2 =
+    this->path+"experiments/"
+    + this->experiment_name + "/offspringpop" +
+    std::to_string(generation_genome)+ "/balance_"+genome_id".txt";
+    file.open(path2);
+    file
+    <<  balance;
+    file.close();
 }
 
 
@@ -1341,169 +1427,169 @@ void Evolution::addToArchive()
  * */
 void Evolution::calculateNovelty()
 {
-  std::vector<Genome> individuals_compare;
-  individuals_compare.insert(individuals_compare.end(),
-                             this->population.begin(), this->population.end());
-  individuals_compare.insert(individuals_compare.end(),
-                             this->archive.begin(), this->archive.end());
-
-
-  std::map< std::string, double > measures;
-
-
-  //matrix with all individuals
-  // columns: number of metrics / lines: number of genomes
-  arma::mat compare(
-     // individuals_compare[0].getMeasures().size(),
-      9,
-      individuals_compare.size());
-
-
-  for (int i = 0; i < individuals_compare.size(); i++)
-  {
-    int m = 0;
-    for (const auto &it : individuals_compare[i].getMeasures())
-    {
-      if(it.second == 'branching'
-       or it.second == 'connectivity1'
-          or it.second == 'connectivity2'
-             or it.second == 'coverage'
-                or it.second == 'effective_joints'
-                   or it.second == 'length_ratio'
-                      or it.second == 'sensors'
-                         or it.second == 'symmetry'
-                            or it.second == 'total_components')
-      {
-        compare(
-            m,
-            i) = it.second;
-        m++;
-      }
-    }
-  }
-
-  for (int i = 0; i < this->population.size(); i++)
-  {
-    // matrix with individuals which will be compared to the others
-    // columns: number of metrics / single line: genome
-    arma::mat reference(
-        //this->population[0].getMeasures().size(),
-        9,
-        1);
-
-    int m = 0;
-    for (const auto &it : this->population[i].getMeasures())
-    {
-      if(it.second == 'branching'
-         or it.second == 'connectivity1'
-         or it.second == 'connectivity2'
-         or it.second == 'coverage'
-         or it.second == 'effective_joints'
-         or it.second == 'length_ratio'
-         or it.second == 'sensors'
-         or it.second == 'symmetry'
-         or it.second == 'total_components') {
-        reference(
-                m,
-                0) = it.second;
-        m++;
-      }
-    }
-
-    NeighborSearch< NearestNeighborSort, EuclideanDistance > nn(compare);
-    arma::Mat< size_t > neighbors;
-    arma::mat distances;
-
-    // search for each individual, the nearest neighbors (+1 because it includes itself)
-    nn.Search(
-        reference,
-        this->params["k_neighbors"] + 1,
-        neighbors,
-        distances);
-
-    double fitness = 0;
-    for (size_t j = 0; j < neighbors.n_elem; ++j)
-    {
-      fitness += distances[j];
-      this->aux.logs(
-          "nv nearest neighbor  " + std::to_string(j) + " for genome "
-          + this->population[i].getId() + " has distance "
-          + std::to_string(distances[j]));
-    }
-
-    // averages the nearest neighboards
-    fitness = fitness / this->params["k_neighbors"];
-
-    this->population[i].updateNoveltyFitness(fitness);
-
-  }
-    std::cout<<"Novelty has been calculated."<<std::endl;
+//  std::vector<Genome> individuals_compare;
+//  individuals_compare.insert(individuals_compare.end(),
+//                             this->population.begin(), this->population.end());
+//  individuals_compare.insert(individuals_compare.end(),
+//                             this->archive.begin(), this->archive.end());
+//
+//
+//  std::map< std::string, double > measures;
+//
+//
+//  //matrix with all individuals
+//  // columns: number of metrics / lines: number of genomes
+//  arma::mat compare(
+//     // individuals_compare[0].getMeasures().size(),
+//      9,
+//      individuals_compare.size());
+//
+//
+//  for (int i = 0; i < individuals_compare.size(); i++)
+//  {
+//    int m = 0;
+//    for (const auto &it : individuals_compare[i].getMeasures())
+//    {
+//      if(it.second == 'branching'
+//       or it.second == 'connectivity1'
+//          or it.second == 'connectivity2'
+//             or it.second == 'coverage'
+//                or it.second == 'effective_joints'
+//                   or it.second == 'length_ratio'
+//                      or it.second == 'sensors'
+//                         or it.second == 'symmetry'
+//                            or it.second == 'total_components')
+//      {
+//        compare(
+//            m,
+//            i) = it.second;
+//        m++;
+//      }
+//    }
+//  }
+//
+//  for (int i = 0; i < this->population.size(); i++)
+//  {
+//    // matrix with individuals which will be compared to the others
+//    // columns: number of metrics / single line: genome
+//    arma::mat reference(
+//        //this->population[0].getMeasures().size(),
+//        9,
+//        1);
+//
+//    int m = 0;
+//    for (const auto &it : this->population[i].getMeasures())
+//    {
+//      if(it.second == 'branching'
+//         or it.second == 'connectivity1'
+//         or it.second == 'connectivity2'
+//         or it.second == 'coverage'
+//         or it.second == 'effective_joints'
+//         or it.second == 'length_ratio'
+//         or it.second == 'sensors'
+//         or it.second == 'symmetry'
+//         or it.second == 'total_components') {
+//        reference(
+//                m,
+//                0) = it.second;
+//        m++;
+//      }
+//    }
+//
+//    NeighborSearch< NearestNeighborSort, EuclideanDistance > nn(compare);
+//    arma::Mat< size_t > neighbors;
+//    arma::mat distances;
+//
+//    // search for each individual, the nearest neighbors (+1 because it includes itself)
+//    nn.Search(
+//        reference,
+//        this->params["k_neighbors"] + 1,
+//        neighbors,
+//        distances);
+//
+//    double fitness = 0;
+//    for (size_t j = 0; j < neighbors.n_elem; ++j)
+//    {
+//      fitness += distances[j];
+//      this->aux.logs(
+//          "nv nearest neighbor  " + std::to_string(j) + " for genome "
+//          + this->population[i].getId() + " has distance "
+//          + std::to_string(distances[j]));
+//    }
+//
+//    // averages the nearest neighboards
+//    fitness = fitness / this->params["k_neighbors"];
+//
+//    this->population[i].updateNoveltyFitness(fitness);
+//
+//  }
+//    std::cout<<"Novelty has been calculated."<<std::endl;
 }
 
 void Evolution::calculateNoveltyLocomotion()
 {
-  std::vector<Genome> individuals_compare;
-  individuals_compare.insert(individuals_compare.end(),
-                             this->population.begin(), this->population.end());
-  individuals_compare.insert(individuals_compare.end(),
-                             this->archive.begin(), this->archive.end());
-
-  //matrix with all individuals
-  // columns: number of metrics / lines: number of genomes
-  arma::mat compare(
-      1,
-      individuals_compare.size());
-
-  for (int i = 0; i < individuals_compare.size(); i++)
-  {
-    int m = 0;
-    compare(
-          m,
-          i) = individuals_compare[i].getLocomotionFitness();
-  }
-
-  for (int i = 0; i < this->population.size(); i++)
-  {
-    // matrix with individuals which will be compared to the others
-    // columns: number of metrics / single line: genome
-    arma::mat reference(
-        1,
-        1);
-
-    int m = 0;
-    reference(
-          m,
-          0) = this->population[i].getLocomotionFitness();
-
-
-    NeighborSearch< NearestNeighborSort, EuclideanDistance > nn(compare);
-    arma::Mat< size_t > neighbors;
-    arma::mat distances;
-
-    // search for each individual, the nearest neighbors (+1 because it includes itself)
-    nn.Search(
-        reference,
-        this->params["k_neighbors"] + 1,
-        neighbors,
-        distances);
-
-    double fitness = 0;
-    for (size_t j = 0; j < neighbors.n_elem; ++j)
-    {
-      fitness += distances[j];
-      this->aux.logs(
-          "nv2 nearest neighbor  " + std::to_string(j) + " for genome "
-          + this->population[i].getId() + " has distance "
-          + std::to_string(distances[j]));
-    }
-
-    // averages the nearest neighboards
-    fitness = fitness / this->params["k_neighbors"];
-
-    this->population[i].updateNoveltyLocomotionFitness(fitness);
-
-  }
-  std::cout<<"Novelty of locomotion has been calculated."<<std::endl;
+//  std::vector<Genome> individuals_compare;
+//  individuals_compare.insert(individuals_compare.end(),
+//                             this->population.begin(), this->population.end());
+//  individuals_compare.insert(individuals_compare.end(),
+//                             this->archive.begin(), this->archive.end());
+//
+//  //matrix with all individuals
+//  // columns: number of metrics / lines: number of genomes
+//  arma::mat compare(
+//      1,
+//      individuals_compare.size());
+//
+//  for (int i = 0; i < individuals_compare.size(); i++)
+//  {
+//    int m = 0;
+//    compare(
+//          m,
+//          i) = individuals_compare[i].getLocomotionFitness();
+//  }
+//
+//  for (int i = 0; i < this->population.size(); i++)
+//  {
+//    // matrix with individuals which will be compared to the others
+//    // columns: number of metrics / single line: genome
+//    arma::mat reference(
+//        1,
+//        1);
+//
+//    int m = 0;
+//    reference(
+//          m,
+//          0) = this->population[i].getLocomotionFitness();
+//
+//
+//    NeighborSearch< NearestNeighborSort, EuclideanDistance > nn(compare);
+//    arma::Mat< size_t > neighbors;
+//    arma::mat distances;
+//
+//    // search for each individual, the nearest neighbors (+1 because it includes itself)
+//    nn.Search(
+//        reference,
+//        this->params["k_neighbors"] + 1,
+//        neighbors,
+//        distances);
+//
+//    double fitness = 0;
+//    for (size_t j = 0; j < neighbors.n_elem; ++j)
+//    {
+//      fitness += distances[j];
+//      this->aux.logs(
+//          "nv2 nearest neighbor  " + std::to_string(j) + " for genome "
+//          + this->population[i].getId() + " has distance "
+//          + std::to_string(distances[j]));
+//    }
+//
+//    // averages the nearest neighboards
+//    fitness = fitness / this->params["k_neighbors"];
+//
+//    this->population[i].updateNoveltyLocomotionFitness(fitness);
+//
+//  }
+//  std::cout<<"Novelty of locomotion has been calculated."<<std::endl;
 }
 
 /**
@@ -1537,7 +1623,7 @@ void Evolution::calculateFinalFitness()
       if(this->params["fitness"] == 3) // s3
       {
            fitness = this->population[i].getLocomotionFitness()
-                        * this->population[i].getNoveltyFitness()
+                      //  * this->population[i].getNoveltyFitness()
                         * this->population[i].getPenaltyFitness();
 
       }
@@ -1564,7 +1650,8 @@ void Evolution::calculatePenaltyFitness()
   {
 
     double fitness =
-        std::max(0.1, 1 - this->population[i].getMeasures()["connectivity2"]);
+       // std::max(0.1, 1 - this->population[i].getMeasures()["connectivity2"]);
+       std::max(0.1, 1 - this->population[i].getMeasures()["total_components"]);
 
     this->population[i].updatePenaltyFitness(fitness);
   }
@@ -1645,6 +1732,7 @@ double Evolution::runExperiment_part1(
 
   // updates the average measures for the population
   this->savesValidity(generation);
+ 
 
 }
 
@@ -1696,6 +1784,11 @@ double Evolution::runExperiment_part2(int generation)
     {
       this->surv_selection_tournament();
     }
+      if(this->params["surv_selection"] == 2)
+      {
+          this->surv_selection_comma();
+      }
+      
 
     std::cout<<"Selection of generation "<<generation<<" has been realized."<<std::endl;
 

@@ -7,7 +7,7 @@ num_initial_comp 3
 prob_add_archive 0.3
 replacement_iterations 3
 offspring_prop 0.5
-max_comps 100
+max_comps 15
 grid_bins 100
 logs_to_screen 0
 logs_to_file 1
@@ -25,3 +25,4 @@ tournament_size 2
 crossover_prob 0.8
 surv_selection 1
 loco_fitness 2
+revaluate_parents 1
